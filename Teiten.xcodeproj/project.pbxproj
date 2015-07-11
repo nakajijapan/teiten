@@ -1,0 +1,490 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DCB53F631A88CFC100FA3B10 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB53F621A88CFC100FA3B10 /* AppDelegate.swift */; };
+		DCB53F651A88CFC100FA3B10 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB53F641A88CFC100FA3B10 /* ViewController.swift */; };
+		DCB53F671A88CFC100FA3B10 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCB53F661A88CFC100FA3B10 /* Images.xcassets */; };
+		DCB53F6A1A88CFC100FA3B10 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCB53F681A88CFC100FA3B10 /* Main.storyboard */; };
+		DCB53F761A88CFC100FA3B10 /* TeitenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB53F751A88CFC100FA3B10 /* TeitenTests.swift */; };
+		DCB53F851A88D03300FA3B10 /* CaptureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB53F801A88D03300FA3B10 /* CaptureViewController.swift */; };
+		DCB53F861A88D03300FA3B10 /* FileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB53F811A88D03300FA3B10 /* FileEntity.swift */; };
+		DCB53F871A88D03300FA3B10 /* MovieMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB53F821A88D03300FA3B10 /* MovieMaker.swift */; };
+		DCB53F891A88D03300FA3B10 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB53F841A88D03300FA3B10 /* SettingViewController.swift */; };
+		DCB53F8B1A88D0BF00FA3B10 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB53F8A1A88D0BF00FA3B10 /* Cocoa.framework */; };
+		DCB53F8D1A88D0C700FA3B10 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB53F8C1A88D0C700FA3B10 /* AppKit.framework */; };
+		DCB53F8F1A88D0CE00FA3B10 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB53F8E1A88D0CE00FA3B10 /* CoreMedia.framework */; };
+		DCB53F911A88D0DA00FA3B10 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB53F901A88D0DA00FA3B10 /* CoreVideo.framework */; };
+		DCB53F931A88D0E600FA3B10 /* InputMethodKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB53F921A88D0E600FA3B10 /* InputMethodKit.framework */; };
+		DCB53F951A88D0EF00FA3B10 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB53F941A88D0EF00FA3B10 /* AVFoundation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DCB53F701A88CFC100FA3B10 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DCB53F551A88CFC100FA3B10 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DCB53F5C1A88CFC100FA3B10;
+			remoteInfo = Teiten;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		DCB53F5D1A88CFC100FA3B10 /* Teiten.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Teiten.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCB53F611A88CFC100FA3B10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DCB53F621A88CFC100FA3B10 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		DCB53F641A88CFC100FA3B10 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		DCB53F661A88CFC100FA3B10 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		DCB53F691A88CFC100FA3B10 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		DCB53F6F1A88CFC100FA3B10 /* TeitenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TeitenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCB53F741A88CFC100FA3B10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DCB53F751A88CFC100FA3B10 /* TeitenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeitenTests.swift; sourceTree = "<group>"; };
+		DCB53F801A88D03300FA3B10 /* CaptureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureViewController.swift; sourceTree = "<group>"; };
+		DCB53F811A88D03300FA3B10 /* FileEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileEntity.swift; sourceTree = "<group>"; };
+		DCB53F821A88D03300FA3B10 /* MovieMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieMaker.swift; sourceTree = "<group>"; };
+		DCB53F841A88D03300FA3B10 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		DCB53F8A1A88D0BF00FA3B10 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		DCB53F8C1A88D0C700FA3B10 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		DCB53F8E1A88D0CE00FA3B10 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		DCB53F901A88D0DA00FA3B10 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		DCB53F921A88D0E600FA3B10 /* InputMethodKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InputMethodKit.framework; path = System/Library/Frameworks/InputMethodKit.framework; sourceTree = SDKROOT; };
+		DCB53F941A88D0EF00FA3B10 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		DCB53F971A88D17F00FA3B10 /* Teiten.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Teiten.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DCB53F5A1A88CFC100FA3B10 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCB53F951A88D0EF00FA3B10 /* AVFoundation.framework in Frameworks */,
+				DCB53F931A88D0E600FA3B10 /* InputMethodKit.framework in Frameworks */,
+				DCB53F911A88D0DA00FA3B10 /* CoreVideo.framework in Frameworks */,
+				DCB53F8F1A88D0CE00FA3B10 /* CoreMedia.framework in Frameworks */,
+				DCB53F8D1A88D0C700FA3B10 /* AppKit.framework in Frameworks */,
+				DCB53F8B1A88D0BF00FA3B10 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCB53F6C1A88CFC100FA3B10 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DCB53F541A88CFC100FA3B10 = {
+			isa = PBXGroup;
+			children = (
+				DCB53F5F1A88CFC100FA3B10 /* Teiten */,
+				DCB53F721A88CFC100FA3B10 /* TeitenTests */,
+				DCB53F5E1A88CFC100FA3B10 /* Products */,
+				DCB53F961A88D0FF00FA3B10 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		DCB53F5E1A88CFC100FA3B10 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DCB53F5D1A88CFC100FA3B10 /* Teiten.app */,
+				DCB53F6F1A88CFC100FA3B10 /* TeitenTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DCB53F5F1A88CFC100FA3B10 /* Teiten */ = {
+			isa = PBXGroup;
+			children = (
+				DCB53F971A88D17F00FA3B10 /* Teiten.entitlements */,
+				DCB53F621A88CFC100FA3B10 /* AppDelegate.swift */,
+				DCB53F641A88CFC100FA3B10 /* ViewController.swift */,
+				DCB53F7F1A88D03300FA3B10 /* Classes */,
+				DCB53F661A88CFC100FA3B10 /* Images.xcassets */,
+				DCB53F681A88CFC100FA3B10 /* Main.storyboard */,
+				DCB53F601A88CFC100FA3B10 /* Supporting Files */,
+			);
+			path = Teiten;
+			sourceTree = "<group>";
+		};
+		DCB53F601A88CFC100FA3B10 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DCB53F611A88CFC100FA3B10 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DCB53F721A88CFC100FA3B10 /* TeitenTests */ = {
+			isa = PBXGroup;
+			children = (
+				DCB53F751A88CFC100FA3B10 /* TeitenTests.swift */,
+				DCB53F731A88CFC100FA3B10 /* Supporting Files */,
+			);
+			path = TeitenTests;
+			sourceTree = "<group>";
+		};
+		DCB53F731A88CFC100FA3B10 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DCB53F741A88CFC100FA3B10 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DCB53F7F1A88D03300FA3B10 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				DCB53F801A88D03300FA3B10 /* CaptureViewController.swift */,
+				DCB53F811A88D03300FA3B10 /* FileEntity.swift */,
+				DCB53F821A88D03300FA3B10 /* MovieMaker.swift */,
+				DCB53F841A88D03300FA3B10 /* SettingViewController.swift */,
+			);
+			name = Classes;
+			path = teiten/Classes;
+			sourceTree = SOURCE_ROOT;
+		};
+		DCB53F961A88D0FF00FA3B10 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DCB53F941A88D0EF00FA3B10 /* AVFoundation.framework */,
+				DCB53F921A88D0E600FA3B10 /* InputMethodKit.framework */,
+				DCB53F901A88D0DA00FA3B10 /* CoreVideo.framework */,
+				DCB53F8E1A88D0CE00FA3B10 /* CoreMedia.framework */,
+				DCB53F8C1A88D0C700FA3B10 /* AppKit.framework */,
+				DCB53F8A1A88D0BF00FA3B10 /* Cocoa.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DCB53F5C1A88CFC100FA3B10 /* Teiten */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DCB53F791A88CFC100FA3B10 /* Build configuration list for PBXNativeTarget "Teiten" */;
+			buildPhases = (
+				DCB53F591A88CFC100FA3B10 /* Sources */,
+				DCB53F5A1A88CFC100FA3B10 /* Frameworks */,
+				DCB53F5B1A88CFC100FA3B10 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Teiten;
+			productName = Teiten;
+			productReference = DCB53F5D1A88CFC100FA3B10 /* Teiten.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DCB53F6E1A88CFC100FA3B10 /* TeitenTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DCB53F7C1A88CFC100FA3B10 /* Build configuration list for PBXNativeTarget "TeitenTests" */;
+			buildPhases = (
+				DCB53F6B1A88CFC100FA3B10 /* Sources */,
+				DCB53F6C1A88CFC100FA3B10 /* Frameworks */,
+				DCB53F6D1A88CFC100FA3B10 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DCB53F711A88CFC100FA3B10 /* PBXTargetDependency */,
+			);
+			name = TeitenTests;
+			productName = TeitenTests;
+			productReference = DCB53F6F1A88CFC100FA3B10 /* TeitenTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DCB53F551A88CFC100FA3B10 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = net.nakajijapan;
+				TargetAttributes = {
+					DCB53F5C1A88CFC100FA3B10 = {
+						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = CNE5C4C374;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
+					};
+					DCB53F6E1A88CFC100FA3B10 = {
+						CreatedOnToolsVersion = 6.1.1;
+						TestTargetID = DCB53F5C1A88CFC100FA3B10;
+					};
+				};
+			};
+			buildConfigurationList = DCB53F581A88CFC100FA3B10 /* Build configuration list for PBXProject "Teiten" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DCB53F541A88CFC100FA3B10;
+			productRefGroup = DCB53F5E1A88CFC100FA3B10 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DCB53F5C1A88CFC100FA3B10 /* Teiten */,
+				DCB53F6E1A88CFC100FA3B10 /* TeitenTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DCB53F5B1A88CFC100FA3B10 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCB53F671A88CFC100FA3B10 /* Images.xcassets in Resources */,
+				DCB53F6A1A88CFC100FA3B10 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCB53F6D1A88CFC100FA3B10 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DCB53F591A88CFC100FA3B10 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCB53F861A88D03300FA3B10 /* FileEntity.swift in Sources */,
+				DCB53F871A88D03300FA3B10 /* MovieMaker.swift in Sources */,
+				DCB53F651A88CFC100FA3B10 /* ViewController.swift in Sources */,
+				DCB53F851A88D03300FA3B10 /* CaptureViewController.swift in Sources */,
+				DCB53F891A88D03300FA3B10 /* SettingViewController.swift in Sources */,
+				DCB53F631A88CFC100FA3B10 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCB53F6B1A88CFC100FA3B10 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCB53F761A88CFC100FA3B10 /* TeitenTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DCB53F711A88CFC100FA3B10 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DCB53F5C1A88CFC100FA3B10 /* Teiten */;
+			targetProxy = DCB53F701A88CFC100FA3B10 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		DCB53F681A88CFC100FA3B10 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DCB53F691A88CFC100FA3B10 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		DCB53F771A88CFC100FA3B10 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = Icon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		DCB53F781A88CFC100FA3B10 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = Icon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Daichi Nakajima (CNE5C4C374)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "2794928d-1ed2-4c24-9262-85d2420956f1";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		DCB53F7A1A88CFC100FA3B10 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Teiten/Teiten.entitlements;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Teiten/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		DCB53F7B1A88CFC100FA3B10 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Teiten/Teiten.entitlements;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Teiten/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "1670be32-30ec-4092-a8b4-012d6a90f96a";
+			};
+			name = Release;
+		};
+		DCB53F7D1A88CFC100FA3B10 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = TeitenTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Teiten.app/Contents/MacOS/Teiten";
+			};
+			name = Debug;
+		};
+		DCB53F7E1A88CFC100FA3B10 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = TeitenTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Teiten.app/Contents/MacOS/Teiten";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DCB53F581A88CFC100FA3B10 /* Build configuration list for PBXProject "Teiten" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCB53F771A88CFC100FA3B10 /* Debug */,
+				DCB53F781A88CFC100FA3B10 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DCB53F791A88CFC100FA3B10 /* Build configuration list for PBXNativeTarget "Teiten" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCB53F7A1A88CFC100FA3B10 /* Debug */,
+				DCB53F7B1A88CFC100FA3B10 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DCB53F7C1A88CFC100FA3B10 /* Build configuration list for PBXNativeTarget "TeitenTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCB53F7D1A88CFC100FA3B10 /* Debug */,
+				DCB53F7E1A88CFC100FA3B10 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DCB53F551A88CFC100FA3B10 /* Project object */;
+}

@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "09378AC8541058007B6F2BC2A75FE6B61C21501C",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "09378AC8541058007B6F2BC2A75FE6B61C21501C" : 0,
+    "8F908A0E0218F85A3E929645F7A0E0941ED588C4" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "2D341408-3DA3-47B3-964E-8856FDD915F0",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "09378AC8541058007B6F2BC2A75FE6B61C21501C" : "teiten_public",
+    "8F908A0E0218F85A3E929645F7A0E0941ED588C4" : "teiten"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Teiten",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 203,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Teiten.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/nakajijapan\/teiten",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "09378AC8541058007B6F2BC2A75FE6B61C21501C"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:nakajijapan\/teiten.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8F908A0E0218F85A3E929645F7A0E0941ED588C4"
+    }
+  ]
+}
