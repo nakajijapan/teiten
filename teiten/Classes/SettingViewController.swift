@@ -35,10 +35,15 @@ enum ScreenResolution:Int {
     }
 }
 
+enum SaveTarget:Int {
+    case Image = 0, Movie
+}
+
 class SettingViewController: NSViewController {
     
     @IBOutlet var matrix:NSMatrix!
     @IBOutlet var matrixForResolution:NSMatrix!
+    @IBOutlet var matrixForSaveTarget:NSMatrix!
     
     
     override func viewDidLoad() {
@@ -59,7 +64,7 @@ class SettingViewController: NSViewController {
         self.matrixForResolution.setSelectionFrom(0, to: screenResolution, anchor: 0, highlight: true)
     }
     
-    @IBAction func changeCheckbox(sender:NSMatrix) {
+    @IBAction func timeIntervalMatrixDidChangeValue(sender:NSMatrix) {
         
         var timeInterval = 10
         switch (sender.selectedRow) {
@@ -72,12 +77,12 @@ class SettingViewController: NSViewController {
         }
         
         let userInfo = ["timeInterval": timeInterval]
-        let n = NSNotification(name: "changeTimeInterval", object: self, userInfo: userInfo)
-        NSNotificationCenter.defaultCenter().postNotification(n)
+        let notification = NSNotification(name: "changeTimeInterval", object: self, userInfo: userInfo)
+        NSNotificationCenter.defaultCenter().postNotification(notification)
         
     }
     
-    @IBAction func didChangeCheckboxForResolution(sender:NSMatrix) {
+    @IBAction func resolutionMatrixDidChangeValue(sender:NSMatrix) {
         
         let screenResolution = ScreenResolution(rawValue: sender.selectedRow)!
         let userInfo = ["screenResolution": screenResolution.rawValue]
@@ -85,6 +90,12 @@ class SettingViewController: NSViewController {
         NSNotificationCenter.defaultCenter().postNotification(notification)
         
     }
+    
+
+    @IBAction func saveTargetMatrixDidChangeValue(sender: NSMatrix) {
+        // something code
+    }
+    
     
     @IBAction func dissmiss(sender: AnyObject) {
         self.dismissController(self)

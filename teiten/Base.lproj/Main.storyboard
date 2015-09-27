@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14E11f" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7702"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -831,21 +831,11 @@ IA
             <objects>
                 <viewController title="Setting" storyboardIdentifier="SettingViewController" id="vQI-ER-s2z" customClass="SettingViewController" customModule="Teiten" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="NyM-re-WWU">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="344"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jgm-fx-bbx">
-                                <rect key="frame" x="330" y="18" width="100" height="48"/>
-                                <buttonCell key="cell" type="squareTextured" title="close" bezelStyle="texturedSquare" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="guX-gK-fJO">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="dissmiss:" target="vQI-ER-s2z" id="dyn-Yx-4CZ"/>
-                                </connections>
-                            </button>
                             <matrix verticalHuggingPriority="750" fixedFrame="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="21P-Pj-BF9">
-                                <rect key="frame" x="32" y="180" width="61" height="38"/>
+                                <rect key="frame" x="32" y="224" width="61" height="38"/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 <size key="cellSize" width="38" height="18"/>
                                 <size key="intercellSpacing" width="4" height="2"/>
@@ -866,11 +856,36 @@ IA
                                     </column>
                                 </cells>
                                 <connections>
-                                    <action selector="changeCheckbox:" target="vQI-ER-s2z" id="Wx7-j9-CJ5"/>
+                                    <action selector="timeIntervalMatrixDidChangeValue:" target="vQI-ER-s2z" id="kE5-zk-P64"/>
+                                </connections>
+                            </matrix>
+                            <matrix verticalHuggingPriority="750" fixedFrame="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EPs-A6-rtZ">
+                                <rect key="frame" x="32" y="58" width="61" height="38"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                <size key="cellSize" width="60" height="18"/>
+                                <size key="intercellSpacing" width="4" height="2"/>
+                                <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="twf-Fr-7me">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <cells>
+                                    <column>
+                                        <buttonCell type="radio" title="Image" imagePosition="left" alignment="left" state="on" tag="1" inset="2" id="2Tk-w1-hco">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <buttonCell type="radio" title="Movie" imagePosition="left" alignment="left" inset="2" id="OR7-Fd-4kY">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                    </column>
+                                </cells>
+                                <connections>
+                                    <action selector="saveTargetMatrixDidChange:" target="vQI-ER-s2z" id="ane-lW-Njm"/>
                                 </connections>
                             </matrix>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HTY-nv-iKm">
-                                <rect key="frame" x="18" y="253" width="74" height="27"/>
+                                <rect key="frame" x="18" y="297" width="74" height="27"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Setting" id="eKe-92-Fox">
                                     <font key="font" metaFont="system" size="22"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -878,7 +893,7 @@ IA
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6bE-cM-xtf">
-                                <rect key="frame" x="30" y="226" width="184" height="19"/>
+                                <rect key="frame" x="30" y="270" width="184" height="19"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Shooting Time Interval" id="Itd-pT-5Tc">
                                     <font key="font" metaFont="system" size="16"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -886,15 +901,23 @@ IA
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OrJ-Ed-D3a">
-                                <rect key="frame" x="30" y="153" width="184" height="19"/>
+                                <rect key="frame" x="30" y="197" width="184" height="19"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Resolution" id="e14-8e-bPG">
                                     <font key="font" metaFont="system" size="16"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="opV-KB-FRW">
+                                <rect key="frame" x="30" y="104" width="184" height="19"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Save Target" id="LAu-T8-p1q">
+                                    <font key="font" metaFont="system" size="16"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                             <matrix verticalHuggingPriority="750" fixedFrame="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RlC-9N-eRH">
-                                <rect key="frame" x="32" y="87" width="106" height="58"/>
+                                <rect key="frame" x="32" y="131" width="106" height="58"/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 <size key="cellSize" width="83" height="18"/>
                                 <size key="intercellSpacing" width="4" height="2"/>
@@ -919,9 +942,19 @@ IA
                                     </column>
                                 </cells>
                                 <connections>
-                                    <action selector="didChangeCheckboxForResolution:" target="vQI-ER-s2z" id="AbX-Jf-zbc"/>
+                                    <action selector="resolutionMatrixDidChangeValue:" target="vQI-ER-s2z" id="Z5Q-pO-EJ5"/>
                                 </connections>
                             </matrix>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jgm-fx-bbx">
+                                <rect key="frame" x="330" y="18" width="100" height="48"/>
+                                <buttonCell key="cell" type="squareTextured" title="close" bezelStyle="texturedSquare" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="guX-gK-fJO">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="dissmiss:" target="vQI-ER-s2z" id="dyn-Yx-4CZ"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
                     <connections>
@@ -931,7 +964,7 @@ IA
                 </viewController>
                 <customObject id="FiH-vb-TrW" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="1136"/>
+            <point key="canvasLocation" x="75" y="1158"/>
         </scene>
     </scenes>
     <resources>
