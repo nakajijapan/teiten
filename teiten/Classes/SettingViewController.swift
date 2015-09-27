@@ -20,8 +20,6 @@ enum ScreenResolution:Int {
             return CGSize(width: 640, height: 360)
         case .size1280x720:
             return CGSize(width: 1280, height: 720)
-        default:
-            return CGSize(width: 1280, height: 720)
         }
     }
     
@@ -33,24 +31,22 @@ enum ScreenResolution:Int {
             return AVCaptureSessionPreset640x480
         case .size1280x720:
             return AVCaptureSessionPreset1280x720
-        default:
-            return AVCaptureSessionPreset1280x720
         }
     }
 }
 
 class SettingViewController: NSViewController {
-
+    
     @IBOutlet var matrix:NSMatrix!
     @IBOutlet var matrixForResolution:NSMatrix!
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override func viewWillAppear() {
-
+        
         let timeInterval = NSUserDefaults.standardUserDefaults().integerForKey("TIMEINTERVAL")
         if timeInterval == 10 {
             self.matrix.setSelectionFrom(0, to: 0, anchor: 0, highlight: true)
@@ -83,7 +79,7 @@ class SettingViewController: NSViewController {
     
     @IBAction func didChangeCheckboxForResolution(sender:NSMatrix) {
         
-        var screenResolution = ScreenResolution(rawValue: sender.selectedRow)!
+        let screenResolution = ScreenResolution(rawValue: sender.selectedRow)!
         let userInfo = ["screenResolution": screenResolution.rawValue]
         let notification = NSNotification(name: "didChangeScreenResolution", object: self, userInfo: userInfo)
         NSNotificationCenter.defaultCenter().postNotification(notification)
@@ -93,5 +89,5 @@ class SettingViewController: NSViewController {
     @IBAction func dissmiss(sender: AnyObject) {
         self.dismissController(self)
     }
-
+    
 }
