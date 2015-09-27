@@ -36,6 +36,10 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDa
     var captureSession:AVCaptureSession!
     var videoStillImageOutput:AVCaptureStillImageOutput!
     
+    // movie
+    var videoMovieFileOutput:AVCaptureMovieFileOutput!
+
+    
     @IBOutlet var tableView:NSTableView!
     var entity = FileEntity()
     
@@ -94,17 +98,36 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDa
         // initialize
         let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
         
-        // Video
+        // Image
         let videoInput = try! AVCaptureDeviceInput(device: device)
         self.videoStillImageOutput = AVCaptureStillImageOutput()
         
+        // Movie
+        self.videoMovieFileOutput = AVCaptureMovieFileOutput()
+        let maxDuration = CMTime(
+            seconds: 3.0,          // recording time
+            preferredTimescale: 24 // frame buffer
+        )
+        self.videoMovieFileOutput.maxRecordedDuration = maxDuration
+        self.videoMovieFileOutput.minFreeDiskSpaceLimit = 1024 * 1024
+
+        
         self.captureSession = AVCaptureSession()
-        self.captureSession.addInput(videoInput as AVCaptureInput)
-        self.captureSession.addOutput(self.videoStillImageOutput)
+
+        if self.captureSession.canAddInput(videoInput) {
+            self.captureSession.addInput(videoInput as AVCaptureInput)
+        }
+        
+        if self.captureSession.canAddOutput(self.videoStillImageOutput) {
+            self.captureSession.addOutput(self.videoStillImageOutput)
+        }
+        
+        if self.captureSession.canAddOutput(self.videoMovieFileOutput) {
+            self.captureSession.addOutput(self.videoMovieFileOutput)
+        }
         
         // AVCaptureSessionPreset1280x720
         self.captureSession.sessionPreset = ScreenResolution(rawValue: 0)!.toSessionPreset()
-        
         
         // Preview Layer
         let previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
@@ -170,9 +193,9 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDa
     
     @IBAction func pushButtonCaptureImage(sender:AnyObject!) {
         
-        let connection = self.videoOutput.connections[0] as! AVCaptureConnection
+        let connection = self.videoStillImageOutput.connections[0] as! AVCaptureConnection
         
-        self.videoOutput.captureStillImageAsynchronouslyFromConnection(connection, completionHandler: {(sambleBuffer, erro) -> Void in
+        self.videoStillImageOutput.captureStillImageAsynchronouslyFromConnection(connection, completionHandler: {(sambleBuffer, erro) -> Void in
             
             let data = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sambleBuffer)
             let tmpImage = NSImage(data: data)!
