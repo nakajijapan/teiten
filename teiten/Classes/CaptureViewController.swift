@@ -34,7 +34,7 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDa
     
     // image
     var captureSession:AVCaptureSession!
-    var videoOutput:AVCaptureStillImageOutput!
+    var videoStillImageOutput:AVCaptureStillImageOutput!
     
     @IBOutlet var tableView:NSTableView!
     var entity = FileEntity()
@@ -96,16 +96,17 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDa
         
         // Video
         let videoInput = try! AVCaptureDeviceInput(device: device)
-        let videoOutput = AVCaptureStillImageOutput()
-        self.videoOutput = videoOutput
+        self.videoStillImageOutput = AVCaptureStillImageOutput()
         
         self.captureSession = AVCaptureSession()
         self.captureSession.addInput(videoInput as AVCaptureInput)
-        self.captureSession.addOutput(videoOutput)
+        self.captureSession.addOutput(self.videoStillImageOutput)
         
         // AVCaptureSessionPreset1280x720
         self.captureSession.sessionPreset = ScreenResolution(rawValue: 0)!.toSessionPreset()
         
+        
+        // Preview Layer
         let previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
         previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
         previewLayer.frame = CGRect(x: 0, y: 0, width: 640, height: 360)
