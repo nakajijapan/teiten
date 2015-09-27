@@ -18,23 +18,22 @@ protocol MovieMakerDelegate {
 }
 
 class MovieMaker: NSObject {
-
+    
     var delegate:MovieMakerDelegate?
     var size:NSSize!
     
     //MARK: - File Util
-
+    
     func getImageList() -> [NSImage] {
         
+        // get home directory path
         let homeDir = "\(kAppHomePath)/images"
         let fileManager = NSFileManager.defaultManager()
-        
-        var error:NSError?
-        let list:Array = fileManager.contentsOfDirectoryAtPath(homeDir, error: &error)!
-        
+        let list:Array = try! fileManager.contentsOfDirectoryAtPath(homeDir)
         var files:[NSImage] = []
         
         for path in list {
+            print("path = \(homeDir)/\(path)")
             
             if path.hasSuffix("DS_Store") {
                 continue
@@ -49,67 +48,94 @@ class MovieMaker: NSObject {
     
     func deleteFiles() {
         
+        // get home directory path
         let homeDir = "\(kAppHomePath)/images"
         let fileManager = NSFileManager.defaultManager()
-        
-        var error:NSError?
-        let list:Array = fileManager.contentsOfDirectoryAtPath(homeDir, error: &error)!
+        let list:Array = try! fileManager.contentsOfDirectoryAtPath(homeDir)
         
         for path in list {
-            fileManager.removeItemAtPath("\(homeDir)/\(path)", error: nil)
+            
+            do {
+                try fileManager.removeItemAtPath("\(homeDir)/\(path)")
+            } catch let error as NSError {
+                print("failed to remove file: \(error.description)");
+            }
+            
         }
     }
     
     //MARK: - movie
     
+    // writeImagesAsMovie
     func writeImagesAsMovie(images:[NSImage], toPath path:String, success: (() -> Void)) {
         
-        // 既にファイルがある場合は削除する
+        print("writeImagesAsMovie \(__LINE__) path = file://\(path)")
+        
+        // delete file if file already exists
         let fileManager = NSFileManager.defaultManager();
         if fileManager.fileExistsAtPath(path) {
-            fileManager.removeItemAtPath(path, error: nil)
+            
+            do {
+                try fileManager.removeItemAtPath(path)
+            } catch let error as NSError {
+                print("failed to make directory: \(error.description)");
+            }
+            
         }
         
         // Target Saving File
-        let url = NSURL(fileURLWithPath:path)
+        let url = NSURL(fileURLWithPath: "\(path)")
         
-        var error:NSError? = nil
-        var videoWriter = AVAssetWriter(URL: url, fileType: AVFileTypeQuickTimeMovie, error: &error)
-        
-        if error != nil {
-            println("error creating AssetWriter: \(error!.description)");
+        var videoWriter: AVAssetWriter!
+        do {
+            videoWriter = try AVAssetWriter(URL: url, fileType: AVFileTypeQuickTimeMovie)
+        } catch let error as NSError {
+            print("failed to create AssetWriter: \(error.description)");
         }
         
+        //-----------------------------------
         // AVAssetWriterInput
-        let videoSettings:[NSObject : AnyObject] = [
+        
+        let videoSettings: [String : AnyObject] = [
             AVVideoCodecKey: AVVideoCodecH264,
             AVVideoWidthKey: self.size.width,
             AVVideoHeightKey: self.size.height]
         
         
-        var writerInput = AVAssetWriterInput(mediaType: AVMediaTypeVideo, outputSettings: videoSettings)
+        let writerInput = AVAssetWriterInput(mediaType: AVMediaTypeVideo, outputSettings: videoSettings)
         videoWriter.addInput(writerInput)
         
-        // AVAssetWriterInputPixelBufferAdaptor
-        var attributes:Dictionary<NSObject, AnyObject> = [
-            NSString(format: kCVPixelBufferPixelFormatTypeKey): NSNumber(unsignedInt: UInt32(kCVPixelFormatType_32ARGB)),
-            NSString(format: kCVPixelBufferWidthKey):           NSNumber(unsignedInt: UInt32(self.size.width)),
-            NSString(format: kCVPixelBufferHeightKey):          NSNumber(unsignedInt: UInt32(self.size.height)),
-        ];
         
-        var adaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: writerInput, sourcePixelBufferAttributes: attributes)
-
+        //-----------------------------------
+        // AVAssetWriterInputPixelBufferAdaptor
+        
+        let formatTypeKey = kCVPixelBufferPixelFormatTypeKey as NSString as String
+        let widthKey = kCVPixelBufferWidthKey as NSString as String
+        let heightKey = kCVPixelBufferHeightKey as NSString as String
+        
+        let attributes: [String : AnyObject] = [
+            formatTypeKey: Int(kCVPixelFormatType_32ARGB),
+            widthKey:      self.size.width,
+            heightKey:     self.size.height,
+        ]
+        
+        let adaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: writerInput, sourcePixelBufferAttributes: attributes)
+        
         // fixes all errors
         writerInput.expectsMediaDataInRealTime = true;
         
-        // generation
-        var start:Bool = videoWriter.startWriting()
+        //-----------------------------------
+        // start generate
+        let start = videoWriter.startWriting()
         if !start {
-            println("failed writing");
+            print("failed writing");
         }
+        print("Session started? \(start)");
         
         videoWriter.startSessionAtSourceTime(kCMTimeZero)
         
+        
+        //-----------------------------------
         // Add Image
         var frameCount:Int64 = 0
         let durationForEachImage:Int64 = 1
@@ -117,49 +143,61 @@ class MovieMaker: NSObject {
         var frameTime:CMTime = kCMTimeZero
         
         var current = 1
+        
         for nsImage in images {
+            
+            print("writeImagesAsMovie \(__LINE__) - \(adaptor.assetWriterInput.readyForMoreMediaData)")
             
             if adaptor.assetWriterInput.readyForMoreMediaData {
                 
+                print("------------------------ writeImagesAsMovie - \(frameCount)------------------------")
+                
                 frameTime = CMTimeMake(frameCount * 12 * durationForEachImage, Int32(fps64))
+                
                 let cgFirstImage:CGImage? = self.convertNSImageToCGImage(nsImage)
                 
-                var buffer:CVPixelBufferRef = self.pixelBufferFromCGImage(cgFirstImage!)
+                let buffer:CVPixelBufferRef = self.pixelBufferFromCGImage(cgFirstImage!)
                 let result:Bool = adaptor.appendPixelBuffer(buffer, withPresentationTime: frameTime)
                 if result == false {
-                    println("failed to append buffer")
+                    print("failed to append buffer")
                 }
+                
+                
                 frameCount++
                 
                 self.delegate?.movieMakerDidAddImage(current, total: images.count)
                 current++
+                
             }
-
+            
+            
         }
         
         writerInput.markAsFinished()
         videoWriter.endSessionAtSourceTime(frameTime)
+        videoWriter.finishWritingWithCompletionHandler { () -> Void in
+            print("Finish writing")
+            
+            // delete images that use in generating movie
+            self.deleteFiles()
+            
+            success()
+        }
         
-        videoWriter.finishWritingWithCompletionHandler(nil)
-
-
-        self.deleteFiles()
-        
-        success()
     }
     
-    // MARK: - movie(Private)
+    // MARK: - Private Methods
     
     func convertNSImageToCGImage(image:NSImage) -> CGImage? {
-
+        
         let imageData:NSData? = image.TIFFRepresentation
         if imageData == nil {
             return nil
         }
         
-        var cfImageData:CFData? = imageData as CFData!
-        var imageSource:CGImageSource = CGImageSourceCreateWithData(cfImageData, nil)
-        var cgimage:CGImage = CGImageSourceCreateImageAtIndex(imageSource, 0, nil)
+        let cfImageData:CFData? = imageData as CFData!
+        let imageSource:CGImageSource = CGImageSourceCreateWithData(cfImageData!, nil)!
+        let cgimage:CGImage = CGImageSourceCreateImageAtIndex(imageSource, 0, nil)!
         
         return cgimage
     }
@@ -168,31 +206,30 @@ class MovieMaker: NSObject {
         
         let options:NSDictionary = NSDictionary(dictionary: [
             kCVPixelBufferCGImageCompatibilityKey : true,
-            kCVPixelBufferCGBitmapContextCompatibilityKey: true
-            ])
-        
+            kCVPixelBufferCGBitmapContextCompatibilityKey: true]
+        )
         let cfoptions:CFDictionary = options as CFDictionary
-        var unmanagedPixelBuffer:Unmanaged<CVPixelBuffer>? = nil
+        var unmanagedPixelBuffer:CVPixelBuffer? = nil
         
-        let pixelFormat:OSType = UInt32(kCVPixelFormatType_32ARGB)
+        // memo
         CVPixelBufferCreate(
             kCFAllocatorDefault,
             CGImageGetWidth(image),
             CGImageGetHeight(image),
-            pixelFormat,
+            kCVPixelFormatType_32ARGB,
             cfoptions,
-            &unmanagedPixelBuffer // UnsafeMutablePointer<Unmanaged<CVPixelBuffer>?>
+            &unmanagedPixelBuffer // UnsafeMutablePointer<CVPixelBuffer?>
         )
         
-        var pixelBuffer:CVPixelBuffer = Unmanaged<CVPixelBuffer>.takeUnretainedValue(unmanagedPixelBuffer!)()
+        let pixelBuffer:CVPixelBuffer = unmanagedPixelBuffer!
         
         // Lock
         CVPixelBufferLockBaseAddress(pixelBuffer, 0)
         
-        var pxdata:UnsafeMutablePointer<()> = CVPixelBufferGetBaseAddress(pixelBuffer)
+        let pxdata:UnsafeMutablePointer<()> = CVPixelBufferGetBaseAddress(pixelBuffer)
         
-        var colorSpace:CGColorSpace = CGColorSpaceCreateDeviceRGB()
-        let bitmapInfo:CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedFirst.rawValue)
+        let colorSpace:CGColorSpace = CGColorSpaceCreateDeviceRGB()!
+        let bitmapInfo = CGImageAlphaInfo.PremultipliedFirst.rawValue
         
         var context = CGBitmapContextCreate(
             pxdata,
@@ -207,12 +244,12 @@ class MovieMaker: NSObject {
         let height:CGFloat = CGFloat(CGImageGetHeight(image))
         let width:CGFloat  = CGFloat(CGImageGetWidth(image))
         
-        // because of inverting image
+        // Image had been reversed because of this
         //let flipHorizontal:CGAffineTransform = CGAffineTransformMake(-1.0, 0.0, 0.0, 1.0, width, 0.0);
         //CGContextConcatCTM(context, flipHorizontal);
         
         CGContextDrawImage(context, CGRectMake(0, 0, width, height), image)
-
+        
         // UnLock
         context = nil
         CVPixelBufferUnlockBaseAddress(pixelBuffer, 0)
