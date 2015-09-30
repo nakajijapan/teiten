@@ -21,32 +21,26 @@ class FileEntity: NSObject, NSPasteboardWriting {
         
         self.image = image
         
-        let dragPath   = "\(NSTemporaryDirectory())teiten.jpg"
-        let schemePath = "file://\(dragPath)"
+        let dragPathString   = "\(NSTemporaryDirectory())teiten.jpg"
+        let schemePathString = "file://\(dragPathString)"
         
-        //println("\(__FUNCTION__) : \(__LINE__) path = \(path)")
-        //println("\(__FUNCTION__) : \(__LINE__) schemePath = \(schemePath)")
+        self.fileURL = NSURL(string: schemePathString)
         
-        self.fileURL = NSURL(string: schemePath)
-        
-        if NSFileManager.defaultManager().fileExistsAtPath(dragPath) {
+        if NSFileManager.defaultManager().fileExistsAtPath(dragPathString) {
             do {
                 try NSFileManager.defaultManager().removeItemAtURL(self.fileURL)
-            } catch _ {
+            } catch let error as NSError {
+                print("can not remove. \(error.description)")
             }
         }
         
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyyMMddHHmmss"
-        let date = NSDate()
-        let stringDate = dateFormatter.stringFromDate(date)
-        let savePath = "\(kAppHomePath)/images/\(stringDate).jpg"
+        let dateString = dateFormatter.stringFromDate(NSDate())
+        let savePathString = "\(kAppHomePath)/images/\(dateString).jpg"
         
-        //println("\(__FUNCTION__) \(__LINE__) \(stringDate)")
-        //println("\(__FUNCTION__) \(__LINE__) \(path)")
-        
-        data.writeToFile(savePath, atomically: true)
-        data.writeToFile(dragPath, atomically: true)
+        data.writeToFile(savePathString, atomically: true)
+        data.writeToFile(dragPathString, atomically: true)
     }
     
     // MARK: - NSPasteboardWriting

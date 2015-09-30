@@ -15,7 +15,8 @@ import QuartzCore
 let kAppHomePath = "\(NSHomeDirectory())/Teiten"
 let kAppMoviePath = "\(NSHomeDirectory())/Movies/Teiten"
 
-class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDataSource, NSTableViewDelegate {
+
+class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDataSource, NSTableViewDelegate, AVCaptureFileOutputRecordingDelegate {
     
     // timer
     var timer:NSTimer!
@@ -59,6 +60,12 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDa
         
         do {
             try fileManager.createDirectoryAtPath("\(kAppHomePath)/images", withIntermediateDirectories: true, attributes: nil)
+        } catch let error as NSError {
+            print("failed to make directory. error: \(error.description)")
+        }
+        
+        do {
+            try fileManager.createDirectoryAtPath("\(kAppHomePath)/movies", withIntermediateDirectories: true, attributes: nil)
         } catch let error as NSError {
             print("failed to make directory. error: \(error.description)")
         }
@@ -191,9 +198,17 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDa
             self.timeInterval--
         } else if (self.timeInterval == 0) {
             self.timeInterval = NSUserDefaults.standardUserDefaults().integerForKey("TIMEINTERVAL")
-            self.pushButtonCaptureImage(nil)
+            
+            if self.resourceType == ResourceType.Image.rawValue {
+                self.pushButtonCaptureImage(nil)
+            } else {
+                self.pushButtonCaptureMovie(nil)
+            }
+            
+
         }
     }
+    
     
     @IBAction func pushButtonCaptureImage(sender:AnyObject!) {
         
@@ -289,6 +304,29 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDa
             
         }
         
+    }
+    
+    func pushButtonCaptureMovie(sender:AnyObject!) {
+        
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyyMMddHHmmss"
+        let dateString = dateFormatter.stringFromDate(NSDate())
+        let pathString = "\(kAppHomePath)/movies/\(dateString).mov"
+        let schemePathString = "file://\(pathString)"
+
+        if NSFileManager.defaultManager().fileExistsAtPath(pathString) {
+            try! NSFileManager.defaultManager().removeItemAtPath(pathString)
+        }
+        
+        // start recording
+        self.videoMovieFileOutput.startRecordingToOutputFileURL(NSURL(string: schemePathString), recordingDelegate: self)
+        
+    }
+    
+    // MARK: - AVCaptureFileOutputRecordingDelegate
+    
+    func captureOutput(captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAtURL outputFileURL: NSURL!, fromConnections connections: [AnyObject]!, error: NSError!) {
+        print("Saved: \(outputFileURL)")
     }
     
     // MARK: - MovieMakerDelegate
