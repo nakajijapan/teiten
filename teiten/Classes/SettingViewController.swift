@@ -54,9 +54,11 @@ class SettingViewController: NSViewController {
             self.matrix.setSelectionFrom(0, to: 1, anchor: 0, highlight: true)
         }
         
-        
         let screenResolution = NSUserDefaults.standardUserDefaults().integerForKey("SCREENRESOLUTION")
         self.matrixForResolution.setSelectionFrom(0, to: screenResolution, anchor: 0, highlight: true)
+        
+        let resourceType = NSUserDefaults.standardUserDefaults().integerForKey("RESOURCETYPE")
+        self.matrixForResourceType.setSelectionFrom(0, to: resourceType, anchor: 0, highlight: true)
     }
     
     @IBAction func timeIntervalMatrixDidChangeValue(sender:NSMatrix) {
