@@ -16,7 +16,7 @@ let kAppHomePath = "\(NSHomeDirectory())/Teiten"
 let kAppMoviePath = "\(NSHomeDirectory())/Movies/Teiten"
 
 
-class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDataSource, NSTableViewDelegate, AVCaptureFileOutputRecordingDelegate {
+class CaptureViewController: NSViewController, MovieMakerDelegate, MovieMakerWithMoviesDelegate, NSTableViewDataSource, NSTableViewDelegate, AVCaptureFileOutputRecordingDelegate {
     
     // timer
     var timer:NSTimer!
@@ -65,7 +65,7 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDa
         }
         
         do {
-            try fileManager.createDirectoryAtPath("\(kAppHomePath)/movies", withIntermediateDirectories: true, attributes: nil)
+            try fileManager.createDirectoryAtPath("\(kAppHomePath)/videos", withIntermediateDirectories: true, attributes: nil)
         } catch let error as NSError {
             print("failed to make directory. error: \(error.description)")
         }
@@ -129,6 +129,14 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDa
         
         if self.captureSession.canAddOutput(self.videoMovieFileOutput) {
             self.captureSession.addOutput(self.videoMovieFileOutput)
+        }
+        
+        
+        let audioCaptureDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeAudio)
+        let audioInput = try! AVCaptureDeviceInput(device: audioCaptureDevice) //[AVCaptureDeviceInput deviceInputWithDevice:audioCaptureDevice error:&error];
+
+        if self.captureSession.canAddInput(audioInput) {
+            self.captureSession.addInput(audioInput)
         }
         
         // AVCaptureSessionPreset1280x720
@@ -266,34 +274,53 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDa
     
     @IBAction func pushButtonCreateMovie(sender:AnyObject!) {
         
-        let movieMaker = MovieMaker()
-        movieMaker.delegate = self
-        movieMaker.size = ScreenResolution(rawValue: self.screenResolution)?.toSize()
-        
-        // images
-        let images = movieMaker.getImageList()
-        
         // save path
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd"
         let date = NSDate()
         let path = "\(kAppMoviePath)/\(dateFormatter.stringFromDate(date)).mov"
         
-        // Indicator Start
-        self.indicator.hidden = false
-        self.indicator.doubleValue = 0
-        self.indicator.startAnimation(self.indicator)
-        
-        // generate movie
-        movieMaker.writeImagesAsMovie(images, toPath: path) { () -> Void in
+        if self.resourceType == ResourceType.Image.rawValue {
             
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            let movieMaker = MovieMaker()
+            movieMaker.delegate = self
+            movieMaker.size = ScreenResolution(rawValue: self.screenResolution)?.toSize()
+            
+            // images
+            let images = movieMaker.getImageList()
+            
+
+            
+            // Indicator Start
+            self.indicator.hidden = false
+            self.indicator.doubleValue = 0
+            self.indicator.startAnimation(self.indicator)
+            
+            // generate movie
+            movieMaker.writeImagesAsMovie(images, toPath: path) { () -> Void in
                 
-                // Indicator Stop
-                self.indicator.doubleValue = 100.0
-                self.indicator.stopAnimation(self.indicator)
-                self.indicator.hidden = true
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    
+                    // Indicator Stop
+                    self.indicator.doubleValue = 100.0
+                    self.indicator.stopAnimation(self.indicator)
+                    self.indicator.hidden = true
+                    
+                    // Alert
+                    let alert = NSAlert()
+                    alert.alertStyle = NSAlertStyle.InformationalAlertStyle
+                    alert.messageText = "Complete!!"
+                    alert.informativeText = "finished generating movie"
+                    alert.runModal()
+                })
                 
+            }
+            
+        } else {
+            
+            let movieMaker = MovieMakerWithMovies()
+            movieMaker.delegate = self
+            movieMaker.composeMovies(path, success: { () -> Void in
                 // Alert
                 let alert = NSAlert()
                 alert.alertStyle = NSAlertStyle.InformationalAlertStyle
@@ -301,8 +328,11 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDa
                 alert.informativeText = "finished generating movie"
                 alert.runModal()
             })
+
             
         }
+        
+
         
     }
     
@@ -311,7 +341,7 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDa
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyyMMddHHmmss"
         let dateString = dateFormatter.stringFromDate(NSDate())
-        let pathString = "\(kAppHomePath)/movies/\(dateString).mov"
+        let pathString = "\(kAppHomePath)/videos/\(dateString).mov"
         let schemePathString = "file://\(pathString)"
 
         if NSFileManager.defaultManager().fileExistsAtPath(pathString) {
@@ -329,10 +359,10 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDa
         print("Saved: \(outputFileURL)")
     }
     
-    // MARK: - MovieMakerDelegate
+    // MARK: - MovieMakerDelegate, MovieMakerWithMoviesDelegate
     
-    // add Image
-    func movieMakerDidAddImage(current: Int, total: Int) {
+    // add Object
+    func movieMakerDidAddObject(current: Int, total: Int) {
         let nst = NSThread(target:self, selector:"countOne:", object:["current": current, "total": total])
         nst.start()
     }

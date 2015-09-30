@@ -24,6 +24,7 @@
 		DCB53F911A88D0DA00FA3B10 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB53F901A88D0DA00FA3B10 /* CoreVideo.framework */; };
 		DCB53F931A88D0E600FA3B10 /* InputMethodKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB53F921A88D0E600FA3B10 /* InputMethodKit.framework */; };
 		DCB53F951A88D0EF00FA3B10 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB53F941A88D0EF00FA3B10 /* AVFoundation.framework */; };
+		DCF928BE1BBC381F00C40621 /* MovieMakerWithMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF928BD1BBC381F00C40621 /* MovieMakerWithMovies.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		DCB53F921A88D0E600FA3B10 /* InputMethodKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InputMethodKit.framework; path = System/Library/Frameworks/InputMethodKit.framework; sourceTree = SDKROOT; };
 		DCB53F941A88D0EF00FA3B10 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		DCB53F971A88D17F00FA3B10 /* Teiten.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Teiten.entitlements; sourceTree = "<group>"; };
+		DCF928BD1BBC381F00C40621 /* MovieMakerWithMovies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieMakerWithMovies.swift; sourceTree = "<group>"; };
 		F5C32B2C6C37D35A62D5348C /* Pods-Teiten.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Teiten.release.xcconfig"; path = "Pods/Target Support Files/Pods-Teiten/Pods-Teiten.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -167,6 +169,7 @@
 				DCB53F801A88D03300FA3B10 /* CaptureViewController.swift */,
 				DCB53F811A88D03300FA3B10 /* FileEntity.swift */,
 				DCB53F821A88D03300FA3B10 /* MovieMaker.swift */,
+				DCF928BD1BBC381F00C40621 /* MovieMakerWithMovies.swift */,
 				DCB53F841A88D03300FA3B10 /* SettingViewController.swift */,
 			);
 			name = Classes;
@@ -394,6 +397,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DCB53F861A88D03300FA3B10 /* FileEntity.swift in Sources */,
+				DCF928BE1BBC381F00C40621 /* MovieMakerWithMovies.swift in Sources */,
 				DCB53F871A88D03300FA3B10 /* MovieMaker.swift in Sources */,
 				DCB53F651A88CFC100FA3B10 /* ViewController.swift in Sources */,
 				DCB53F851A88D03300FA3B10 /* CaptureViewController.swift in Sources */,

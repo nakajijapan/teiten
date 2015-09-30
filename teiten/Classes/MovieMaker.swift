@@ -14,7 +14,7 @@ import CoreGraphics
 import Foundation
 
 protocol MovieMakerDelegate {
-    func movieMakerDidAddImage(current: Int, total: Int)
+    func movieMakerDidAddObject(current: Int, total: Int)
 }
 
 class MovieMaker: NSObject {
@@ -165,7 +165,7 @@ class MovieMaker: NSObject {
                 
                 frameCount++
                 
-                self.delegate?.movieMakerDidAddImage(current, total: images.count)
+                self.delegate?.movieMakerDidAddObject(current, total: images.count)
                 current++
                 
             }
