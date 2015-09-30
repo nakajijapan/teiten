@@ -202,7 +202,7 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDa
             if self.resourceType == ResourceType.Image.rawValue {
                 self.pushButtonCaptureImage(nil)
             } else {
-                self.pushButtonCaptureMovie(nil)
+                self.captureMovie(nil)
             }
             
 
@@ -306,7 +306,7 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDa
         
     }
     
-    func pushButtonCaptureMovie(sender:AnyObject!) {
+    func captureMovie(sender:AnyObject!) {
         
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyyMMddHHmmss"
