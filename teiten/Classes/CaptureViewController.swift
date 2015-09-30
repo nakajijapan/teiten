@@ -25,6 +25,9 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDa
     // resolution
     var screenResolution = ScreenResolution.size1280x720.rawValue
     
+    // resouce type
+    var resourceType = ResourceType.Image.rawValue
+    
     
     // background
     @IBOutlet var backgroundView:NSView!
@@ -46,15 +49,9 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDa
     
     // indicator
     @IBOutlet weak var indicator: NSProgressIndicator!
-    //var windowController:PreferenceWindowController!
-    
-    override func awakeFromNib() {
-        // I don't know that is why also loaded three times...
-        //println("\(__FUNCTION__) : \(__LINE__) \(self.windowController)")
-    }
     
     // MARK: - LifeCycle
-    
+
     override func viewDidLoad() {
         
         // make working directory
@@ -85,6 +82,7 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDa
         NSUserDefaults.standardUserDefaults().setInteger(self.screenResolution, forKey: "SCREENRESOLUTION")
         print("self.screenResolution = \(self.screenResolution)")
         
+        self.resourceType = NSUserDefaults.standardUserDefaults().integerForKey("RESOURCETYPE")
         
         //-------------------------------------------------
         // initialize - timer
@@ -149,33 +147,39 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDa
         self.tableView.setDraggingSourceOperationMask(NSDragOperation.Every, forLocal: false)
     }
     
+
+    
+    
     // MARK: - notifications
     func initNotification() {
-        let nc = NSNotificationCenter.defaultCenter()
-        nc.addObserver(self, selector: "updateTimeInterval:", name: "changeTimeInterval", object: nil)
-        nc.addObserver(self, selector: "updateScreenResolution:", name: "didChangeScreenResolution", object: nil)
+        let notification = NSNotificationCenter.defaultCenter()
+        notification.addObserver(self, selector: "updateTimeInterval:", name: "SettingDidChangeTimeInterval", object: nil)
+        notification.addObserver(self, selector: "updateScreenResolution:", name: "SettingDidChangeScreenResolution", object: nil)
+        notification.addObserver(self, selector: "updateResurceType:", name: "SettingDidChangeResourceType", object: nil)
     }
     
     func updateTimeInterval(sender:NSNotification) {
-        let interval = sender.userInfo!["timeInterval"] as! NSNumber
-        self.timeInterval = interval.integerValue
-        NSUserDefaults.standardUserDefaults().setInteger(interval.integerValue, forKey: "TIMEINTERVAL")
+        let value = sender.userInfo!["timeInterval"] as! NSNumber
+        self.timeInterval = value.integerValue
+        NSUserDefaults.standardUserDefaults().setInteger(value.integerValue, forKey: "TIMEINTERVAL")
     }
     
     
     func updateScreenResolution(sender:NSNotification) {
         
-        let screenResolution = sender.userInfo!["screenResolution"] as! NSNumber
-        self.screenResolution = screenResolution.integerValue
-        NSUserDefaults.standardUserDefaults().setInteger(self.screenResolution, forKey: "SCREENRESOLUTION")
-        
-        /*
-        self.captureSession.beginConfiguration()
-        self.captureSession.sessionPreset = ScreenResolution(rawValue: self.screenResolution)!.toSessionPreset()
-        self.captureSession.commitConfiguration()
-        */
+        let value = sender.userInfo!["screenResolution"] as! NSNumber
+        self.screenResolution = value.integerValue
+        NSUserDefaults.standardUserDefaults().setInteger(value.integerValue, forKey: "SCREENRESOLUTION")
         
     }
+    
+    func updateResurceType(sender:NSNotification) {
+        
+        let value = sender.userInfo!["resourceType"] as! NSNumber
+        self.resourceType = value.integerValue
+        NSUserDefaults.standardUserDefaults().setInteger(value.integerValue, forKey: "RESOURCETYPE")
+        
+   }
     
     // MARK: - Actions
     

@@ -856,7 +856,7 @@ IA
                                     </column>
                                 </cells>
                                 <connections>
-                                    <action selector="timeIntervalMatrixDidChangeValue:" target="vQI-ER-s2z" id="kE5-zk-P64"/>
+                                    <action selector="timeIntervalMatrixDidChangeValue:" target="vQI-ER-s2z" id="c86-KG-ol2"/>
                                 </connections>
                             </matrix>
                             <matrix verticalHuggingPriority="750" fixedFrame="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EPs-A6-rtZ">
@@ -881,7 +881,7 @@ IA
                                     </column>
                                 </cells>
                                 <connections>
-                                    <action selector="saveTargetMatrixDidChange:" target="vQI-ER-s2z" id="ane-lW-Njm"/>
+                                    <action selector="resourceTypeMatrixDidChangeValue:" target="vQI-ER-s2z" id="Guu-BO-wWT"/>
                                 </connections>
                             </matrix>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HTY-nv-iKm">
@@ -960,6 +960,7 @@ IA
                     <connections>
                         <outlet property="matrix" destination="21P-Pj-BF9" id="7KT-xh-Q3D"/>
                         <outlet property="matrixForResolution" destination="RlC-9N-eRH" id="Efu-2F-KGI"/>
+                        <outlet property="matrixForResourceType" destination="EPs-A6-rtZ" id="bCc-XZ-LWA"/>
                     </connections>
                 </viewController>
                 <customObject id="FiH-vb-TrW" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
