@@ -289,51 +289,57 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, MovieMakerWit
             // images
             let images = movieMaker.getImageList()
             
+            self.indicatorStart()
 
-            
-            // Indicator Start
-            self.indicator.hidden = false
-            self.indicator.doubleValue = 0
-            self.indicator.startAnimation(self.indicator)
-            
             // generate movie
             movieMaker.writeImagesAsMovie(images, toPath: path) { () -> Void in
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     
-                    // Indicator Stop
-                    self.indicator.doubleValue = 100.0
-                    self.indicator.stopAnimation(self.indicator)
-                    self.indicator.hidden = true
-                    
-                    // Alert
-                    let alert = NSAlert()
-                    alert.alertStyle = NSAlertStyle.InformationalAlertStyle
-                    alert.messageText = "Complete!!"
-                    alert.informativeText = "finished generating movie"
-                    alert.runModal()
+                    self.indicatorStop()
+
                 })
                 
             }
             
         } else {
             
+            self.indicatorStart()
+            
             let movieMaker = MovieMakerWithMovies()
             movieMaker.delegate = self
+            movieMaker.size = ScreenResolution(rawValue: self.screenResolution)?.toSize()
             movieMaker.composeMovies(path, success: { () -> Void in
-                // Alert
-                let alert = NSAlert()
-                alert.alertStyle = NSAlertStyle.InformationalAlertStyle
-                alert.messageText = "Complete!!"
-                alert.informativeText = "finished generating movie"
-                alert.runModal()
+                
+                self.indicatorStop()
+
             })
 
-            
         }
         
-
-        
+    }
+    
+    func indicatorStart() {
+        self.indicator.hidden = false
+        self.indicator.doubleValue = 0
+        self.indicator.startAnimation(self.indicator)
+    }
+    
+    func indicatorStop() {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            
+            // Indicator Stop
+            self.indicator.doubleValue = 100.0
+            self.indicator.stopAnimation(self.indicator)
+            self.indicator.hidden = true
+            
+            // Alert
+            let alert = NSAlert()
+            alert.alertStyle = NSAlertStyle.InformationalAlertStyle
+            alert.messageText = "Complete!!"
+            alert.informativeText = "finished generating movie"
+            alert.runModal()
+        })
     }
     
     func captureMovie(sender:AnyObject!) {

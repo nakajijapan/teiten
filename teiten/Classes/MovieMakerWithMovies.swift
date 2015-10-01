@@ -81,19 +81,24 @@ class MovieMakerWithMovies: NSObject {
 
         //fileManager.createFileAtPath(composedMoviePath, contents: nil, attributes: nil)
         
+        var current = 1
+        
         let movieComposition = NKJMovieComposer()
+        movieComposition.videoComposition.renderSize = CGSize(width: self.size.width, height: self.size.height)
+
         let moviePaths = self.getMovies()
         for moviePath in moviePaths {
 
             // movie
-            let movieURL = NSURL(string: moviePath)
+            let movieURL = NSURL(fileURLWithPath: moviePath)
             let layerInstruction = movieComposition.addVideo(movieURL)
-
-            print("composeMovies \(layerInstruction)")
+            
+            self.delegate?.movieMakerDidAddObject(current, total: moviePaths.count)
+            current++
         }
         
         // compose
-        let assetExportSession = movieComposition.readyToComposeVideo(composedMoviePath)
+        let assetExportSession = movieComposition.readyToComposeVideo("\(composedMoviePath)")
         
         // export
         assetExportSession.exportAsynchronouslyWithCompletionHandler({() -> Void in
@@ -101,7 +106,7 @@ class MovieMakerWithMovies: NSObject {
             print("Finish writing")
             
             // delete images that use in generating movie
-            //self.deleteFiles()
+            self.deleteFiles()
             
             success()
             
@@ -109,6 +114,5 @@ class MovieMakerWithMovies: NSObject {
         
     }
     
-    // MARK: - Private Methods
-    
+   
 }
