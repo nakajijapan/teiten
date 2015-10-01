@@ -1,0 +1,10 @@
+PODS:
+  - NKJMovieComposer (1.0.1)
+
+DEPENDENCIES:
+  - NKJMovieComposer
+
+SPEC CHECKSUMS:
+  NKJMovieComposer: bc245ecbd819862b7d508386863b6784ac6cdf6b
+
+COCOAPODS: 0.38.2

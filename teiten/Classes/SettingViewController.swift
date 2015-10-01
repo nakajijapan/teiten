@@ -35,15 +35,15 @@ enum ScreenResolution:Int {
     }
 }
 
+enum ResourceType:Int {
+    case Image = 0, Movie
+}
+
 class SettingViewController: NSViewController {
     
     @IBOutlet var matrix:NSMatrix!
     @IBOutlet var matrixForResolution:NSMatrix!
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+    @IBOutlet var matrixForResourceType:NSMatrix!
     
     override func viewWillAppear() {
         
@@ -54,12 +54,14 @@ class SettingViewController: NSViewController {
             self.matrix.setSelectionFrom(0, to: 1, anchor: 0, highlight: true)
         }
         
-        
         let screenResolution = NSUserDefaults.standardUserDefaults().integerForKey("SCREENRESOLUTION")
         self.matrixForResolution.setSelectionFrom(0, to: screenResolution, anchor: 0, highlight: true)
+        
+        let resourceType = NSUserDefaults.standardUserDefaults().integerForKey("RESOURCETYPE")
+        self.matrixForResourceType.setSelectionFrom(0, to: resourceType, anchor: 0, highlight: true)
     }
     
-    @IBAction func changeCheckbox(sender:NSMatrix) {
+    @IBAction func timeIntervalMatrixDidChangeValue(sender:NSMatrix) {
         
         var timeInterval = 10
         switch (sender.selectedRow) {
@@ -72,19 +74,28 @@ class SettingViewController: NSViewController {
         }
         
         let userInfo = ["timeInterval": timeInterval]
-        let n = NSNotification(name: "changeTimeInterval", object: self, userInfo: userInfo)
-        NSNotificationCenter.defaultCenter().postNotification(n)
-        
-    }
-    
-    @IBAction func didChangeCheckboxForResolution(sender:NSMatrix) {
-        
-        let screenResolution = ScreenResolution(rawValue: sender.selectedRow)!
-        let userInfo = ["screenResolution": screenResolution.rawValue]
-        let notification = NSNotification(name: "didChangeScreenResolution", object: self, userInfo: userInfo)
+        let notification = NSNotification(name: "SettingDidChangeTimeInterval", object: self, userInfo: userInfo)
         NSNotificationCenter.defaultCenter().postNotification(notification)
         
     }
+    
+    @IBAction func resolutionMatrixDidChangeValue(sender:NSMatrix) {
+        
+        let screenResolution = ScreenResolution(rawValue: sender.selectedRow)!
+        let userInfo = ["screenResolution": screenResolution.rawValue]
+        let notification = NSNotification(name: "SettingDidChangeScreenResolution", object: self, userInfo: userInfo)
+        NSNotificationCenter.defaultCenter().postNotification(notification)
+        
+    }
+    
+    @IBAction func resourceTypeMatrixDidChangeValue(sender: NSMatrix) {
+
+        let resourceType = ResourceType(rawValue: sender.selectedRow)!
+        let userInfo = ["resourceType": resourceType.rawValue]
+        let notification = NSNotification(name: "SettingDidChangeResourceType", object: self, userInfo: userInfo)
+        NSNotificationCenter.defaultCenter().postNotification(notification)
+    }
+    
     
     @IBAction func dissmiss(sender: AnyObject) {
         self.dismissController(self)

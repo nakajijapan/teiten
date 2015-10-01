@@ -13,13 +13,13 @@ import CoreVideo
 import CoreGraphics
 import Foundation
 
-protocol MovieMakerDelegate {
-    func movieMakerDidAddImage(current: Int, total: Int)
+protocol MovieMakerWithImagesDelegate {
+    func movieMakerDidAddObject(current: Int, total: Int)
 }
 
-class MovieMaker: NSObject {
+class MovieMakerWithImages: NSObject {
     
-    var delegate:MovieMakerDelegate?
+    var delegate:MovieMakerWithImagesDelegate?
     var size:NSSize!
     
     //MARK: - File Util
@@ -66,7 +66,6 @@ class MovieMaker: NSObject {
     
     //MARK: - movie
     
-    // writeImagesAsMovie
     func writeImagesAsMovie(images:[NSImage], toPath path:String, success: (() -> Void)) {
         
         print("writeImagesAsMovie \(__LINE__) path = file://\(path)")
@@ -165,7 +164,7 @@ class MovieMaker: NSObject {
                 
                 frameCount++
                 
-                self.delegate?.movieMakerDidAddImage(current, total: images.count)
+                self.delegate?.movieMakerDidAddObject(current, total: images.count)
                 current++
                 
             }
