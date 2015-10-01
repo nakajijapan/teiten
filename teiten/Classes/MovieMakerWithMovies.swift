@@ -91,7 +91,7 @@ class MovieMakerWithMovies: NSObject {
 
             // movie
             let movieURL = NSURL(fileURLWithPath: moviePath)
-            let layerInstruction = movieComposition.addVideo(movieURL)
+            _ = movieComposition.addVideo(movieURL)
             
             self.delegate?.movieMakerDidAddObject(current, total: moviePaths.count)
             current++

@@ -16,7 +16,7 @@ let kAppHomePath = "\(NSHomeDirectory())/Teiten"
 let kAppMoviePath = "\(NSHomeDirectory())/Movies/Teiten"
 
 
-class CaptureViewController: NSViewController, MovieMakerDelegate, MovieMakerWithMoviesDelegate, NSTableViewDataSource, NSTableViewDelegate, AVCaptureFileOutputRecordingDelegate {
+class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, MovieMakerWithMoviesDelegate, NSTableViewDataSource, NSTableViewDelegate, AVCaptureFileOutputRecordingDelegate {
     
     // timer
     var timer:NSTimer!
@@ -282,7 +282,7 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, MovieMakerWit
         
         if self.resourceType == ResourceType.Image.rawValue {
             
-            let movieMaker = MovieMaker()
+            let movieMaker = MovieMakerWithImages()
             movieMaker.delegate = self
             movieMaker.size = ScreenResolution(rawValue: self.screenResolution)?.toSize()
             

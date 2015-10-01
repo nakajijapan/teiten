@@ -16,7 +16,7 @@
 		DCB53F761A88CFC100FA3B10 /* TeitenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB53F751A88CFC100FA3B10 /* TeitenTests.swift */; };
 		DCB53F851A88D03300FA3B10 /* CaptureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB53F801A88D03300FA3B10 /* CaptureViewController.swift */; };
 		DCB53F861A88D03300FA3B10 /* FileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB53F811A88D03300FA3B10 /* FileEntity.swift */; };
-		DCB53F871A88D03300FA3B10 /* MovieMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB53F821A88D03300FA3B10 /* MovieMaker.swift */; };
+		DCB53F871A88D03300FA3B10 /* MovieMakerWithImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB53F821A88D03300FA3B10 /* MovieMakerWithImages.swift */; };
 		DCB53F891A88D03300FA3B10 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB53F841A88D03300FA3B10 /* SettingViewController.swift */; };
 		DCB53F8B1A88D0BF00FA3B10 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB53F8A1A88D0BF00FA3B10 /* Cocoa.framework */; };
 		DCB53F8D1A88D0C700FA3B10 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB53F8C1A88D0C700FA3B10 /* AppKit.framework */; };
@@ -54,7 +54,7 @@
 		DCB53F751A88CFC100FA3B10 /* TeitenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeitenTests.swift; sourceTree = "<group>"; };
 		DCB53F801A88D03300FA3B10 /* CaptureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureViewController.swift; sourceTree = "<group>"; };
 		DCB53F811A88D03300FA3B10 /* FileEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileEntity.swift; sourceTree = "<group>"; };
-		DCB53F821A88D03300FA3B10 /* MovieMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieMaker.swift; sourceTree = "<group>"; };
+		DCB53F821A88D03300FA3B10 /* MovieMakerWithImages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieMakerWithImages.swift; sourceTree = "<group>"; };
 		DCB53F841A88D03300FA3B10 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		DCB53F8A1A88D0BF00FA3B10 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		DCB53F8C1A88D0C700FA3B10 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -168,7 +168,7 @@
 			children = (
 				DCB53F801A88D03300FA3B10 /* CaptureViewController.swift */,
 				DCB53F811A88D03300FA3B10 /* FileEntity.swift */,
-				DCB53F821A88D03300FA3B10 /* MovieMaker.swift */,
+				DCB53F821A88D03300FA3B10 /* MovieMakerWithImages.swift */,
 				DCF928BD1BBC381F00C40621 /* MovieMakerWithMovies.swift */,
 				DCB53F841A88D03300FA3B10 /* SettingViewController.swift */,
 			);
@@ -398,7 +398,7 @@
 			files = (
 				DCB53F861A88D03300FA3B10 /* FileEntity.swift in Sources */,
 				DCF928BE1BBC381F00C40621 /* MovieMakerWithMovies.swift in Sources */,
-				DCB53F871A88D03300FA3B10 /* MovieMaker.swift in Sources */,
+				DCB53F871A88D03300FA3B10 /* MovieMakerWithImages.swift in Sources */,
 				DCB53F651A88CFC100FA3B10 /* ViewController.swift in Sources */,
 				DCB53F851A88D03300FA3B10 /* CaptureViewController.swift in Sources */,
 				DCB53F891A88D03300FA3B10 /* SettingViewController.swift in Sources */,
