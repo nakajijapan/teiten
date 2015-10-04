@@ -6,12 +6,11 @@
 //  Copyright © 2015年 net.nakajijapan. All rights reserved.
 //
 
-import Cocoa
+import Foundation
 import AVFoundation
 import CoreMedia
 import CoreVideo
 import CoreGraphics
-import Foundation
 import NKJMovieComposer
 
 protocol MovieMakerWithMoviesDelegate {

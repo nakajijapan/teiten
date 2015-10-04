@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 net.nakajijapan. All rights reserved.
 //
 
-import Cocoa
 import AVFoundation
 import CoreMedia
 import CoreVideo
