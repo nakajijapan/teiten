@@ -1,5 +1,9 @@
 # teiten
 
+## Archive
+
+Product -> Archive
+
 ## Create disc image
 
 ```
