@@ -21,27 +21,39 @@ class MovieMakerWithMovies: NSObject {
     
     var delegate:MovieMakerWithMoviesDelegate?
     var size:NSSize!
+    var files: [String] = []
+    var dates: [NSDate] = []
+    
+    
+    override init() {
+        super.init()
+        self.setMovieInfo()
+    }
     
     // MARK: - File Util
     
-    func getMovies() -> [String] {
+    func setMovieInfo() {
         
         // get home directory path
         let homeDir = "\(kAppHomePath)/videos"
         let fileManager = NSFileManager.defaultManager()
         let paths:Array = try! fileManager.contentsOfDirectoryAtPath(homeDir)
-        var files:[String] = []
         
         for path in paths {
             
             if path.hasSuffix("DS_Store") {
                 continue
             }
+           
+            // Creation Date
+            let attributes = try! NSFileManager.defaultManager().attributesOfItemAtPath("\(homeDir)/\(path)")
+            let createDateStirng = attributes[NSFileCreationDate] as! NSDate
+            self.dates.append(createDateStirng)
             
-            files.append("\(homeDir)/\(path)")
+            // File Path
+            self.files.append("\(homeDir)/\(path)")
         }
         
-        return files
     }
     
     func deleteFiles() {
@@ -77,26 +89,6 @@ class MovieMakerWithMovies: NSObject {
             }
             
         }
-
-        //fileManager.createFileAtPath(composedMoviePath, contents: nil, attributes: nil)
-        
-        var current = 1
-        
-        let movieComposition = NKJMovieComposer()
-        movieComposition.videoComposition.renderSize = CGSize(width: self.size.width, height: self.size.height)
-
-        let moviePaths = self.getMovies()
-        for moviePath in moviePaths {
-
-            // movie
-            let movieURL = NSURL(fileURLWithPath: moviePath)
-            //let layerInstruction = movieComposition.addVideo(movieURL)
-            _ = movieComposition.addVideo(movieURL)
-            
-            self.delegate?.movieMakerDidAddObject(current, total: moviePaths.count)
-            current++
-            
-        }
         
         // generate parent layer
         let layerRoot  = CALayer()
@@ -105,19 +97,51 @@ class MovieMakerWithMovies: NSObject {
         layerVideo.frame  = CGRect(x: 0.0, y: 0.0, width: self.size.width, height: self.size.height)
         layerRoot.addSublayer(layerVideo)
 
-        // today
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy/MM/dd"
         
-        // text layer
-        let textLayer = CATextLayer()
-        textLayer.frame = CGRect(x: self.size.width - 250.0 - 10.0, y: 10.0, width: 250, height: 52)
-        textLayer.string = dateFormatter.stringFromDate(NSDate())
-        textLayer.fontSize = 48.0
-        textLayer.alignmentMode = kCAAlignmentRight
-        textLayer.foregroundColor = NSColor.whiteColor().CGColor
-        textLayer.shouldRasterize = true
-        layerRoot.addSublayer(textLayer)
+        let movieComposition = NKJMovieComposer()
+        movieComposition.videoComposition.renderSize = CGSize(width: self.size.width, height: self.size.height)
+
+        for i in 0..<self.files.count {
+
+            let beforeTimeDuration = movieComposition.currentTimeDuration
+            let moviePath = self.files[i]
+            
+            // movie
+            let movieURL = NSURL(fileURLWithPath: moviePath)
+            //let layerInstruction = movieComposition.addVideo(movieURL)
+            _ = movieComposition.addVideo(movieURL)
+            
+            self.delegate?.movieMakerDidAddObject(i + 1, total: self.files.count)
+            
+            // today
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "yyyy/MM/dd HH:mm"
+            
+            // text layer
+            let textLayer = CATextLayer()
+            textLayer.frame = CGRect(x: self.size.width - 400.0 - 10.0, y: 10.0, width: 400.0, height: 52.0)
+            textLayer.string = dateFormatter.stringFromDate(self.dates[i])
+            textLayer.fontSize = 48.0
+            textLayer.alignmentMode = kCAAlignmentRight
+            textLayer.foregroundColor = NSColor.whiteColor().CGColor
+            textLayer.shouldRasterize = true
+            textLayer.opacity = 0.0
+            layerRoot.addSublayer(textLayer)
+
+            // animation
+            let offsetTimeDuration = CMTimeSubtract(movieComposition.currentTimeDuration, beforeTimeDuration)
+            let animation = CABasicAnimation(keyPath: "opacity")
+            animation.beginTime     = (i == 0) ? AVCoreAnimationBeginTimeAtZero : CMTimeGetSeconds(beforeTimeDuration)
+            animation.duration      = CMTimeGetSeconds(offsetTimeDuration)
+            animation.repeatCount   = 1
+            animation.autoreverses  = false
+            animation.fromValue     = NSNumber(float: 1.0)
+            animation.toValue       = NSNumber(float: 1.0)
+            animation.removedOnCompletion = false
+            textLayer.addAnimation(animation, forKey:"hide")
+
+        }
+        
         
         // animation
         movieComposition.videoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: layerVideo, inLayer: layerRoot)
