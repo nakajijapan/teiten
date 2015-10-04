@@ -2,7 +2,7 @@
 //  MovieMaker.swift
 //  teiten
 //
-//  Created by nakajijapan on 12/24/14.
+//  Created by nakajijapan on 2014/12/24.
 //  Copyright (c) 2014 net.nakajijapan. All rights reserved.
 //
 

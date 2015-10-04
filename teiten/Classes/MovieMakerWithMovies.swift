@@ -3,7 +3,7 @@
 //  Teiten
 //
 //  Created by nakajijapan on 2015/10/01.
-//  Copyright © 2015年 net.nakajijapan. All rights reserved.
+//  Copyright (c) 2015 net.nakajijapan. All rights reserved.
 //
 
 import Foundation
