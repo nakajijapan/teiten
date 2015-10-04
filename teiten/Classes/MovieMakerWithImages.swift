@@ -170,7 +170,7 @@ class MovieMakerWithImages: NSObject {
             
             
         }
-        
+
         writerInput.markAsFinished()
         videoWriter.endSessionAtSourceTime(frameTime)
         videoWriter.finishWritingWithCompletionHandler { () -> Void in

@@ -90,11 +90,37 @@ class MovieMakerWithMovies: NSObject {
 
             // movie
             let movieURL = NSURL(fileURLWithPath: moviePath)
+            //let layerInstruction = movieComposition.addVideo(movieURL)
             _ = movieComposition.addVideo(movieURL)
             
             self.delegate?.movieMakerDidAddObject(current, total: moviePaths.count)
             current++
+            
         }
+        
+        // generate parent layer
+        let layerRoot  = CALayer()
+        let layerVideo = CALayer()
+        layerRoot.frame   = CGRect(x: 0.0, y: 0.0, width: self.size.width, height: self.size.height)
+        layerVideo.frame  = CGRect(x: 0.0, y: 0.0, width: self.size.width, height: self.size.height)
+        layerRoot.addSublayer(layerVideo)
+
+        // today
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        
+        // text layer
+        let textLayer = CATextLayer()
+        textLayer.frame = CGRect(x: self.size.width - 250.0 - 10.0, y: 10.0, width: 250, height: 52)
+        textLayer.string = dateFormatter.stringFromDate(NSDate())
+        textLayer.fontSize = 48.0
+        textLayer.alignmentMode = kCAAlignmentRight
+        textLayer.foregroundColor = NSColor.whiteColor().CGColor
+        textLayer.shouldRasterize = true
+        layerRoot.addSublayer(textLayer)
+        
+        // animation
+        movieComposition.videoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: layerVideo, inLayer: layerRoot)
         
         // compose
         let assetExportSession = movieComposition.readyToComposeVideo("\(composedMoviePath)")
@@ -112,6 +138,5 @@ class MovieMakerWithMovies: NSObject {
         })
         
     }
-    
    
 }
