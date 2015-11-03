@@ -282,17 +282,12 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         
         if self.resourceType == ResourceType.Image.rawValue {
             
+            self.indicatorStart()
+
             let movieMaker = MovieMakerWithImages()
             movieMaker.delegate = self
             movieMaker.size = ScreenResolution(rawValue: self.screenResolution)?.toSize()
-            
-            // images
-            let images = movieMaker.getImageList()
-            
-            self.indicatorStart()
-
-            // generate movie
-            movieMaker.writeImagesAsMovie(images, toPath: path) { () -> Void in
+            movieMaker.writeImagesAsMovie(toPath: path) { () -> Void in
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     

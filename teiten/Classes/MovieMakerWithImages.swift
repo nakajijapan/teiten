@@ -20,17 +20,22 @@ class MovieMakerWithImages: NSObject {
     
     var delegate:MovieMakerWithImagesDelegate?
     var size:NSSize!
+    var files:[NSImage] = []
+    
+    override init() {
+        super.init()
+        self.setImageInfo()
+    }
     
     //MARK: - File Util
     
-    func getImageList() -> [NSImage] {
+    func setImageInfo() {
         
         // get home directory path
         let homeDir = "\(kAppHomePath)/images"
         let fileManager = NSFileManager.defaultManager()
         let list:Array = try! fileManager.contentsOfDirectoryAtPath(homeDir)
-        var files:[NSImage] = []
-        
+
         for path in list {
             print("path = \(homeDir)/\(path)")
             
@@ -39,10 +44,9 @@ class MovieMakerWithImages: NSObject {
             }
             
             let image = NSImage(contentsOfFile: "\(homeDir)/\(path)")!
-            files.append(image)
+            self.files.append(image)
         }
         
-        return files
     }
     
     func deleteFiles() {
@@ -65,9 +69,10 @@ class MovieMakerWithImages: NSObject {
     
     //MARK: - movie
     
-    func writeImagesAsMovie(images:[NSImage], toPath path:String, success: (() -> Void)) {
+    func writeImagesAsMovie(toPath path:String, success: (() -> Void)) {
         
         print("writeImagesAsMovie \(__LINE__) path = file://\(path)")
+        let images = self.files
         
         // delete file if file already exists
         let fileManager = NSFileManager.defaultManager();
