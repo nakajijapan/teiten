@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0FC1CBB0448D4738615C5F21 /* Pods_TeitenTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B71CF7EA64DFEAE829520CE /* Pods_TeitenTests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		8D88AFD7DE5A90A84F23A9EF /* Pods_Teiten.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5EEADF257574E353AA85507 /* Pods_Teiten.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		0FC1CBB0448D4738615C5F21 /* Pods_TeitenTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B71CF7EA64DFEAE829520CE /* Pods_TeitenTests.framework */; };
+		8D88AFD7DE5A90A84F23A9EF /* Pods_Teiten.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5EEADF257574E353AA85507 /* Pods_Teiten.framework */; };
 		DCB53F631A88CFC100FA3B10 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB53F621A88CFC100FA3B10 /* AppDelegate.swift */; };
 		DCB53F651A88CFC100FA3B10 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB53F641A88CFC100FA3B10 /* ViewController.swift */; };
 		DCB53F671A88CFC100FA3B10 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCB53F661A88CFC100FA3B10 /* Images.xcassets */; };
@@ -24,7 +24,7 @@
 		DCB53F911A88D0DA00FA3B10 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB53F901A88D0DA00FA3B10 /* CoreVideo.framework */; };
 		DCB53F931A88D0E600FA3B10 /* InputMethodKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB53F921A88D0E600FA3B10 /* InputMethodKit.framework */; };
 		DCB53F951A88D0EF00FA3B10 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB53F941A88D0EF00FA3B10 /* AVFoundation.framework */; };
-		DCF928BE1BBC381F00C40621 /* MovieMakerWithMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF928BD1BBC381F00C40621 /* MovieMakerWithMovies.swift */; settings = {ASSET_TAGS = (); }; };
+		DCF928BE1BBC381F00C40621 /* MovieMakerWithMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF928BD1BBC381F00C40621 /* MovieMakerWithMovies.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
