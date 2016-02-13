@@ -21,8 +21,8 @@ class MovieMakerWithMovies: NSObject {
     
     var delegate:MovieMakerWithMoviesDelegate?
     var size:NSSize!
-    var files: [String] = []
-    var dates: [NSDate] = []
+    var files = [String]()
+    var dates = [NSDate]()
     
     
     override init() {
@@ -37,7 +37,7 @@ class MovieMakerWithMovies: NSObject {
         // get home directory path
         let homeDir = "\(kAppHomePath)/videos"
         let fileManager = NSFileManager.defaultManager()
-        let paths:Array = try! fileManager.contentsOfDirectoryAtPath(homeDir)
+        let paths = try! fileManager.contentsOfDirectoryAtPath(homeDir)
         
         for path in paths {
             
@@ -61,7 +61,7 @@ class MovieMakerWithMovies: NSObject {
         // get home directory path
         let homeDir = "\(kAppHomePath)/videos"
         let fileManager = NSFileManager.defaultManager()
-        let list:Array = try! fileManager.contentsOfDirectoryAtPath(homeDir)
+        let list = try! fileManager.contentsOfDirectoryAtPath(homeDir)
         
         for path in list {
             

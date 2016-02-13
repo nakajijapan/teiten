@@ -12,11 +12,17 @@ import CoreMedia
 import CoreVideo
 import QuartzCore
 
+import RxSwift
+import RxCocoa
+import RxBlocking
+
 let kAppHomePath = "\(NSHomeDirectory())/Teiten"
 let kAppMoviePath = "\(NSHomeDirectory())/Movies/Teiten"
 
 
 class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, MovieMakerWithMoviesDelegate, NSTableViewDataSource, NSTableViewDelegate, AVCaptureFileOutputRecordingDelegate {
+    
+    let disposeBag = DisposeBag()
     
     // timer
     var timer:NSTimer!
@@ -160,6 +166,14 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         let types = [NSImage.imageTypes().first!, NSFilenamesPboardType]
         self.tableView.registerForDraggedTypes(types)
         self.tableView.setDraggingSourceOperationMask(NSDragOperation.Every, forLocal: false)
+        
+        // TimeInterval
+        self.countDownLabel.rx_observe(String.self, "stringValue")
+            .subscribe({ (string) -> Void in
+                    print("count : \(string)")
+                })
+            .addDisposableTo(disposeBag)
+
     }
     
 
