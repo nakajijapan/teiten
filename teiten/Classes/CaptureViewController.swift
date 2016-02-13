@@ -98,15 +98,52 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         self.resourceType = NSUserDefaults.standardUserDefaults().integerForKey("RESOURCETYPE")
         
         //-------------------------------------------------
-        // initialize - timer
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "timerAction:", userInfo: nil, repeats: true)
-        self.timer.fire()
+        // TimeInterval
+        _ = Observable<Int>.interval(1.0, scheduler: MainScheduler.instance)
+            .observeOn(MainScheduler.instance)
+            .subscribe({ event in
+                
+                print(event)
+                self.countDownLabel.stringValue = String(self.timeInterval)
+                
+            })
+            .addDisposableTo(disposeBag)
         
-        // notifications
-        self.initNotification()
+        //-------------------------------------------------
+        // CountDownLabel
+        self.countDownLabel.rx_observe(String.self, "stringValue")
+            .subscribe({ (string) -> Void in
+                print("count : \(string)")
+
+                if self.timeInterval > 0 {
+
+                    self.timeInterval--
+
+                } else if (self.timeInterval == 0) {
+
+                    self.timeInterval = NSUserDefaults.standardUserDefaults().integerForKey("TIMEINTERVAL")
+                    
+                    if self.resourceType == ResourceType.Image.rawValue {
+                        self.pushButtonCaptureImage(nil)
+                    } else {
+                        self.captureMovie(nil)
+                    }
+                    
+                    
+                }
+
+            })
+            .addDisposableTo(disposeBag)
+        
+        
         
         //-------------------------------------------------
         // initialize
+
+        // notifications
+        self.initNotification()
+        
+        // AVCaptureDevice
         let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
         
         // Image
@@ -167,12 +204,6 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         self.tableView.registerForDraggedTypes(types)
         self.tableView.setDraggingSourceOperationMask(NSDragOperation.Every, forLocal: false)
         
-        // TimeInterval
-        self.countDownLabel.rx_observe(String.self, "stringValue")
-            .subscribe({ (string) -> Void in
-                    print("count : \(string)")
-                })
-            .addDisposableTo(disposeBag)
 
     }
     
@@ -211,26 +242,6 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
    }
     
     // MARK: - Actions
-    
-    func timerAction(sender:AnyObject!) {
-        
-        self.countDownLabel.stringValue = String(self.timeInterval)
-        
-        if self.timeInterval > 0 {
-            self.timeInterval--
-        } else if (self.timeInterval == 0) {
-            self.timeInterval = NSUserDefaults.standardUserDefaults().integerForKey("TIMEINTERVAL")
-            
-            if self.resourceType == ResourceType.Image.rawValue {
-                self.pushButtonCaptureImage(nil)
-            } else {
-                self.captureMovie(nil)
-            }
-            
-
-        }
-    }
-    
     
     @IBAction func pushButtonCaptureImage(sender:AnyObject!) {
         
