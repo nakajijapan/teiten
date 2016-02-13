@@ -7,7 +7,6 @@ target 'Teiten' do
   pod 'RxSwift',    '~> 2.0'
   pod 'RxCocoa',    '~> 2.0'
   pod 'RxBlocking', '~> 2.0'
-  pod 'RxTests',    '~> 2.0'
 end
 
 target 'TeitenTests' do
@@ -15,6 +14,5 @@ target 'TeitenTests' do
   pod 'RxSwift',    '~> 2.0'
   pod 'RxCocoa',    '~> 2.0'
   pod 'RxBlocking', '~> 2.0'
-  pod 'RxTests',    '~> 2.0'
 end
 
