@@ -122,6 +122,12 @@
                                                 <action selector="didPushButtonOpenWindow:" target="Voe-Tx-rLC" id="6Pf-Kl-Mfp"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="Open Saved Videos" tag="10" id="3Ya-XZ-QJv">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="didTapMenuButtonOpenMoviesFinder:" target="Voe-Tx-rLC" id="48x-ve-3zU"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>
