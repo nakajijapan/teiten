@@ -27,7 +27,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     // MARK: - Actions
     
-    @IBAction func didPushButtonOpenWindow(sender: NSMenuItem) {
+    @IBAction func didTapMenuButtonOpenImagesFinder(sender: NSMenuItem) {
         let url = NSURL(string: "file://\(kAppHomePath)/images")!
         NSWorkspace.sharedWorkspace().openURL(url)
     }
