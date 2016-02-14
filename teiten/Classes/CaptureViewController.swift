@@ -83,7 +83,7 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         }
         
         //-------------------------------------------------
-        // initialize - settings
+        // Settings
         self.timeInterval = NSUserDefaults.standardUserDefaults().integerForKey("TIMEINTERVAL")
         if self.timeInterval < 1 {
             self.timeInterval = 10
@@ -103,7 +103,6 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
             .observeOn(MainScheduler.instance)
             .subscribe({ event in
                 
-                print(event)
                 self.countDownLabel.stringValue = String(self.timeInterval)
                 
             })
@@ -113,7 +112,6 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         // CountDownLabel
         self.countDownLabel.rx_observe(String.self, "stringValue")
             .subscribe({ (string) -> Void in
-                print("count : \(string)")
 
                 if self.timeInterval > 0 {
 
@@ -140,8 +138,8 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         //-------------------------------------------------
         // initialize
 
-        // notifications
-        self.initNotification()
+        // subscribe NSUserDefaults
+        self.initSubscribeNSuserDefaults()
         
         // AVCaptureDevice
         let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
@@ -207,40 +205,37 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
 
     }
     
+    // MARK: - NSUserDefaults
+    func initSubscribeNSuserDefaults() {
+        
+        NSUserDefaults.standardUserDefaults()
+            .rx_observe(Int.self, "TIMEINTERVAL")
+            .subscribeNext({ (value) -> Void in
+                
+                self.timeInterval = value!
+                
+            }).addDisposableTo(disposeBag)
+        
+        NSUserDefaults.standardUserDefaults()
+            .rx_observe(Int.self, "SCREENRESOLUTION")
+            .subscribeNext({ (value) -> Void in
 
-    
-    
-    // MARK: - notifications
-    func initNotification() {
-        let notification = NSNotificationCenter.defaultCenter()
-        notification.addObserver(self, selector: "updateTimeInterval:", name: "SettingDidChangeTimeInterval", object: nil)
-        notification.addObserver(self, selector: "updateScreenResolution:", name: "SettingDidChangeScreenResolution", object: nil)
-        notification.addObserver(self, selector: "updateResurceType:", name: "SettingDidChangeResourceType", object: nil)
+                self.screenResolution = value!
+
+            })
+            .addDisposableTo(disposeBag)
+        
+        NSUserDefaults.standardUserDefaults()
+            .rx_observe(Int.self, "RESOURCETYPE")
+            .subscribeNext({ (value) -> Void in
+                
+                self.resourceType = value!
+
+            })
+            .addDisposableTo(disposeBag)
+
     }
-    
-    func updateTimeInterval(sender:NSNotification) {
-        let value = sender.userInfo!["timeInterval"] as! NSNumber
-        self.timeInterval = value.integerValue
-        NSUserDefaults.standardUserDefaults().setInteger(value.integerValue, forKey: "TIMEINTERVAL")
-    }
-    
-    
-    func updateScreenResolution(sender:NSNotification) {
-        
-        let value = sender.userInfo!["screenResolution"] as! NSNumber
-        self.screenResolution = value.integerValue
-        NSUserDefaults.standardUserDefaults().setInteger(value.integerValue, forKey: "SCREENRESOLUTION")
-        
-    }
-    
-    func updateResurceType(sender:NSNotification) {
-        
-        let value = sender.userInfo!["resourceType"] as! NSNumber
-        self.resourceType = value.integerValue
-        NSUserDefaults.standardUserDefaults().setInteger(value.integerValue, forKey: "RESOURCETYPE")
-        
-   }
-    
+
     // MARK: - Actions
     
     @IBAction func pushButtonCaptureImage(sender:AnyObject!) {
