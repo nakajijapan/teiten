@@ -73,27 +73,22 @@ class SettingViewController: NSViewController {
             break
         }
         
-        let userInfo = ["timeInterval": timeInterval]
-        let notification = NSNotification(name: "SettingDidChangeTimeInterval", object: self, userInfo: userInfo)
-        NSNotificationCenter.defaultCenter().postNotification(notification)
+        NSUserDefaults.standardUserDefaults().setInteger(timeInterval, forKey: "TIMEINTERVAL")
         
     }
     
     @IBAction func resolutionMatrixDidChangeValue(sender:NSMatrix) {
-        
+
         let screenResolution = ScreenResolution(rawValue: sender.selectedRow)!
-        let userInfo = ["screenResolution": screenResolution.rawValue]
-        let notification = NSNotification(name: "SettingDidChangeScreenResolution", object: self, userInfo: userInfo)
-        NSNotificationCenter.defaultCenter().postNotification(notification)
-        
+        NSUserDefaults.standardUserDefaults().setInteger(screenResolution.rawValue, forKey: "SCREENRESOLUTION")
+
     }
     
     @IBAction func resourceTypeMatrixDidChangeValue(sender: NSMatrix) {
 
         let resourceType = ResourceType(rawValue: sender.selectedRow)!
-        let userInfo = ["resourceType": resourceType.rawValue]
-        let notification = NSNotification(name: "SettingDidChangeResourceType", object: self, userInfo: userInfo)
-        NSNotificationCenter.defaultCenter().postNotification(notification)
+        NSUserDefaults.standardUserDefaults().setInteger(resourceType.rawValue, forKey: "RESOURCETYPE")
+
     }
     
     

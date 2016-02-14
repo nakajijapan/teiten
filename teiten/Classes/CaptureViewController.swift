@@ -12,11 +12,17 @@ import CoreMedia
 import CoreVideo
 import QuartzCore
 
+import RxSwift
+import RxCocoa
+import RxBlocking
+
 let kAppHomePath = "\(NSHomeDirectory())/Teiten"
 let kAppMoviePath = "\(NSHomeDirectory())/Movies/Teiten"
 
 
 class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, MovieMakerWithMoviesDelegate, NSTableViewDataSource, NSTableViewDelegate, AVCaptureFileOutputRecordingDelegate {
+    
+    let disposeBag = DisposeBag()
     
     // timer
     var timer:NSTimer!
@@ -77,7 +83,7 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         }
         
         //-------------------------------------------------
-        // initialize - settings
+        // Settings
         self.timeInterval = NSUserDefaults.standardUserDefaults().integerForKey("TIMEINTERVAL")
         if self.timeInterval < 1 {
             self.timeInterval = 10
@@ -92,15 +98,50 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         self.resourceType = NSUserDefaults.standardUserDefaults().integerForKey("RESOURCETYPE")
         
         //-------------------------------------------------
-        // initialize - timer
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "timerAction:", userInfo: nil, repeats: true)
-        self.timer.fire()
+        // TimeInterval
+        _ = Observable<Int>.interval(1.0, scheduler: MainScheduler.instance)
+            .observeOn(MainScheduler.instance)
+            .subscribe({ event in
+                
+                self.countDownLabel.stringValue = String(self.timeInterval)
+                
+            })
+            .addDisposableTo(disposeBag)
         
-        // notifications
-        self.initNotification()
+        //-------------------------------------------------
+        // CountDownLabel
+        self.countDownLabel.rx_observe(String.self, "stringValue")
+            .subscribe({ (string) -> Void in
+
+                if self.timeInterval > 0 {
+
+                    self.timeInterval--
+
+                } else if (self.timeInterval == 0) {
+
+                    self.timeInterval = NSUserDefaults.standardUserDefaults().integerForKey("TIMEINTERVAL")
+                    
+                    if self.resourceType == ResourceType.Image.rawValue {
+                        self.pushButtonCaptureImage(nil)
+                    } else {
+                        self.captureMovie(nil)
+                    }
+                    
+                    
+                }
+
+            })
+            .addDisposableTo(disposeBag)
+        
+        
         
         //-------------------------------------------------
         // initialize
+
+        // subscribe NSUserDefaults
+        self.initSubscribeNSuserDefaults()
+        
+        // AVCaptureDevice
         let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
         
         // Image
@@ -160,63 +201,42 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         let types = [NSImage.imageTypes().first!, NSFilenamesPboardType]
         self.tableView.registerForDraggedTypes(types)
         self.tableView.setDraggingSourceOperationMask(NSDragOperation.Every, forLocal: false)
-    }
-    
+        
 
-    
-    
-    // MARK: - notifications
-    func initNotification() {
-        let notification = NSNotificationCenter.defaultCenter()
-        notification.addObserver(self, selector: "updateTimeInterval:", name: "SettingDidChangeTimeInterval", object: nil)
-        notification.addObserver(self, selector: "updateScreenResolution:", name: "SettingDidChangeScreenResolution", object: nil)
-        notification.addObserver(self, selector: "updateResurceType:", name: "SettingDidChangeResourceType", object: nil)
     }
     
-    func updateTimeInterval(sender:NSNotification) {
-        let value = sender.userInfo!["timeInterval"] as! NSNumber
-        self.timeInterval = value.integerValue
-        NSUserDefaults.standardUserDefaults().setInteger(value.integerValue, forKey: "TIMEINTERVAL")
+    // MARK: - NSUserDefaults
+    func initSubscribeNSuserDefaults() {
+        
+        NSUserDefaults.standardUserDefaults()
+            .rx_observe(Int.self, "TIMEINTERVAL")
+            .subscribeNext({ (value) -> Void in
+                
+                self.timeInterval = value!
+                
+            }).addDisposableTo(disposeBag)
+        
+        NSUserDefaults.standardUserDefaults()
+            .rx_observe(Int.self, "SCREENRESOLUTION")
+            .subscribeNext({ (value) -> Void in
+
+                self.screenResolution = value!
+
+            })
+            .addDisposableTo(disposeBag)
+        
+        NSUserDefaults.standardUserDefaults()
+            .rx_observe(Int.self, "RESOURCETYPE")
+            .subscribeNext({ (value) -> Void in
+                
+                self.resourceType = value!
+
+            })
+            .addDisposableTo(disposeBag)
+
     }
-    
-    
-    func updateScreenResolution(sender:NSNotification) {
-        
-        let value = sender.userInfo!["screenResolution"] as! NSNumber
-        self.screenResolution = value.integerValue
-        NSUserDefaults.standardUserDefaults().setInteger(value.integerValue, forKey: "SCREENRESOLUTION")
-        
-    }
-    
-    func updateResurceType(sender:NSNotification) {
-        
-        let value = sender.userInfo!["resourceType"] as! NSNumber
-        self.resourceType = value.integerValue
-        NSUserDefaults.standardUserDefaults().setInteger(value.integerValue, forKey: "RESOURCETYPE")
-        
-   }
-    
+
     // MARK: - Actions
-    
-    func timerAction(sender:AnyObject!) {
-        
-        self.countDownLabel.stringValue = String(self.timeInterval)
-        
-        if self.timeInterval > 0 {
-            self.timeInterval--
-        } else if (self.timeInterval == 0) {
-            self.timeInterval = NSUserDefaults.standardUserDefaults().integerForKey("TIMEINTERVAL")
-            
-            if self.resourceType == ResourceType.Image.rawValue {
-                self.pushButtonCaptureImage(nil)
-            } else {
-                self.captureMovie(nil)
-            }
-            
-
-        }
-    }
-    
     
     @IBAction func pushButtonCaptureImage(sender:AnyObject!) {
         
@@ -397,14 +417,6 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
     
     func tableView(tableView: NSTableView, pasteboardWriterForRow row: Int) -> NSPasteboardWriting? {
         return self.entity
-    }
-    
-    // MARK: - Segue
-    
-    override func prepareForSegue(segue: NSStoryboardSegue, sender: AnyObject?) {
-        print("prepareForSegue: \(segue.identifier)")
-        print(sender)
-        
     }
     
 }

@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0FC1CBB0448D4738615C5F21 /* Pods_TeitenTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B71CF7EA64DFEAE829520CE /* Pods_TeitenTests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		8D88AFD7DE5A90A84F23A9EF /* Pods_Teiten.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5EEADF257574E353AA85507 /* Pods_Teiten.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		0FC1CBB0448D4738615C5F21 /* Pods_TeitenTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B71CF7EA64DFEAE829520CE /* Pods_TeitenTests.framework */; };
+		8D88AFD7DE5A90A84F23A9EF /* Pods_Teiten.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5EEADF257574E353AA85507 /* Pods_Teiten.framework */; };
+		DCB414C41C6F4125009B077D /* Scheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB414C31C6F4125009B077D /* Scheduler.swift */; };
 		DCB53F631A88CFC100FA3B10 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB53F621A88CFC100FA3B10 /* AppDelegate.swift */; };
 		DCB53F651A88CFC100FA3B10 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB53F641A88CFC100FA3B10 /* ViewController.swift */; };
 		DCB53F671A88CFC100FA3B10 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCB53F661A88CFC100FA3B10 /* Images.xcassets */; };
@@ -24,7 +25,7 @@
 		DCB53F911A88D0DA00FA3B10 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB53F901A88D0DA00FA3B10 /* CoreVideo.framework */; };
 		DCB53F931A88D0E600FA3B10 /* InputMethodKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB53F921A88D0E600FA3B10 /* InputMethodKit.framework */; };
 		DCB53F951A88D0EF00FA3B10 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB53F941A88D0EF00FA3B10 /* AVFoundation.framework */; };
-		DCF928BE1BBC381F00C40621 /* MovieMakerWithMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF928BD1BBC381F00C40621 /* MovieMakerWithMovies.swift */; settings = {ASSET_TAGS = (); }; };
+		DCF928BE1BBC381F00C40621 /* MovieMakerWithMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF928BD1BBC381F00C40621 /* MovieMakerWithMovies.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,7 @@
 		B50FFD433D06CBF7D8ECCA46 /* Pods-Teiten.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Teiten.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Teiten/Pods-Teiten.debug.xcconfig"; sourceTree = "<group>"; };
 		CBD08C60EE954D6A857CC5F6 /* Pods-TeitenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TeitenTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TeitenTests/Pods-TeitenTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D5EEADF257574E353AA85507 /* Pods_Teiten.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Teiten.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCB414C31C6F4125009B077D /* Scheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scheduler.swift; sourceTree = "<group>"; };
 		DCB53F5D1A88CFC100FA3B10 /* Teiten.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Teiten.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCB53F611A88CFC100FA3B10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DCB53F621A88CFC100FA3B10 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 				DCB53F821A88D03300FA3B10 /* MovieMakerWithImages.swift */,
 				DCF928BD1BBC381F00C40621 /* MovieMakerWithMovies.swift */,
 				DCB53F841A88D03300FA3B10 /* SettingViewController.swift */,
+				DCB414C31C6F4125009B077D /* Scheduler.swift */,
 			);
 			name = Classes;
 			path = teiten/Classes;
@@ -396,6 +399,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DCB414C41C6F4125009B077D /* Scheduler.swift in Sources */,
 				DCB53F861A88D03300FA3B10 /* FileEntity.swift in Sources */,
 				DCF928BE1BBC381F00C40621 /* MovieMakerWithMovies.swift in Sources */,
 				DCB53F871A88D03300FA3B10 /* MovieMakerWithImages.swift in Sources */,
