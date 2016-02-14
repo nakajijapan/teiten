@@ -419,12 +419,4 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         return self.entity
     }
     
-    // MARK: - Segue
-    
-    override func prepareForSegue(segue: NSStoryboardSegue, sender: AnyObject?) {
-        print("prepareForSegue: \(segue.identifier)")
-        print(sender)
-        
-    }
-    
 }
