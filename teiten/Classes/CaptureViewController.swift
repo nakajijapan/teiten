@@ -17,8 +17,7 @@ import RxCocoa
 import RxBlocking
 
 let kAppHomePath = "\(NSHomeDirectory())/Teiten"
-let kAppMoviePath = "\(NSHomeDirectory())/Movies/Teiten"
-
+let kAppMoviePath = "\(NSHomeDirectory())/Movies/\(NSBundle.mainBundle().bundleIdentifier!)"
 
 class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, MovieMakerWithMoviesDelegate, NSTableViewDataSource, NSTableViewDelegate, AVCaptureFileOutputRecordingDelegate {
     
