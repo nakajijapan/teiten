@@ -202,7 +202,6 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
             })
             .addDisposableTo(disposeBag)
         
-        //-------------------------------------------------
         // CountDownLabel
         self.countDownLabel.rx_observe(String.self, "stringValue")
             .subscribe({ (string) -> Void in
