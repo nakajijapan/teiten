@@ -48,6 +48,9 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
     
     // movie
     var videoMovieFileOutput:AVCaptureMovieFileOutput!
+    
+    // disable connecting camera
+    @IBOutlet var disableConnectingCaptureDeviceImageView:NSImageView!
 
     
     @IBOutlet var tableView:NSTableView!
@@ -82,62 +85,7 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
             print("failed to make directory error: \(error.description)")
         }
         
-        //-------------------------------------------------
-        // Settings
-        self.timeInterval = NSUserDefaults.standardUserDefaults().integerForKey("TIMEINTERVAL")
-        if self.timeInterval < 1 {
-            self.timeInterval = 10
-            NSUserDefaults.standardUserDefaults().setInteger(self.timeInterval, forKey: "TIMEINTERVAL")
-        }
         
-        self.screenResolution = NSUserDefaults.standardUserDefaults().integerForKey("SCREENRESOLUTION")
-        
-        NSUserDefaults.standardUserDefaults().setInteger(self.screenResolution, forKey: "SCREENRESOLUTION")
-        print("self.screenResolution = \(self.screenResolution)")
-        
-        self.resourceType = NSUserDefaults.standardUserDefaults().integerForKey("RESOURCETYPE")
-        
-        //-------------------------------------------------
-        // TimeInterval
-        _ = Observable<Int>.interval(1.0, scheduler: MainScheduler.instance)
-            .observeOn(MainScheduler.instance)
-            .subscribe({ event in
-                
-                self.countDownLabel.stringValue = String(self.timeInterval)
-                
-            })
-            .addDisposableTo(disposeBag)
-        
-        //-------------------------------------------------
-        // CountDownLabel
-        self.countDownLabel.rx_observe(String.self, "stringValue")
-            .subscribe({ (string) -> Void in
-
-                if self.timeInterval > 0 {
-
-                    self.timeInterval--
-
-                } else if (self.timeInterval == 0) {
-
-                    self.timeInterval = NSUserDefaults.standardUserDefaults().integerForKey("TIMEINTERVAL")
-                    
-                    if self.resourceType == ResourceType.Image.rawValue {
-                        self.pushButtonCaptureImage(nil)
-                    } else {
-                        self.captureMovie(nil)
-                    }
-                    
-                    
-                }
-
-            })
-            .addDisposableTo(disposeBag)
-        
-        
-        
-        //-------------------------------------------------
-        // initialize
-
         // subscribe NSUserDefaults
         self.initSubscribeNSuserDefaults()
         
@@ -156,20 +104,28 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         )
         self.videoMovieFileOutput.maxRecordedDuration = maxDuration
         self.videoMovieFileOutput.minFreeDiskSpaceLimit = 1024 * 1024
-
         
         self.captureSession = AVCaptureSession()
 
         if self.captureSession.canAddInput(videoInput) {
             self.captureSession.addInput(videoInput as AVCaptureInput)
+        } else {
+            self.disableConnectingCaptureDevice()
+            return
         }
         
         if self.captureSession.canAddOutput(self.videoStillImageOutput) {
             self.captureSession.addOutput(self.videoStillImageOutput)
+        } else {
+            self.disableConnectingCaptureDevice()
+            return
         }
         
         if self.captureSession.canAddOutput(self.videoMovieFileOutput) {
             self.captureSession.addOutput(self.videoMovieFileOutput)
+        } else {
+            self.disableConnectingCaptureDevice()
+            return
         }
         
         
@@ -178,6 +134,9 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
 
         if self.captureSession.canAddInput(audioInput) {
             self.captureSession.addInput(audioInput)
+        } else {
+            self.disableConnectingCaptureDevice()
+            return
         }
         
         // AVCaptureSessionPreset1280x720
@@ -196,12 +155,77 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         // start
         self.captureSession.startRunning()
         
-        //-------------------------------------------------
-        // 許可するドラッグタイプを設定
+        // setting drag type allowed
         let types = [NSImage.imageTypes().first!, NSFilenamesPboardType]
         self.tableView.registerForDraggedTypes(types)
         self.tableView.setDraggingSourceOperationMask(NSDragOperation.Every, forLocal: false)
         
+
+        self.initDefaultSettings()
+        
+        self.initCountDown()
+        
+
+    }
+    
+    func disableConnectingCaptureDevice() {
+        self.backgroundView.hidden = true
+        self.disableConnectingCaptureDeviceImageView.hidden = false
+    }
+
+    func initDefaultSettings() {
+
+        self.timeInterval = NSUserDefaults.standardUserDefaults().integerForKey("TIMEINTERVAL")
+        if self.timeInterval < 1 {
+            self.timeInterval = 10
+            NSUserDefaults.standardUserDefaults().setInteger(self.timeInterval, forKey: "TIMEINTERVAL")
+        }
+        
+        self.screenResolution = NSUserDefaults.standardUserDefaults().integerForKey("SCREENRESOLUTION")
+        
+        NSUserDefaults.standardUserDefaults().setInteger(self.screenResolution, forKey: "SCREENRESOLUTION")
+        print("self.screenResolution = \(self.screenResolution)")
+        
+        self.resourceType = NSUserDefaults.standardUserDefaults().integerForKey("RESOURCETYPE")
+
+    }
+    
+    func initCountDown() {
+
+        // TimeInterval
+        _ = Observable<Int>.interval(1.0, scheduler: MainScheduler.instance)
+            .observeOn(MainScheduler.instance)
+            .subscribe({ event in
+                
+                self.countDownLabel.stringValue = String(self.timeInterval)
+                
+            })
+            .addDisposableTo(disposeBag)
+        
+        //-------------------------------------------------
+        // CountDownLabel
+        self.countDownLabel.rx_observe(String.self, "stringValue")
+            .subscribe({ (string) -> Void in
+                
+                if self.timeInterval > 0 {
+                    
+                    self.timeInterval--
+                    
+                } else if (self.timeInterval == 0) {
+                    
+                    self.timeInterval = NSUserDefaults.standardUserDefaults().integerForKey("TIMEINTERVAL")
+                    
+                    if self.resourceType == ResourceType.Image.rawValue {
+                        self.pushButtonCaptureImage(nil)
+                    } else {
+                        self.captureMovie(nil)
+                    }
+                    
+                    
+                }
+                
+            })
+            .addDisposableTo(disposeBag)
 
     }
     

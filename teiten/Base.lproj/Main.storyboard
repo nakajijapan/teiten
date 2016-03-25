@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -813,6 +813,10 @@ IA
                                     <constraint firstItem="lpA-yo-vDV" firstAttribute="leading" secondItem="r2y-VN-eUU" secondAttribute="leading" constant="20" id="tNL-Wu-3He"/>
                                 </constraints>
                             </customView>
+                            <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xsj-sq-81z">
+                                <rect key="frame" x="253" y="113" width="134" height="134"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="disable_camera_access" id="l42-0F-iJx"/>
+                            </imageView>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="r2y-VN-eUU" secondAttribute="bottom" id="2G4-el-Uqw"/>
@@ -824,6 +828,7 @@ IA
                     <connections>
                         <outlet property="backgroundView" destination="r2y-VN-eUU" id="MEM-SI-AfI"/>
                         <outlet property="countDownLabel" destination="ipJ-gg-UzT" id="Fwe-C8-pcx"/>
+                        <outlet property="disableConnectingCaptureDeviceImageView" destination="Xsj-sq-81z" id="8Hz-Y3-Jin"/>
                         <outlet property="indicator" destination="64G-bQ-o5Y" id="8go-PY-ynM"/>
                         <outlet property="tableView" destination="izS-Mu-zrJ" id="6we-VE-xn6"/>
                     </connections>
@@ -979,5 +984,6 @@ IA
         <image name="button_capture_image" width="32" height="32"/>
         <image name="button_setting" width="32" height="32"/>
         <image name="button_video" width="32" height="32"/>
+        <image name="disable_camera_access" width="64" height="64"/>
     </resources>
 </document>
