@@ -207,7 +207,7 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
                 
                 if self.timeInterval > 0 {
                     
-                    self.timeInterval--
+                    self.timeInterval -= 1
                     
                 } else if (self.timeInterval == 0) {
                     
@@ -406,7 +406,7 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
     
     // add Object
     func movieMakerDidAddObject(current: Int, total: Int) {
-        let nst = NSThread(target:self, selector:"countOne:", object:["current": current, "total": total])
+        let nst = NSThread(target:self, selector:#selector(CaptureViewController.countOne(_:)), object:["current": current, "total": total])
         nst.start()
     }
     

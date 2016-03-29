@@ -71,7 +71,7 @@ class MovieMakerWithImages: NSObject {
     
     func writeImagesAsMovie(toPath path:String, success: (() -> Void)) {
         
-        print("writeImagesAsMovie \(__LINE__) path = file://\(path)")
+        print("writeImagesAsMovie \(#line) path = file://\(path)")
         let images = self.files
         
         // delete file if file already exists
@@ -149,7 +149,7 @@ class MovieMakerWithImages: NSObject {
         
         for nsImage in images {
             
-            print("writeImagesAsMovie \(__LINE__) - \(adaptor.assetWriterInput.readyForMoreMediaData)")
+            print("writeImagesAsMovie \(#line) - \(adaptor.assetWriterInput.readyForMoreMediaData)")
             
             if adaptor.assetWriterInput.readyForMoreMediaData {
                 
@@ -166,10 +166,10 @@ class MovieMakerWithImages: NSObject {
                 }
                 
                 
-                frameCount++
+                frameCount += 1
                 
                 self.delegate?.movieMakerDidAddObject(current, total: images.count)
-                current++
+                current += 1
                 
             }
             

@@ -46,17 +46,17 @@ class FileEntity: NSObject, NSPasteboardWriting {
     // MARK: - NSPasteboardWriting
     
     func writableTypesForPasteboard(pasteboard: NSPasteboard) -> [String] {
-        print("\(__FUNCTION__) \(__LINE__) \(self.fileURL.writableTypesForPasteboard(pasteboard))")
+        print("\(#function) \(#line) \(self.fileURL.writableTypesForPasteboard(pasteboard))")
         return self.fileURL.writableTypesForPasteboard(pasteboard)
     }
     
     func pasteboardPropertyListForType(type: String) -> AnyObject? {
-        print("\(__FUNCTION__) \(__LINE__) \(type) : \(self.fileURL.pasteboardPropertyListForType(type))")
+        print("\(#function) \(#line) \(type) : \(self.fileURL.pasteboardPropertyListForType(type))")
         return self.fileURL.pasteboardPropertyListForType(type)
     }
     
     func writinOptionsForType(type: String!, pasteboard: NSPasteboard!) -> NSPasteboardWritingOptions {
-        print("\(__FUNCTION__) \(__LINE__) \(type)")
+        print("\(#function) \(#line) \(type)")
         return self.fileURL.writingOptionsForType(type, pasteboard: pasteboard)
     }
 }
