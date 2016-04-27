@@ -83,16 +83,28 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         } catch let error as NSError {
             print("failed to make directory error: \(error.description)")
         }
+
+        // Default Setting
+        self.initDefaultSettings()
         
-        
-        // subscribe NSUserDefaults
+        // Subscribe NSUserDefaults
         self.initSubscribeNSuserDefaults()
         
         // AVCaptureDevice
-        let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
-        
+        guard let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo) else {
+            self.disableConnectingCaptureDevice()
+            return
+        }
+
         // Image
-        let videoInput = try! AVCaptureDeviceInput(device: device)
+        let videoInput:AVCaptureDeviceInput
+        do {
+            videoInput = try AVCaptureDeviceInput(device: device)
+        } catch _ {
+            self.disableConnectingCaptureDevice()
+            return
+        }
+
         self.videoStillImageOutput = AVCaptureStillImageOutput()
         
         // Movie
@@ -160,7 +172,6 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         self.tableView.setDraggingSourceOperationMask(NSDragOperation.Every, forLocal: false)
         
 
-        self.initDefaultSettings()
         
         self.initCountDown()
         
@@ -183,7 +194,6 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         self.screenResolution = NSUserDefaults.standardUserDefaults().integerForKey("SCREENRESOLUTION")
         
         NSUserDefaults.standardUserDefaults().setInteger(self.screenResolution, forKey: "SCREENRESOLUTION")
-        print("self.screenResolution = \(self.screenResolution)")
         
         self.resourceType = NSUserDefaults.standardUserDefaults().integerForKey("RESOURCETYPE")
 
@@ -234,7 +244,9 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
             .rx_observe(Int.self, "TIMEINTERVAL")
             .subscribeNext({ (value) -> Void in
                 
-                self.timeInterval = value!
+                if value != nil {
+                    self.timeInterval = value!
+                }
                 
             }).addDisposableTo(disposeBag)
         
@@ -242,7 +254,9 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
             .rx_observe(Int.self, "SCREENRESOLUTION")
             .subscribeNext({ (value) -> Void in
 
-                self.screenResolution = value!
+                if value != nil {
+                    self.screenResolution = value!
+                }
 
             })
             .addDisposableTo(disposeBag)
@@ -251,7 +265,9 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
             .rx_observe(Int.self, "RESOURCETYPE")
             .subscribeNext({ (value) -> Void in
                 
-                self.resourceType = value!
+                if value != nil {
+                    self.resourceType = value!
+                }
 
             })
             .addDisposableTo(disposeBag)
