@@ -24,16 +24,4 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
     
-    
-    // MARK: - Actions
-    
-    @IBAction func didTapMenuButtonOpenImagesFinder(sender: NSMenuItem) {
-        let url = NSURL(string: "file://\(kAppHomePath)/images")!
-        NSWorkspace.sharedWorkspace().openURL(url)
-    }
-    @IBAction func didTapMenuButtonOpenMoviesFinder(sender: AnyObject) {
-        let url = NSURL(string: "file://\(kAppHomePath)/videos")!
-        NSWorkspace.sharedWorkspace().openURL(url)
-
-    }
 }
