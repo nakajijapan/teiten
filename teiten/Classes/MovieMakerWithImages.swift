@@ -16,20 +16,26 @@ protocol MovieMakerWithImagesDelegate {
     func movieMakerDidAddObject(current: Int, total: Int)
 }
 
-class MovieMakerWithImages: NSObject {
+class MovieMakerWithImages: NSObject, MovieCreatable, FileOperatable, FileDeletable {
+    
+    // FileOperatable
+    var baseDirectoryPath = "\(kAppHomePath)/images"
+    
+    // MovieCreatable
+    var size = NSSize()
+    var files = [NSImage]()
     
     var delegate:MovieMakerWithImagesDelegate?
-    var size:NSSize!
-    var files:[NSImage] = []
+
     
     override init() {
         super.init()
-        self.setImageInfo()
+        self.initImageInfo()
     }
     
     //MARK: - File Util
     
-    func setImageInfo() {
+    func initImageInfo() {
         
         // get home directory path
         let homeDir = "\(kAppHomePath)/images"
@@ -47,24 +53,6 @@ class MovieMakerWithImages: NSObject {
             self.files.append(image)
         }
         
-    }
-    
-    func deleteFiles() {
-        
-        // get home directory path
-        let homeDir = "\(kAppHomePath)/images"
-        let fileManager = NSFileManager.defaultManager()
-        let list:Array = try! fileManager.contentsOfDirectoryAtPath(homeDir)
-        
-        for path in list {
-            
-            do {
-                try fileManager.removeItemAtPath("\(homeDir)/\(path)")
-            } catch let error as NSError {
-                print("failed to remove file: \(error.description)");
-            }
-            
-        }
     }
     
     //MARK: - movie
@@ -182,7 +170,7 @@ class MovieMakerWithImages: NSObject {
             print("Finish writing")
             
             // delete images that use in generating movie
-            self.deleteFiles()
+            self.removeFiles()
             
             success()
         }
