@@ -13,20 +13,17 @@ import CoreVideo
 import CoreGraphics
 import NKJMovieComposer
 
-protocol MovieMakerWithMoviesDelegate {
-    func movieMakerDidAddObject(current: Int, total: Int)
-}
-
 class MovieMakerWithMovies: NSObject, MovieCreatable, FileOperatable, FileDeletable {
 
     // FileOperatable
     var baseDirectoryPath = "\(kAppHomePath)/videos"
     
     // MovieCreatable
+    typealias FileListType = String
     var size = NSSize()
-    var files = [String]()
+    var files = [FileListType]()
+    var delegate:MovieMakerDelegate?
 
-    var delegate:MovieMakerWithMoviesDelegate?
     var dates = [NSDate]()
     
     

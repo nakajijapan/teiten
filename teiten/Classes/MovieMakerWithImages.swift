@@ -12,21 +12,16 @@ import CoreVideo
 import CoreGraphics
 import Foundation
 
-protocol MovieMakerWithImagesDelegate {
-    func movieMakerDidAddObject(current: Int, total: Int)
-}
-
 class MovieMakerWithImages: NSObject, MovieCreatable, FileOperatable, FileDeletable {
     
     // FileOperatable
     var baseDirectoryPath = "\(kAppHomePath)/images"
     
     // MovieCreatable
+    typealias FileListType = NSImage
     var size = NSSize()
-    var files = [NSImage]()
-    
-    var delegate:MovieMakerWithImagesDelegate?
-
+    var files = [FileListType]()
+    var delegate:MovieMakerDelegate?
     
     override init() {
         super.init()

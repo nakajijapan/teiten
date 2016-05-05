@@ -8,15 +8,17 @@
 
 import Foundation
 
+protocol MovieMakerDelegate {
+    func movieMakerDidAddObject(current: Int, total: Int)
+}
 
 protocol MovieCreatable {
     associatedtype FileListType
     var size:NSSize { get set }
     var files:[FileListType] { get set }
+    var delegate:MovieMakerDelegate? { get set }
+
     
     func generateMovie(composedMoviePath:String, success: (() -> Void)) -> Void
 }
 
-extension MovieCreatable {
-    
-}
