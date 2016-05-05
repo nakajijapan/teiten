@@ -35,14 +35,12 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileOperatable, FileDeleta
         self.initMovieInfo()
     }
     
-    // MARK: - File Util
+    // MARK: - File 
     
     func initMovieInfo() {
         
-        // get home directory path
-        let homeDir = "\(kAppHomePath)/videos"
         let fileManager = NSFileManager.defaultManager()
-        let paths = try! fileManager.contentsOfDirectoryAtPath(homeDir)
+        let paths = try! fileManager.contentsOfDirectoryAtPath(self.baseDirectoryPath)
         
         for path in paths {
             
@@ -51,12 +49,12 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileOperatable, FileDeleta
             }
            
             // Creation Date
-            let attributes = try! NSFileManager.defaultManager().attributesOfItemAtPath("\(homeDir)/\(path)")
+            let attributes = try! NSFileManager.defaultManager().attributesOfItemAtPath("\(self.baseDirectoryPath)/\(path)")
             let createDateStirng = attributes[NSFileCreationDate] as! NSDate
             self.dates.append(createDateStirng)
             
             // File Path
-            self.files.append("\(homeDir)/\(path)")
+            self.files.append("\(self.baseDirectoryPath)/\(path)")
         }
         
     }

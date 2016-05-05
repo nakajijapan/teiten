@@ -33,23 +33,21 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileOperatable, FileDeleta
         self.initImageInfo()
     }
     
-    //MARK: - File Util
+    //MARK: - File 
     
     func initImageInfo() {
         
-        // get home directory path
-        let homeDir = "\(kAppHomePath)/images"
         let fileManager = NSFileManager.defaultManager()
-        let list:Array = try! fileManager.contentsOfDirectoryAtPath(homeDir)
+        let list:Array = try! fileManager.contentsOfDirectoryAtPath(self.baseDirectoryPath)
 
         for path in list {
-            print("path = \(homeDir)/\(path)")
+            print("path = \(self.baseDirectoryPath)/\(path)")
             
             if path.hasSuffix("DS_Store") {
                 continue
             }
             
-            let image = NSImage(contentsOfFile: "\(homeDir)/\(path)")!
+            let image = NSImage(contentsOfFile: "\(self.baseDirectoryPath)/\(path)")!
             self.files.append(image)
         }
         
