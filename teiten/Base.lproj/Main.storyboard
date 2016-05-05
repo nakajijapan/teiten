@@ -100,22 +100,29 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="Edit" id="5QF-Oa-p0T">
+                            <menuItem title="Command" id="jp2-5k-gdE" userLabel="Command">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Edit" id="W48-6f-4Dl">
+                                <menu key="submenu" title="Command" id="PZ9-Pj-juH">
                                     <items>
-                                        <menuItem title="Undo" keyEquivalent="z" id="dRJ-4n-Yzg">
+                                        <menuItem title="Capture Image" keyEquivalent=" " id="BIR-0T-lOI">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="undo:" target="Ady-hI-5gd" id="M6e-cu-g7V"/>
+                                                <action selector="captureImageMenuItemDidSelect:" target="Voe-Tx-rLC" id="dXY-iF-cJe"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Redo" state="on" keyEquivalent="Z" id="6dh-zS-Vam">
+                                        <menuItem isSeparatorItem="YES" id="ASB-1J-u5I"/>
+                                        <menuItem title="Create Movie" keyEquivalent="c" id="iFb-9I-o8g">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="redo:" target="Ady-hI-5gd" id="oIA-Rs-6OD"/>
+                                                <action selector="createMovieMenuItemDidSelect:" target="Voe-Tx-rLC" id="SeE-bi-tcI"/>
                                             </connections>
                                         </menuItem>
                                     </items>
                                 </menu>
+                            </menuItem>
+                            <menuItem title="Edit" id="5QF-Oa-p0T">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Edit" id="W48-6f-4Dl"/>
                             </menuItem>
                             <menuItem title="Window" id="aUF-d1-5bR">
                                 <modifierMask key="keyEquivalentModifierMask"/>
@@ -173,7 +180,7 @@
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="640" height="360"/>
-                        <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
                         <value key="minSize" type="size" width="640" height="360"/>
                         <value key="maxSize" type="size" width="640" height="360"/>
                     </window>

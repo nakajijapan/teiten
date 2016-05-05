@@ -24,4 +24,33 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
     
+    
+    @IBAction func captureImageMenuItemDidSelect(sender: AnyObject) {
+        
+        guard let mainWindow = NSApplication.sharedApplication().mainWindow else {
+            return
+        }
+        
+        guard let captureViewController = mainWindow.contentViewController as? CaptureViewController else {
+            return
+        }
+
+        captureViewController.captureImage()
+    }
+    
+    
+    @IBAction func createMovieMenuItemDidSelect(sender: AnyObject) {
+        
+        guard let mainWindow = NSApplication.sharedApplication().mainWindow else {
+            return
+        }
+        
+        guard let captureViewController = mainWindow.contentViewController as? CaptureViewController else {
+            return
+        }
+        
+        captureViewController.createMovie()
+
+    }
+    
 }

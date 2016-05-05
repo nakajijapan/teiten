@@ -19,7 +19,7 @@ import RxBlocking
 let kAppHomePath = "\(NSHomeDirectory())/Teiten"
 let kAppMoviePath = "\(NSHomeDirectory())/Movies/\(NSBundle.mainBundle().bundleIdentifier!)"
 
-class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, MovieMakerWithMoviesDelegate, NSTableViewDataSource, NSTableViewDelegate, AVCaptureFileOutputRecordingDelegate {
+public class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, MovieMakerWithMoviesDelegate, NSTableViewDataSource, NSTableViewDelegate, AVCaptureFileOutputRecordingDelegate {
     
     let disposeBag = DisposeBag()
     
@@ -61,7 +61,7 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
     
     // MARK: - LifeCycle
 
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         
         // make working directory
         let fileManager = NSFileManager.defaultManager()
@@ -273,10 +273,10 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
             .addDisposableTo(disposeBag)
 
     }
-
-    // MARK: - Actions
     
-    @IBAction func pushButtonCaptureImage(sender:AnyObject!) {
+    // MARK: - Actions
+
+    @IBAction func pushButtonCaptureImage(sender:AnyObject?) {
         
         let connection = self.videoStillImageOutput.connections[0] as! AVCaptureConnection
         
@@ -301,6 +301,7 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
             })
             
         })
+
     }
     
     func imageFromSize(sourceImage:NSImage, size:NSSize) -> NSImage! {
@@ -330,7 +331,7 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         
     }
     
-    @IBAction func pushButtonCreateMovie(sender:AnyObject!) {
+    @IBAction public func pushButtonCreateMovie(sender:AnyObject?) {
         
         // save path
         let dateFormatter = NSDateFormatter()
@@ -412,9 +413,19 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         
     }
     
+    // MARK: - Public Methods
+    
+    public func captureImage() {
+        self.pushButtonCaptureImage(nil)
+    }
+    
+    public func createMovie() {
+        self.pushButtonCreateMovie(nil)
+    }
+    
     // MARK: - AVCaptureFileOutputRecordingDelegate
     
-    func captureOutput(captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAtURL outputFileURL: NSURL!, fromConnections connections: [AnyObject]!, error: NSError!) {
+    public func captureOutput(captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAtURL outputFileURL: NSURL!, fromConnections connections: [AnyObject]!, error: NSError!) {
         print("Saved: \(outputFileURL)")
     }
     
@@ -435,11 +446,11 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
     
     // MARK: - NSTableView data source
     
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+    public func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
+    public func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let view = tableView.makeViewWithIdentifier("imageCell", owner: self)
         let imageView = view!.viewWithTag(1) as! NSImageView
         imageView.image = self.entity.image
@@ -447,13 +458,13 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         return view
     }
     
-    func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+    public func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         return 80
     }
     
     // MARK: - Drag
     
-    func tableView(tableView: NSTableView, pasteboardWriterForRow row: Int) -> NSPasteboardWriting? {
+    public func tableView(tableView: NSTableView, pasteboardWriterForRow row: Int) -> NSPasteboardWriting? {
         return self.entity
     }
     
