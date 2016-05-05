@@ -74,6 +74,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
         
+        // Alert
+        let alert = NSAlert()
+        alert.alertStyle = NSAlertStyle.InformationalAlertStyle
+        alert.messageText = "Complete!!"
+        alert.informativeText = "finished clearing cache"
+        alert.runModal()
+        
     }
     
 }
