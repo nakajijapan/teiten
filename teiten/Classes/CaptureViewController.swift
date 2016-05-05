@@ -274,155 +274,6 @@ public class CaptureViewController: NSViewController, MovieMakerWithImagesDelega
 
     }
     
-    // MARK: - Actions
-
-    @IBAction func pushButtonCaptureImage(sender:AnyObject?) {
-        
-        let connection = self.videoStillImageOutput.connections[0] as! AVCaptureConnection
-        
-        self.videoStillImageOutput.captureStillImageAsynchronouslyFromConnection(connection, completionHandler: {(sambleBuffer, erro) -> Void in
-            
-            let data = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sambleBuffer)
-            let tmpImage = NSImage(data: data)!
-            let targetSize = ScreenResolution(rawValue: self.screenResolution)!.toSize()
-            let image = self.imageFromSize(tmpImage, size: targetSize)
-            
-            // convert to jpeg for writing file
-            let data2 = image.TIFFRepresentation
-            let bitmapImageRep = NSBitmapImageRep.imageRepsWithData(data2!)[0] as! NSBitmapImageRep
-            let properties = [NSImageInterlaced: NSNumber(bool: true)]
-            let resizedData:NSData? = bitmapImageRep.representationUsingType(NSBitmapImageFileType.NSJPEGFileType, properties: properties)
-            
-            // reload table
-            self.entity.loadImage(image, data: resizedData!)
-            
-            dispatch_async(dispatch_get_main_queue(), {() -> Void in
-                self.tableView.reloadData()
-            })
-            
-        })
-
-    }
-    
-    func imageFromSize(sourceImage:NSImage, size:NSSize) -> NSImage! {
-        
-        // extract NSBitmapImageRep from sourceImage, and take out CGImage
-        let image = NSBitmapImageRep(data: sourceImage.TIFFRepresentation!)?.CGImage!
-        
-        // generate new bitmap size
-        let width  = Int(size.width)
-        let height = Int(size.height)
-        let bitsPerComponent = Int(8)
-        let bytesPerRow = Int(4) * width
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let bitmapInfo = CGImageAlphaInfo.PremultipliedLast.rawValue
-        let bitmapContext = CGBitmapContextCreate(nil, width, height, bitsPerComponent, bytesPerRow, colorSpace, bitmapInfo)!
-        
-        // write source image to bitmap
-        let bitmapRect = NSMakeRect(0.0, 0.0, size.width, size.height)
-        
-        CGContextDrawImage(bitmapContext, bitmapRect, image)
-        
-        // convert NSImage to bitmap
-        let newImageRef = CGBitmapContextCreateImage(bitmapContext)!
-        let newImage = NSImage(CGImage: newImageRef, size: size)
-        
-        return newImage
-        
-    }
-    
-    @IBAction public func pushButtonCreateMovie(sender:AnyObject?) {
-        
-        // save path
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd"
-        let date = NSDate()
-        let path = "\(kAppMoviePath)/\(dateFormatter.stringFromDate(date)).mov"
-        
-        if self.resourceType == ResourceType.Image.rawValue {
-            
-            self.indicatorStart()
-
-            let movieMaker = MovieMakerWithImages()
-            movieMaker.delegate = self
-            movieMaker.size = ScreenResolution(rawValue: self.screenResolution)?.toSize()
-            movieMaker.writeImagesAsMovie(toPath: path) { () -> Void in
-                
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    
-                    self.indicatorStop()
-
-                })
-                
-            }
-            
-        } else {
-            
-            self.indicatorStart()
-            
-            let movieMaker = MovieMakerWithMovies()
-            movieMaker.delegate = self
-            movieMaker.size = ScreenResolution(rawValue: self.screenResolution)?.toSize()
-            movieMaker.composeMovies(path, success: { () -> Void in
-                
-                self.indicatorStop()
-
-            })
-
-        }
-        
-    }
-    
-    func indicatorStart() {
-        self.indicator.hidden = false
-        self.indicator.doubleValue = 0
-        self.indicator.startAnimation(self.indicator)
-    }
-    
-    func indicatorStop() {
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            
-            // Indicator Stop
-            self.indicator.doubleValue = 100.0
-            self.indicator.stopAnimation(self.indicator)
-            self.indicator.hidden = true
-            
-            // Alert
-            let alert = NSAlert()
-            alert.alertStyle = NSAlertStyle.InformationalAlertStyle
-            alert.messageText = "Complete!!"
-            alert.informativeText = "finished generating movie"
-            alert.runModal()
-        })
-    }
-    
-    func captureMovie(sender:AnyObject!) {
-        
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyyMMddHHmmss"
-        let dateString = dateFormatter.stringFromDate(NSDate())
-        let pathString = "\(kAppHomePath)/videos/\(dateString).mov"
-        let schemePathString = "file://\(pathString)"
-
-        if NSFileManager.defaultManager().fileExistsAtPath(pathString) {
-            try! NSFileManager.defaultManager().removeItemAtPath(pathString)
-        }
-        
-        // start recording
-        self.videoMovieFileOutput.startRecordingToOutputFileURL(NSURL(string: schemePathString), recordingDelegate: self)
-        
-    }
-    
-    // MARK: - Public Methods
-    
-    public func captureImage() {
-        self.pushButtonCaptureImage(nil)
-    }
-    
-    public func createMovie() {
-        self.pushButtonCreateMovie(nil)
-    }
-    
     // MARK: - AVCaptureFileOutputRecordingDelegate
     
     public func captureOutput(captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAtURL outputFileURL: NSURL!, fromConnections connections: [AnyObject]!, error: NSError!) {
@@ -468,4 +319,155 @@ public class CaptureViewController: NSViewController, MovieMakerWithImagesDelega
         return self.entity
     }
     
+    // MARK: - Actions
+    
+    @IBAction func pushButtonCaptureImage(sender:AnyObject?) {
+        self.captureImage()
+    }
+    
+    @IBAction public func pushButtonCreateMovie(sender:AnyObject?) {
+        self.createMovie()
+    }
+    
+    
+    // MARK: - Public Methods
+    
+    public func captureImage() {
+        
+        let connection = self.videoStillImageOutput.connections[0] as! AVCaptureConnection
+        
+        self.videoStillImageOutput.captureStillImageAsynchronouslyFromConnection(connection, completionHandler: {(sambleBuffer, erro) -> Void in
+            
+            let data = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sambleBuffer)
+            let tmpImage = NSImage(data: data)!
+            let targetSize = ScreenResolution(rawValue: self.screenResolution)!.toSize()
+            let image = self.imageFromSize(tmpImage, size: targetSize)
+            
+            // convert to jpeg for writing file
+            let data2 = image.TIFFRepresentation
+            let bitmapImageRep = NSBitmapImageRep.imageRepsWithData(data2!)[0] as! NSBitmapImageRep
+            let properties = [NSImageInterlaced: NSNumber(bool: true)]
+            let resizedData:NSData? = bitmapImageRep.representationUsingType(NSBitmapImageFileType.NSJPEGFileType, properties: properties)
+            
+            // reload table
+            self.entity.loadImage(image, data: resizedData!)
+            
+            dispatch_async(dispatch_get_main_queue(), {() -> Void in
+                self.tableView.reloadData()
+            })
+            
+        })
+        
+    }
+    
+    public func createMovie() {
+        
+        // save path
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd"
+        let date = NSDate()
+        let path = "\(kAppMoviePath)/\(dateFormatter.stringFromDate(date)).mov"
+        
+        if self.resourceType == ResourceType.Image.rawValue {
+            
+            self.indicatorStart()
+            
+            let movieMaker = MovieMakerWithImages()
+            movieMaker.delegate = self
+            movieMaker.size = ScreenResolution(rawValue: self.screenResolution)?.toSize()
+            movieMaker.writeImagesAsMovie(toPath: path) { () -> Void in
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    
+                    self.indicatorStop()
+                    
+                })
+                
+            }
+            
+        } else {
+            
+            self.indicatorStart()
+            
+            let movieMaker = MovieMakerWithMovies()
+            movieMaker.delegate = self
+            movieMaker.size = ScreenResolution(rawValue: self.screenResolution)?.toSize()
+            movieMaker.composeMovies(path, success: { () -> Void in
+                
+                self.indicatorStop()
+                
+            })
+            
+        }
+        
+    }
+    
+    // MARK: - Private Methods
+
+    func imageFromSize(sourceImage:NSImage, size:NSSize) -> NSImage! {
+        
+        // extract NSBitmapImageRep from sourceImage, and take out CGImage
+        let image = NSBitmapImageRep(data: sourceImage.TIFFRepresentation!)?.CGImage!
+        
+        // generate new bitmap size
+        let width  = Int(size.width)
+        let height = Int(size.height)
+        let bitsPerComponent = Int(8)
+        let bytesPerRow = Int(4) * width
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let bitmapInfo = CGImageAlphaInfo.PremultipliedLast.rawValue
+        let bitmapContext = CGBitmapContextCreate(nil, width, height, bitsPerComponent, bytesPerRow, colorSpace, bitmapInfo)!
+        
+        // write source image to bitmap
+        let bitmapRect = NSMakeRect(0.0, 0.0, size.width, size.height)
+        
+        CGContextDrawImage(bitmapContext, bitmapRect, image)
+        
+        // convert NSImage to bitmap
+        let newImageRef = CGBitmapContextCreateImage(bitmapContext)!
+        let newImage = NSImage(CGImage: newImageRef, size: size)
+        
+        return newImage
+        
+    }
+    
+    func indicatorStart() {
+        self.indicator.hidden = false
+        self.indicator.doubleValue = 0
+        self.indicator.startAnimation(self.indicator)
+    }
+    
+    func indicatorStop() {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            
+            // Indicator Stop
+            self.indicator.doubleValue = 100.0
+            self.indicator.stopAnimation(self.indicator)
+            self.indicator.hidden = true
+            
+            // Alert
+            let alert = NSAlert()
+            alert.alertStyle = NSAlertStyle.InformationalAlertStyle
+            alert.messageText = "Complete!!"
+            alert.informativeText = "finished generating movie"
+            alert.runModal()
+        })
+    }
+    
+    func captureMovie(sender:AnyObject!) {
+        
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyyMMddHHmmss"
+        let dateString = dateFormatter.stringFromDate(NSDate())
+        let pathString = "\(kAppHomePath)/videos/\(dateString).mov"
+        let schemePathString = "file://\(pathString)"
+        
+        if NSFileManager.defaultManager().fileExistsAtPath(pathString) {
+            try! NSFileManager.defaultManager().removeItemAtPath(pathString)
+        }
+        
+        // start recording
+        self.videoMovieFileOutput.startRecordingToOutputFileURL(NSURL(string: schemePathString), recordingDelegate: self)
+        
+    }
 }
