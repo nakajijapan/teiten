@@ -13,6 +13,8 @@ protocol MovieCreatable {
     associatedtype FileListType
     var size:NSSize { get set }
     var files:[FileListType] { get set }
+    
+    func generateMovie(composedMoviePath:String, success: (() -> Void)) -> Void
 }
 
 extension MovieCreatable {

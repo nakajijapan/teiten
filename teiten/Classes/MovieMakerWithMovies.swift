@@ -61,7 +61,7 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileOperatable, FileDeleta
     
     //MARK: - movie
     
-    func composeMovies(composedMoviePath:String, success: (() -> Void)) {
+    func generateMovie(composedMoviePath:String, success: (() -> Void)) {
         
         // delete file if file already exists
         let fileManager = NSFileManager.defaultManager();

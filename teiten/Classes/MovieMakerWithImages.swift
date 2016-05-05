@@ -55,17 +55,17 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileOperatable, FileDeleta
     
     //MARK: - movie
     
-    func writeImagesAsMovie(toPath path:String, success: (() -> Void)) {
+    func generateMovie(composedMoviePath:String, success: (() -> Void)) {
         
-        print("writeImagesAsMovie \(#line) path = file://\(path)")
+        print("writeImagesAsMovie \(#line) path = file://\(composedMoviePath)")
         let images = self.files
         
         // delete file if file already exists
         let fileManager = NSFileManager.defaultManager();
-        if fileManager.fileExistsAtPath(path) {
+        if fileManager.fileExistsAtPath(composedMoviePath) {
             
             do {
-                try fileManager.removeItemAtPath(path)
+                try fileManager.removeItemAtPath(composedMoviePath)
             } catch let error as NSError {
                 print("failed to make directory: \(error.description)");
             }
@@ -73,7 +73,7 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileOperatable, FileDeleta
         }
         
         // Target Saving File
-        let url = NSURL(fileURLWithPath: "\(path)")
+        let url = NSURL(fileURLWithPath: "\(composedMoviePath)")
         
         var videoWriter: AVAssetWriter!
         do {
