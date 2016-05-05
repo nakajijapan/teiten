@@ -224,7 +224,7 @@ public class CaptureViewController: NSViewController, MovieMakerWithImagesDelega
                     self.timeInterval = NSUserDefaults.standardUserDefaults().integerForKey("TIMEINTERVAL")
                     
                     if self.resourceType == ResourceType.Image.rawValue {
-                        self.pushButtonCaptureImage(nil)
+                        self.captureImage()
                     } else {
                         self.captureMovie(nil)
                     }
@@ -321,15 +321,15 @@ public class CaptureViewController: NSViewController, MovieMakerWithImagesDelega
     
     // MARK: - Actions
     
-    @IBAction func pushButtonCaptureImage(sender:AnyObject?) {
+    @IBAction func captureImageButtonDidClick(sender:AnyObject?) {
         self.captureImage()
     }
     
-    @IBAction public func pushButtonCreateMovie(sender:AnyObject?) {
+    @IBAction func createMovieButtonDidClick(sender:AnyObject?) {
         self.createMovie()
     }
-    
-    
+
+
     // MARK: - Public Methods
     
     public func captureImage() {

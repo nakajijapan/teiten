@@ -213,7 +213,7 @@ IA
 </string>
                                         </buttonCell>
                                         <connections>
-                                            <action selector="pushButtonCaptureImage:" target="XfG-lQ-9wD" id="TzI-f9-K65"/>
+                                            <action selector="captureImageButtonDidClick:" target="XfG-lQ-9wD" id="k2Z-G0-18z"/>
                                         </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fHt-GO-qbh">
@@ -224,7 +224,7 @@ IA
                                             <string key="keyEquivalent">c</string>
                                         </buttonCell>
                                         <connections>
-                                            <action selector="pushButtonCreateMovie:" target="XfG-lQ-9wD" id="x3l-nX-gcK"/>
+                                            <action selector="createMovieButtonDidClick:" target="XfG-lQ-9wD" id="P9t-fx-Xfg"/>
                                         </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mqn-pt-KAh">
