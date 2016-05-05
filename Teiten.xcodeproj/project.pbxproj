@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0FC1CBB0448D4738615C5F21 /* Pods_TeitenTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B71CF7EA64DFEAE829520CE /* Pods_TeitenTests.framework */; };
 		8D88AFD7DE5A90A84F23A9EF /* Pods_Teiten.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5EEADF257574E353AA85507 /* Pods_Teiten.framework */; };
+		DC8661F71CDBA9050031A6F5 /* FileOperatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8661F61CDBA9050031A6F5 /* FileOperatable.swift */; };
 		DCB414C41C6F4125009B077D /* Scheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB414C31C6F4125009B077D /* Scheduler.swift */; };
 		DCB53F631A88CFC100FA3B10 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB53F621A88CFC100FA3B10 /* AppDelegate.swift */; };
 		DCB53F671A88CFC100FA3B10 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCB53F661A88CFC100FA3B10 /* Images.xcassets */; };
@@ -43,6 +44,7 @@
 		B50FFD433D06CBF7D8ECCA46 /* Pods-Teiten.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Teiten.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Teiten/Pods-Teiten.debug.xcconfig"; sourceTree = "<group>"; };
 		CBD08C60EE954D6A857CC5F6 /* Pods-TeitenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TeitenTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TeitenTests/Pods-TeitenTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D5EEADF257574E353AA85507 /* Pods_Teiten.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Teiten.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC8661F61CDBA9050031A6F5 /* FileOperatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileOperatable.swift; sourceTree = "<group>"; };
 		DCB414C31C6F4125009B077D /* Scheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scheduler.swift; sourceTree = "<group>"; };
 		DCB53F5D1A88CFC100FA3B10 /* Teiten.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Teiten.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCB53F611A88CFC100FA3B10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 				DCF928BD1BBC381F00C40621 /* MovieMakerWithMovies.swift */,
 				DCB53F841A88D03300FA3B10 /* SettingViewController.swift */,
 				DCB414C31C6F4125009B077D /* Scheduler.swift */,
+				DC8661F61CDBA9050031A6F5 /* FileOperatable.swift */,
 			);
 			name = Classes;
 			path = teiten/Classes;
@@ -402,6 +405,7 @@
 				DCB53F871A88D03300FA3B10 /* MovieMakerWithImages.swift in Sources */,
 				DCB53F851A88D03300FA3B10 /* CaptureViewController.swift in Sources */,
 				DCB53F891A88D03300FA3B10 /* SettingViewController.swift in Sources */,
+				DC8661F71CDBA9050031A6F5 /* FileOperatable.swift in Sources */,
 				DCB53F631A88CFC100FA3B10 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
