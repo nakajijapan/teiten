@@ -19,7 +19,7 @@ import RxBlocking
 let kAppHomePath = "\(NSHomeDirectory())/Teiten"
 let kAppMoviePath = "\(NSHomeDirectory())/Movies/\(NSBundle.mainBundle().bundleIdentifier!)"
 
-class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, MovieMakerWithMoviesDelegate, NSTableViewDataSource, NSTableViewDelegate, AVCaptureFileOutputRecordingDelegate {
+public class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, MovieMakerWithMoviesDelegate, NSTableViewDataSource, NSTableViewDelegate, AVCaptureFileOutputRecordingDelegate {
     
     let disposeBag = DisposeBag()
     
@@ -61,7 +61,7 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
     
     // MARK: - LifeCycle
 
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         
         // make working directory
         let fileManager = NSFileManager.defaultManager()
@@ -224,7 +224,7 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
                     self.timeInterval = NSUserDefaults.standardUserDefaults().integerForKey("TIMEINTERVAL")
                     
                     if self.resourceType == ResourceType.Image.rawValue {
-                        self.pushButtonCaptureImage(nil)
+                        self.captureImage()
                     } else {
                         self.captureMovie(nil)
                     }
@@ -273,10 +273,66 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
             .addDisposableTo(disposeBag)
 
     }
-
+    
+    // MARK: - AVCaptureFileOutputRecordingDelegate
+    
+    public func captureOutput(captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAtURL outputFileURL: NSURL!, fromConnections connections: [AnyObject]!, error: NSError!) {
+        print("Saved: \(outputFileURL)")
+    }
+    
+    // MARK: - MovieMakerDelegate, MovieMakerWithMoviesDelegate
+    
+    // add Object
+    func movieMakerDidAddObject(current: Int, total: Int) {
+        let nst = NSThread(target:self, selector:#selector(CaptureViewController.countOne(_:)), object:["current": current, "total": total])
+        nst.start()
+    }
+    
+    // refrect count number to label
+    func countOne(params: [String:Int]) {
+        let delta = 100.0 / Double(params["total"]!)
+        self.indicator.incrementBy(Double(delta))
+    }
+    
+    
+    // MARK: - NSTableView data source
+    
+    public func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+        return 1
+    }
+    
+    public func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        let view = tableView.makeViewWithIdentifier("imageCell", owner: self)
+        let imageView = view!.viewWithTag(1) as! NSImageView
+        imageView.image = self.entity.image
+        imageView.alphaValue = 0.6
+        return view
+    }
+    
+    public func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+        return 80
+    }
+    
+    // MARK: - Drag
+    
+    public func tableView(tableView: NSTableView, pasteboardWriterForRow row: Int) -> NSPasteboardWriting? {
+        return self.entity
+    }
+    
     // MARK: - Actions
     
-    @IBAction func pushButtonCaptureImage(sender:AnyObject!) {
+    @IBAction func captureImageButtonDidClick(sender:AnyObject?) {
+        self.captureImage()
+    }
+    
+    @IBAction func createMovieButtonDidClick(sender:AnyObject?) {
+        self.createMovie()
+    }
+
+
+    // MARK: - Public Methods
+    
+    public func captureImage() {
         
         let connection = self.videoStillImageOutput.connections[0] as! AVCaptureConnection
         
@@ -301,8 +357,53 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
             })
             
         })
+        
     }
     
+    public func createMovie() {
+        
+        // save path
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd"
+        let date = NSDate()
+        let path = "\(kAppMoviePath)/\(dateFormatter.stringFromDate(date)).mov"
+        
+        if self.resourceType == ResourceType.Image.rawValue {
+            
+            self.indicatorStart()
+            
+            let movieMaker = MovieMakerWithImages()
+            movieMaker.delegate = self
+            movieMaker.size = ScreenResolution(rawValue: self.screenResolution)?.toSize()
+            movieMaker.writeImagesAsMovie(toPath: path) { () -> Void in
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    
+                    self.indicatorStop()
+                    
+                })
+                
+            }
+            
+        } else {
+            
+            self.indicatorStart()
+            
+            let movieMaker = MovieMakerWithMovies()
+            movieMaker.delegate = self
+            movieMaker.size = ScreenResolution(rawValue: self.screenResolution)?.toSize()
+            movieMaker.composeMovies(path, success: { () -> Void in
+                
+                self.indicatorStop()
+                
+            })
+            
+        }
+        
+    }
+    
+    // MARK: - Private Methods
+
     func imageFromSize(sourceImage:NSImage, size:NSSize) -> NSImage! {
         
         // extract NSBitmapImageRep from sourceImage, and take out CGImage
@@ -327,48 +428,6 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         let newImage = NSImage(CGImage: newImageRef, size: size)
         
         return newImage
-        
-    }
-    
-    @IBAction func pushButtonCreateMovie(sender:AnyObject!) {
-        
-        // save path
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd"
-        let date = NSDate()
-        let path = "\(kAppMoviePath)/\(dateFormatter.stringFromDate(date)).mov"
-        
-        if self.resourceType == ResourceType.Image.rawValue {
-            
-            self.indicatorStart()
-
-            let movieMaker = MovieMakerWithImages()
-            movieMaker.delegate = self
-            movieMaker.size = ScreenResolution(rawValue: self.screenResolution)?.toSize()
-            movieMaker.writeImagesAsMovie(toPath: path) { () -> Void in
-                
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    
-                    self.indicatorStop()
-
-                })
-                
-            }
-            
-        } else {
-            
-            self.indicatorStart()
-            
-            let movieMaker = MovieMakerWithMovies()
-            movieMaker.delegate = self
-            movieMaker.size = ScreenResolution(rawValue: self.screenResolution)?.toSize()
-            movieMaker.composeMovies(path, success: { () -> Void in
-                
-                self.indicatorStop()
-
-            })
-
-        }
         
     }
     
@@ -402,7 +461,7 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         let dateString = dateFormatter.stringFromDate(NSDate())
         let pathString = "\(kAppHomePath)/videos/\(dateString).mov"
         let schemePathString = "file://\(pathString)"
-
+        
         if NSFileManager.defaultManager().fileExistsAtPath(pathString) {
             try! NSFileManager.defaultManager().removeItemAtPath(pathString)
         }
@@ -411,50 +470,4 @@ class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, Mov
         self.videoMovieFileOutput.startRecordingToOutputFileURL(NSURL(string: schemePathString), recordingDelegate: self)
         
     }
-    
-    // MARK: - AVCaptureFileOutputRecordingDelegate
-    
-    func captureOutput(captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAtURL outputFileURL: NSURL!, fromConnections connections: [AnyObject]!, error: NSError!) {
-        print("Saved: \(outputFileURL)")
-    }
-    
-    // MARK: - MovieMakerDelegate, MovieMakerWithMoviesDelegate
-    
-    // add Object
-    func movieMakerDidAddObject(current: Int, total: Int) {
-        let nst = NSThread(target:self, selector:#selector(CaptureViewController.countOne(_:)), object:["current": current, "total": total])
-        nst.start()
-    }
-    
-    // refrect count number to label
-    func countOne(params: [String:Int]) {
-        let delta = 100.0 / Double(params["total"]!)
-        self.indicator.incrementBy(Double(delta))
-    }
-    
-    
-    // MARK: - NSTableView data source
-    
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-        return 1
-    }
-    
-    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let view = tableView.makeViewWithIdentifier("imageCell", owner: self)
-        let imageView = view!.viewWithTag(1) as! NSImageView
-        imageView.image = self.entity.image
-        imageView.alphaValue = 0.6
-        return view
-    }
-    
-    func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        return 80
-    }
-    
-    // MARK: - Drag
-    
-    func tableView(tableView: NSTableView, pasteboardWriterForRow row: Int) -> NSPasteboardWriting? {
-        return self.entity
-    }
-    
 }

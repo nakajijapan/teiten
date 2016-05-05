@@ -25,15 +25,32 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     
-    // MARK: - Actions
-    
-    @IBAction func didTapMenuButtonOpenImagesFinder(sender: NSMenuItem) {
-        let url = NSURL(string: "file://\(kAppHomePath)/images")!
-        NSWorkspace.sharedWorkspace().openURL(url)
+    @IBAction func captureImageMenuItemDidSelect(sender: AnyObject) {
+        
+        guard let mainWindow = NSApplication.sharedApplication().mainWindow else {
+            return
+        }
+        
+        guard let captureViewController = mainWindow.contentViewController as? CaptureViewController else {
+            return
+        }
+
+        captureViewController.captureImage()
     }
-    @IBAction func didTapMenuButtonOpenMoviesFinder(sender: AnyObject) {
-        let url = NSURL(string: "file://\(kAppHomePath)/videos")!
-        NSWorkspace.sharedWorkspace().openURL(url)
+    
+    
+    @IBAction func createMovieMenuItemDidSelect(sender: AnyObject) {
+        
+        guard let mainWindow = NSApplication.sharedApplication().mainWindow else {
+            return
+        }
+        
+        guard let captureViewController = mainWindow.contentViewController as? CaptureViewController else {
+            return
+        }
+        
+        captureViewController.createMovie()
 
     }
+    
 }
