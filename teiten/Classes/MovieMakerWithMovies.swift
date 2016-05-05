@@ -35,7 +35,7 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileOperatable, FileDeleta
         self.initMovieInfo()
     }
     
-    // MARK: - File 
+    // MARK: - File
     
     func initMovieInfo() {
         

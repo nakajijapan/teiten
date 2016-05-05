@@ -374,7 +374,7 @@ public class CaptureViewController: NSViewController, MovieMakerWithImagesDelega
             
             let movieMaker = MovieMakerWithImages()
             movieMaker.delegate = self
-            movieMaker.size = ScreenResolution(rawValue: self.screenResolution)?.toSize()
+            movieMaker.size = ScreenResolution(rawValue: self.screenResolution)!.toSize()
             movieMaker.writeImagesAsMovie(toPath: path) { () -> Void in
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -391,7 +391,7 @@ public class CaptureViewController: NSViewController, MovieMakerWithImagesDelega
             
             let movieMaker = MovieMakerWithMovies()
             movieMaker.delegate = self
-            movieMaker.size = ScreenResolution(rawValue: self.screenResolution)?.toSize()
+            movieMaker.size = ScreenResolution(rawValue: self.screenResolution)!.toSize()
             movieMaker.composeMovies(path, success: { () -> Void in
                 
                 self.indicatorStop()
