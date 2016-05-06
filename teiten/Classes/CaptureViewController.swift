@@ -27,16 +27,19 @@ public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTabl
     var timer:NSTimer!
     var timeInterval = 0
     @IBOutlet var countDownLabel:NSTextField!
-    
+    @IBOutlet weak var previewImageScrollView: NSScrollView!
+
     // resolution
     var screenResolution = ScreenResolution.size1280x720.rawValue
     
     // resouce type
     var resourceType = ResourceType.Image.rawValue
     
-    
-    // background
+    // Outlets
     @IBOutlet var backgroundView:NSView!
+    @IBOutlet var cannotConnectCameraView: NSView!
+    @IBOutlet weak var createMovieButton: NSButton!
+    @IBOutlet weak var captureImageButton: NSButton!
     
     // camera
     var previewView:NSView!
@@ -48,13 +51,8 @@ public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTabl
     // movie
     var videoMovieFileOutput:AVCaptureMovieFileOutput!
     
-    // disable connecting camera
-    @IBOutlet var disableConnectingCaptureDeviceImageView:NSImageView!
-
-    
     @IBOutlet var tableView:NSTableView!
     var entity = FileEntity()
-    
     
     // indicator
     @IBOutlet weak var indicator: NSProgressIndicator!
@@ -62,37 +60,16 @@ public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTabl
     // MARK: - LifeCycle
 
     override public func viewDidLoad() {
-        
-        // make working directory
-        let fileManager = NSFileManager.defaultManager()
-        
-        do {
-            try fileManager.createDirectoryAtPath("\(kAppHomePath)/images", withIntermediateDirectories: true, attributes: nil)
-        } catch let error as NSError {
-            print("failed to make directory. error: \(error.description)")
-        }
-        
-        do {
-            try fileManager.createDirectoryAtPath("\(kAppHomePath)/videos", withIntermediateDirectories: true, attributes: nil)
-        } catch let error as NSError {
-            print("failed to make directory. error: \(error.description)")
-        }
-        
-        do {
-            try fileManager.createDirectoryAtPath("\(kAppMoviePath)", withIntermediateDirectories: true, attributes: nil)
-        } catch let error as NSError {
-            print("failed to make directory error: \(error.description)")
-        }
 
-        // Default Setting
+        // Initialize
+        self.initDirectories()
         self.initDefaultSettings()
-        
-        // Subscribe NSUserDefaults
         self.initSubscribeNSuserDefaults()
-        
+        self.initCannotConnectCameraView()
+
         // AVCaptureDevice
         guard let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo) else {
-            self.disableConnectingCaptureDevice()
+            self.cannotConnectCameraViewHidden(false)
             return
         }
 
@@ -101,7 +78,7 @@ public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTabl
         do {
             videoInput = try AVCaptureDeviceInput(device: device)
         } catch _ {
-            self.disableConnectingCaptureDevice()
+            self.cannotConnectCameraViewHidden(false)
             return
         }
 
@@ -117,25 +94,25 @@ public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTabl
         self.videoMovieFileOutput.minFreeDiskSpaceLimit = 1024 * 1024
         
         self.captureSession = AVCaptureSession()
-
+        
         if self.captureSession.canAddInput(videoInput) {
             self.captureSession.addInput(videoInput as AVCaptureInput)
         } else {
-            self.disableConnectingCaptureDevice()
+            self.cannotConnectCameraViewHidden(false)
             return
         }
         
         if self.captureSession.canAddOutput(self.videoStillImageOutput) {
             self.captureSession.addOutput(self.videoStillImageOutput)
         } else {
-            self.disableConnectingCaptureDevice()
+            self.cannotConnectCameraViewHidden(false)
             return
         }
         
         if self.captureSession.canAddOutput(self.videoMovieFileOutput) {
             self.captureSession.addOutput(self.videoMovieFileOutput)
         } else {
-            self.disableConnectingCaptureDevice()
+            self.cannotConnectCameraViewHidden(false)
             return
         }
         
@@ -146,7 +123,7 @@ public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTabl
         if self.captureSession.canAddInput(audioInput) {
             self.captureSession.addInput(audioInput)
         } else {
-            self.disableConnectingCaptureDevice()
+            self.cannotConnectCameraViewHidden(false)
             return
         }
         
@@ -171,16 +148,63 @@ public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTabl
         self.tableView.registerForDraggedTypes(types)
         self.tableView.setDraggingSourceOperationMask(NSDragOperation.Every, forLocal: false)
         
-
-        
         self.initCountDown()
-        
+    }
+    
+    func cannotConnectCameraViewHidden(hidden:Bool) {
+
+        self.countDownLabel.hidden = !hidden
+        self.previewImageScrollView.hidden = !hidden
+        self.cannotConnectCameraView.hidden = hidden
+
+        self.createMovieButton.enabled = hidden
+        self.captureImageButton.enabled = hidden
 
     }
     
-    func disableConnectingCaptureDevice() {
-        self.backgroundView.hidden = true
-        self.disableConnectingCaptureDeviceImageView.hidden = false
+    func initCannotConnectCameraView() {
+
+        self.cannotConnectCameraView.hidden = true
+        self.backgroundView.addSubview(self.cannotConnectCameraView)
+        self.cannotConnectCameraView.translatesAutoresizingMaskIntoConstraints = false
+        let views = ["cannotConnectCameraView": self.cannotConnectCameraView]
+        self.backgroundView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:|[cannotConnectCameraView]|",
+            options: NSLayoutFormatOptions.AlignAllCenterX,
+            metrics: nil,
+            views: views)
+        )
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:|[cannotConnectCameraView]|",
+            options: NSLayoutFormatOptions.AlignAllCenterX,
+            metrics: nil,
+            views: views)
+        )
+
+    }
+
+    func initDirectories() {
+
+        // make working directory
+        let fileManager = NSFileManager.defaultManager()
+        
+        do {
+            try fileManager.createDirectoryAtPath("\(kAppHomePath)/images", withIntermediateDirectories: true, attributes: nil)
+        } catch let error as NSError {
+            print("failed to make directory. error: \(error.description)")
+        }
+        
+        do {
+            try fileManager.createDirectoryAtPath("\(kAppHomePath)/videos", withIntermediateDirectories: true, attributes: nil)
+        } catch let error as NSError {
+            print("failed to make directory. error: \(error.description)")
+        }
+        
+        do {
+            try fileManager.createDirectoryAtPath("\(kAppMoviePath)", withIntermediateDirectories: true, attributes: nil)
+        } catch let error as NSError {
+            print("failed to make directory error: \(error.description)")
+        }
     }
 
     func initDefaultSettings() {
@@ -333,6 +357,10 @@ public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTabl
     // MARK: - Public Methods
     
     public func captureImage() {
+        
+        guard self.videoStillImageOutput != nil else {
+            return
+        }
         
         let connection = self.videoStillImageOutput.connections[0] as! AVCaptureConnection
         

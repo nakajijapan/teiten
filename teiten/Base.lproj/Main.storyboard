@@ -58,42 +58,6 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="File" id="bib-Uj-vzu">
                                     <items>
-                                        <menuItem title="New" keyEquivalent="n" id="Was-JA-tGl">
-                                            <connections>
-                                                <action selector="newDocument:" target="Ady-hI-5gd" id="4Si-XN-c54"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Open…" keyEquivalent="o" id="IAo-SY-fd9">
-                                            <connections>
-                                                <action selector="openDocument:" target="Ady-hI-5gd" id="bVn-NM-KNZ"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Open Recent" id="tXI-mr-wws">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <menu key="submenu" title="Open Recent" systemMenu="recentDocuments" id="oas-Oc-fiZ">
-                                                <items>
-                                                    <menuItem title="Clear Menu" id="vNY-rz-j42">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="clearRecentDocuments:" target="Ady-hI-5gd" id="Daa-9d-B3U"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                </items>
-                                            </menu>
-                                        </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
-                                        <menuItem title="Close" keyEquivalent="w" id="DVo-aG-piG">
-                                            <connections>
-                                                <action selector="performClose:" target="Ady-hI-5gd" id="HmO-Ls-i7Q"/>
-                                            </connections>
-                                        </menuItem>
-                                    </items>
-                                </menu>
-                            </menuItem>
-                            <menuItem title="Command" id="jp2-5k-gdE" userLabel="Command">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Command" id="PZ9-Pj-juH">
-                                    <items>
                                         <menuItem title="Capture Image" keyEquivalent=" " id="BIR-0T-lOI">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
@@ -323,10 +287,6 @@ IA
                                     <constraint firstItem="lpA-yo-vDV" firstAttribute="leading" secondItem="r2y-VN-eUU" secondAttribute="leading" constant="20" id="tNL-Wu-3He"/>
                                 </constraints>
                             </customView>
-                            <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xsj-sq-81z">
-                                <rect key="frame" x="253" y="113" width="134" height="134"/>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="disable_camera_access" id="l42-0F-iJx"/>
-                            </imageView>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="r2y-VN-eUU" secondAttribute="bottom" id="2G4-el-Uqw"/>
@@ -337,15 +297,42 @@ IA
                     </view>
                     <connections>
                         <outlet property="backgroundView" destination="r2y-VN-eUU" id="MEM-SI-AfI"/>
+                        <outlet property="cannotConnectCameraView" destination="d8A-DC-KMu" id="jXJ-OT-0ki"/>
+                        <outlet property="captureImageButton" destination="lpA-yo-vDV" id="KXC-EU-SuD"/>
                         <outlet property="countDownLabel" destination="ipJ-gg-UzT" id="Fwe-C8-pcx"/>
-                        <outlet property="disableConnectingCaptureDeviceImageView" destination="Xsj-sq-81z" id="8Hz-Y3-Jin"/>
+                        <outlet property="createMovieButton" destination="fHt-GO-qbh" id="yfL-2S-lZU"/>
                         <outlet property="indicator" destination="64G-bQ-o5Y" id="8go-PY-ynM"/>
+                        <outlet property="previewImageScrollView" destination="l8A-68-Nfn" id="jUV-2r-yeA"/>
                         <outlet property="tableView" destination="izS-Mu-zrJ" id="6we-VE-xn6"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <customView id="d8A-DC-KMu">
+                    <rect key="frame" x="0.0" y="0.0" width="441" height="230"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <subviews>
+                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4nf-rq-vnZ">
+                            <rect key="frame" x="188" y="83" width="64" height="64"/>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="disable_camera_access" id="Xda-yT-uD4"/>
+                        </imageView>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hZD-Mc-nvE">
+                            <rect key="frame" x="145" y="58" width="151" height="17"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Can't connect Camera" id="Bg8-d3-mHj">
+                                <font key="font" metaFont="systemBold"/>
+                                <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="hZD-Mc-nvE" firstAttribute="top" secondItem="4nf-rq-vnZ" secondAttribute="bottom" constant="8" id="Hoa-5K-8e5"/>
+                        <constraint firstItem="4nf-rq-vnZ" firstAttribute="centerX" secondItem="d8A-DC-KMu" secondAttribute="centerX" id="Iah-rM-gnb"/>
+                        <constraint firstItem="hZD-Mc-nvE" firstAttribute="centerX" secondItem="d8A-DC-KMu" secondAttribute="centerX" id="K4l-MU-hOX"/>
+                        <constraint firstItem="4nf-rq-vnZ" firstAttribute="centerY" secondItem="d8A-DC-KMu" secondAttribute="centerY" id="Q2S-ES-M4L"/>
+                    </constraints>
+                </customView>
             </objects>
-            <point key="canvasLocation" x="75" y="692"/>
+            <point key="canvasLocation" x="87" y="998"/>
         </scene>
         <!--Setting-->
         <scene sceneID="ezX-cN-6sc">
@@ -486,7 +473,7 @@ IA
                 </viewController>
                 <customObject id="FiH-vb-TrW" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="1158"/>
+            <point key="canvasLocation" x="87" y="1497"/>
         </scene>
     </scenes>
     <resources>
