@@ -12,7 +12,7 @@ import CoreVideo
 import CoreGraphics
 import Foundation
 
-class MovieMakerWithImages: NSObject, MovieCreatable, FileOperatable, FileDeletable {
+class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
     
     // FileOperatable
     var baseDirectoryPath = "\(kAppHomePath)/images"
@@ -160,10 +160,11 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileOperatable, FileDeleta
         writerInput.markAsFinished()
         videoWriter.endSessionAtSourceTime(frameTime)
         videoWriter.finishWritingWithCompletionHandler { () -> Void in
+
             print("Finish writing")
             
-            // delete images that use in generating movie
-            self.removeFiles()
+            // remove images that use in generating movie
+            self.removeFiles(path: self.baseDirectoryPath)
             
             success()
         }

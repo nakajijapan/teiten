@@ -13,7 +13,7 @@ import CoreVideo
 import CoreGraphics
 import NKJMovieComposer
 
-class MovieMakerWithMovies: NSObject, MovieCreatable, FileOperatable, FileDeletable {
+class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
 
     // FileOperatable
     var baseDirectoryPath = "\(kAppHomePath)/videos"
@@ -137,7 +137,7 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileOperatable, FileDeleta
             print("Finish writing")
             
             // remove images that use in generating movie
-            self.removeFiles()
+            self.removeFiles(path: self.baseDirectoryPath)
             
             success()
             

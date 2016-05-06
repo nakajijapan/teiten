@@ -17,7 +17,7 @@ protocol MovieCreatable {
     var size:NSSize { get set }
     var files:[FileListType] { get set }
     var delegate:MovieMakerDelegate? { get set }
-
+    var baseDirectoryPath:String { get set }
     
     func generateMovie(composedMoviePath:String, success: (() -> Void)) -> Void
 }
