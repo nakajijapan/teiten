@@ -8,10 +8,6 @@
 
 import Foundation
 
-protocol FileOperatable {
-    var baseDirectoryPath:String { get set }
-}
-
 protocol FileDeletable {}
 extension FileDeletable {
     

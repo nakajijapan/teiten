@@ -12,7 +12,7 @@ import CoreVideo
 import CoreGraphics
 import Foundation
 
-class MovieMakerWithImages: NSObject, MovieCreatable, FileOperatable, FileDeletable {
+class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
     
     // FileOperatable
     var baseDirectoryPath = "\(kAppHomePath)/images"

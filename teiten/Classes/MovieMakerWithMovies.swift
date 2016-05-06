@@ -13,7 +13,7 @@ import CoreVideo
 import CoreGraphics
 import NKJMovieComposer
 
-class MovieMakerWithMovies: NSObject, MovieCreatable, FileOperatable, FileDeletable {
+class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
 
     // FileOperatable
     var baseDirectoryPath = "\(kAppHomePath)/videos"
