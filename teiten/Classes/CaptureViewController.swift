@@ -37,7 +37,7 @@ public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTabl
     
     // Outlets
     @IBOutlet var backgroundView:NSView!
-    @IBOutlet var disableToConnectCameraView: NSView!
+    @IBOutlet var cannotConnectCameraView: NSView!
     
     
     // camera
@@ -49,10 +49,6 @@ public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTabl
     
     // movie
     var videoMovieFileOutput:AVCaptureMovieFileOutput!
-    
-    // disable connecting camera
-    @IBOutlet var disableConnectingCaptureDeviceImageView:NSImageView!
-
     
     @IBOutlet var tableView:NSTableView!
     var entity = FileEntity()
@@ -69,7 +65,8 @@ public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTabl
         self.initDirectories()
         self.initDefaultSettings()
         self.initSubscribeNSuserDefaults()
-        
+        self.initCannotConnectCameraView()
+
         // AVCaptureDevice
         guard let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo) else {
             self.disableConnectingCaptureDevice()
@@ -97,7 +94,7 @@ public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTabl
         self.videoMovieFileOutput.minFreeDiskSpaceLimit = 1024 * 1024
         
         self.captureSession = AVCaptureSession()
-
+        
         if self.captureSession.canAddInput(videoInput) {
             self.captureSession.addInput(videoInput as AVCaptureInput)
         } else {
@@ -160,9 +157,20 @@ public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTabl
     
     func disableConnectingCaptureDevice() {
         self.backgroundView.hidden = true
-        self.disableConnectingCaptureDeviceImageView.hidden = false
+        self.cannotConnectCameraView.hidden = false
     }
     
+    func initCannotConnectCameraView() {
+
+        self.cannotConnectCameraView.hidden = true
+        self.view.addSubview(self.cannotConnectCameraView)
+        self.cannotConnectCameraView.translatesAutoresizingMaskIntoConstraints = false
+        let views = ["cannotConnectCameraView": self.cannotConnectCameraView]
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[cannotConnectCameraView]|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: views))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[cannotConnectCameraView]|", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: nil, views: views))
+
+    }
+
     func initDirectories() {
 
         // make working directory
