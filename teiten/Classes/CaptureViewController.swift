@@ -35,8 +35,10 @@ public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTabl
     var resourceType = ResourceType.Image.rawValue
     
     
-    // background
+    // Outlets
     @IBOutlet var backgroundView:NSView!
+    @IBOutlet var disableToConnectCameraView: NSView!
+    
     
     // camera
     var previewView:NSView!
@@ -62,32 +64,10 @@ public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTabl
     // MARK: - LifeCycle
 
     override public func viewDidLoad() {
-        
-        // make working directory
-        let fileManager = NSFileManager.defaultManager()
-        
-        do {
-            try fileManager.createDirectoryAtPath("\(kAppHomePath)/images", withIntermediateDirectories: true, attributes: nil)
-        } catch let error as NSError {
-            print("failed to make directory. error: \(error.description)")
-        }
-        
-        do {
-            try fileManager.createDirectoryAtPath("\(kAppHomePath)/videos", withIntermediateDirectories: true, attributes: nil)
-        } catch let error as NSError {
-            print("failed to make directory. error: \(error.description)")
-        }
-        
-        do {
-            try fileManager.createDirectoryAtPath("\(kAppMoviePath)", withIntermediateDirectories: true, attributes: nil)
-        } catch let error as NSError {
-            print("failed to make directory error: \(error.description)")
-        }
 
-        // Default Setting
+        // Initialize
+        self.initDirectories()
         self.initDefaultSettings()
-        
-        // Subscribe NSUserDefaults
         self.initSubscribeNSuserDefaults()
         
         // AVCaptureDevice
@@ -181,6 +161,30 @@ public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTabl
     func disableConnectingCaptureDevice() {
         self.backgroundView.hidden = true
         self.disableConnectingCaptureDeviceImageView.hidden = false
+    }
+    
+    func initDirectories() {
+
+        // make working directory
+        let fileManager = NSFileManager.defaultManager()
+        
+        do {
+            try fileManager.createDirectoryAtPath("\(kAppHomePath)/images", withIntermediateDirectories: true, attributes: nil)
+        } catch let error as NSError {
+            print("failed to make directory. error: \(error.description)")
+        }
+        
+        do {
+            try fileManager.createDirectoryAtPath("\(kAppHomePath)/videos", withIntermediateDirectories: true, attributes: nil)
+        } catch let error as NSError {
+            print("failed to make directory. error: \(error.description)")
+        }
+        
+        do {
+            try fileManager.createDirectoryAtPath("\(kAppMoviePath)", withIntermediateDirectories: true, attributes: nil)
+        } catch let error as NSError {
+            print("failed to make directory error: \(error.description)")
+        }
     }
 
     func initDefaultSettings() {
