@@ -137,7 +137,7 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileOperatable, FileDeleta
             print("Finish writing")
             
             // remove images that use in generating movie
-            self.removeFiles()
+            self.removeFiles(path: self.baseDirectoryPath)
             
             success()
             
