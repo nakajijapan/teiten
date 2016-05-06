@@ -341,6 +341,10 @@ public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTabl
     
     public func captureImage() {
         
+        guard self.videoStillImageOutput != nil else {
+            return
+        }
+        
         let connection = self.videoStillImageOutput.connections[0] as! AVCaptureConnection
         
         self.videoStillImageOutput.captureStillImageAsynchronouslyFromConnection(connection, completionHandler: {(sambleBuffer, erro) -> Void in

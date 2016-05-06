@@ -356,12 +356,47 @@ IA
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="B42-n1-E4r">
+                            <rect key="frame" x="20" y="62" width="32" height="32"/>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="button_capture_image" imagePosition="only" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="dQq-He-ceP">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                                <string key="keyEquivalent" base64-UTF8="YES">
+IA
+</string>
+                            </buttonCell>
+                            <connections>
+                                <action selector="captureImageButtonDidClick:" target="XfG-lQ-9wD" id="Ode-zX-33s"/>
+                            </connections>
+                        </button>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vcR-Pp-ret">
+                            <rect key="frame" x="20" y="104" width="32" height="32"/>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="button_video" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="Xvo-nq-wCx">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                                <string key="keyEquivalent">c</string>
+                            </buttonCell>
+                        </button>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KyX-oe-mf9">
+                            <rect key="frame" x="20" y="20" width="32" height="32"/>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="button_setting" imagePosition="only" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="p5h-j2-OZY">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                                <string key="keyEquivalent">s</string>
+                            </buttonCell>
+                        </button>
                     </subviews>
                     <constraints>
+                        <constraint firstItem="B42-n1-E4r" firstAttribute="top" secondItem="vcR-Pp-ret" secondAttribute="bottom" constant="10" id="82Y-zj-ELJ"/>
+                        <constraint firstAttribute="bottom" secondItem="KyX-oe-mf9" secondAttribute="bottom" constant="20" id="CjD-2C-YFQ"/>
+                        <constraint firstItem="KyX-oe-mf9" firstAttribute="leading" secondItem="d8A-DC-KMu" secondAttribute="leading" constant="20" id="H8l-PD-PWK"/>
+                        <constraint firstItem="B42-n1-E4r" firstAttribute="leading" secondItem="d8A-DC-KMu" secondAttribute="leading" constant="20" id="H9n-wb-6vr"/>
                         <constraint firstItem="hZD-Mc-nvE" firstAttribute="top" secondItem="4nf-rq-vnZ" secondAttribute="bottom" constant="8" id="Hoa-5K-8e5"/>
                         <constraint firstItem="4nf-rq-vnZ" firstAttribute="centerX" secondItem="d8A-DC-KMu" secondAttribute="centerX" id="Iah-rM-gnb"/>
                         <constraint firstItem="hZD-Mc-nvE" firstAttribute="centerX" secondItem="d8A-DC-KMu" secondAttribute="centerX" id="K4l-MU-hOX"/>
+                        <constraint firstItem="vcR-Pp-ret" firstAttribute="leading" secondItem="d8A-DC-KMu" secondAttribute="leading" constant="20" id="Nf2-02-YwH"/>
                         <constraint firstItem="4nf-rq-vnZ" firstAttribute="centerY" secondItem="d8A-DC-KMu" secondAttribute="centerY" id="Q2S-ES-M4L"/>
+                        <constraint firstItem="KyX-oe-mf9" firstAttribute="top" secondItem="B42-n1-E4r" secondAttribute="bottom" constant="10" id="sIy-TZ-5ZV"/>
                     </constraints>
                 </customView>
             </objects>
