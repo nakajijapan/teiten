@@ -12,9 +12,9 @@
 
 ## ScreenShots
 
-![Teiten](./Web/screencapture1.png)
-![Teiten](./Web/screencapture2.png)
-![Teiten](./Web/screencapture3.png)
+![Teiten](./Web/images/screencapture1.png)
+![Teiten](./Web/images/screencapture2.png)
+![Teiten](./Web/images/screencapture3.png)
 
 ## Author
 
