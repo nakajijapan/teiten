@@ -19,7 +19,7 @@ import RxBlocking
 let kAppHomePath = "\(NSHomeDirectory())/Teiten"
 let kAppMoviePath = "\(NSHomeDirectory())/Movies/\(NSBundle.mainBundle().bundleIdentifier!)"
 
-public class CaptureViewController: NSViewController, MovieMakerWithImagesDelegate, MovieMakerWithMoviesDelegate, NSTableViewDataSource, NSTableViewDelegate, AVCaptureFileOutputRecordingDelegate {
+public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDataSource, NSTableViewDelegate, AVCaptureFileOutputRecordingDelegate {
     
     let disposeBag = DisposeBag()
     
@@ -280,7 +280,7 @@ public class CaptureViewController: NSViewController, MovieMakerWithImagesDelega
         print("Saved: \(outputFileURL)")
     }
     
-    // MARK: - MovieMakerDelegate, MovieMakerWithMoviesDelegate
+    // MARK: - MovieMakerDelegate
     
     // add Object
     func movieMakerDidAddObject(current: Int, total: Int) {
@@ -367,15 +367,14 @@ public class CaptureViewController: NSViewController, MovieMakerWithImagesDelega
         dateFormatter.dateFormat = "yyyyMMdd"
         let date = NSDate()
         let path = "\(kAppMoviePath)/\(dateFormatter.stringFromDate(date)).mov"
+
+        self.indicatorStart()
         
         if self.resourceType == ResourceType.Image.rawValue {
-            
-            self.indicatorStart()
-            
             let movieMaker = MovieMakerWithImages()
+            movieMaker.size = ScreenResolution(rawValue: self.screenResolution)!.toSize()
             movieMaker.delegate = self
-            movieMaker.size = ScreenResolution(rawValue: self.screenResolution)?.toSize()
-            movieMaker.writeImagesAsMovie(toPath: path) { () -> Void in
+            movieMaker.generateMovie(path) { () -> Void in
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     
@@ -383,23 +382,20 @@ public class CaptureViewController: NSViewController, MovieMakerWithImagesDelega
                     
                 })
                 
-            }
-            
-        } else {
-            
-            self.indicatorStart()
-            
+            }        } else {
             let movieMaker = MovieMakerWithMovies()
+            movieMaker.size = ScreenResolution(rawValue: self.screenResolution)!.toSize()
             movieMaker.delegate = self
-            movieMaker.size = ScreenResolution(rawValue: self.screenResolution)?.toSize()
-            movieMaker.composeMovies(path, success: { () -> Void in
+            movieMaker.generateMovie(path) { () -> Void in
                 
-                self.indicatorStop()
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    
+                    self.indicatorStop()
+                    
+                })
                 
-            })
-            
-        }
-        
+            }        }
+
     }
     
     // MARK: - Private Methods

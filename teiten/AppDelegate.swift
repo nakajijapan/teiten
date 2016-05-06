@@ -53,4 +53,34 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     }
     
+    @IBAction func clearCacheMenuItemDidSelect(sender: AnyObject) {
+
+        let paths = [
+            "\(kAppHomePath)/images",
+            "\(kAppHomePath)/videos"
+        ]
+        
+        let fileManager = NSFileManager.defaultManager()
+
+        paths.enumerate().forEach { (index: Int, element: String) in
+
+            let contents = try! fileManager.contentsOfDirectoryAtPath(element)
+            for content in contents {
+                do {
+                    try fileManager.removeItemAtPath("\(element)/\(content)")
+                } catch let error as NSError {
+                    print("failed to remove file: \(error.description)");
+                }
+            }
+        }
+        
+        // Alert
+        let alert = NSAlert()
+        alert.alertStyle = NSAlertStyle.InformationalAlertStyle
+        alert.messageText = "Complete!!"
+        alert.informativeText = "finished clearing cache"
+        alert.runModal()
+        
+    }
+    
 }

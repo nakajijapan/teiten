@@ -13,31 +13,31 @@ import CoreVideo
 import CoreGraphics
 import NKJMovieComposer
 
-protocol MovieMakerWithMoviesDelegate {
-    func movieMakerDidAddObject(current: Int, total: Int)
-}
+class MovieMakerWithMovies: NSObject, MovieCreatable, FileOperatable, FileDeletable {
 
-class MovieMakerWithMovies: NSObject {
+    // FileOperatable
+    var baseDirectoryPath = "\(kAppHomePath)/videos"
     
-    var delegate:MovieMakerWithMoviesDelegate?
-    var size:NSSize!
-    var files = [String]()
+    // MovieCreatable
+    typealias FileListType = String
+    var size = NSSize()
+    var files = [FileListType]()
+    var delegate:MovieMakerDelegate?
+
     var dates = [NSDate]()
     
     
     override init() {
         super.init()
-        self.setMovieInfo()
+        self.initMovieInfo()
     }
     
-    // MARK: - File Util
+    // MARK: - File
     
-    func setMovieInfo() {
+    func initMovieInfo() {
         
-        // get home directory path
-        let homeDir = "\(kAppHomePath)/videos"
         let fileManager = NSFileManager.defaultManager()
-        let paths = try! fileManager.contentsOfDirectoryAtPath(homeDir)
+        let paths = try! fileManager.contentsOfDirectoryAtPath(self.baseDirectoryPath)
         
         for path in paths {
             
@@ -46,37 +46,19 @@ class MovieMakerWithMovies: NSObject {
             }
            
             // Creation Date
-            let attributes = try! NSFileManager.defaultManager().attributesOfItemAtPath("\(homeDir)/\(path)")
+            let attributes = try! NSFileManager.defaultManager().attributesOfItemAtPath("\(self.baseDirectoryPath)/\(path)")
             let createDateStirng = attributes[NSFileCreationDate] as! NSDate
             self.dates.append(createDateStirng)
             
             // File Path
-            self.files.append("\(homeDir)/\(path)")
+            self.files.append("\(self.baseDirectoryPath)/\(path)")
         }
         
-    }
-    
-    func deleteFiles() {
-        
-        // get home directory path
-        let homeDir = "\(kAppHomePath)/videos"
-        let fileManager = NSFileManager.defaultManager()
-        let list = try! fileManager.contentsOfDirectoryAtPath(homeDir)
-        
-        for path in list {
-            
-            do {
-                try fileManager.removeItemAtPath("\(homeDir)/\(path)")
-            } catch let error as NSError {
-                print("failed to remove file: \(error.description)");
-            }
-            
-        }
     }
     
     //MARK: - movie
     
-    func composeMovies(composedMoviePath:String, success: (() -> Void)) {
+    func generateMovie(composedMoviePath:String, success: (() -> Void)) {
         
         // delete file if file already exists
         let fileManager = NSFileManager.defaultManager();
@@ -154,8 +136,8 @@ class MovieMakerWithMovies: NSObject {
             
             print("Finish writing")
             
-            // delete images that use in generating movie
-            self.deleteFiles()
+            // remove images that use in generating movie
+            self.removeFiles()
             
             success()
             

@@ -12,74 +12,55 @@ import CoreVideo
 import CoreGraphics
 import Foundation
 
-protocol MovieMakerWithImagesDelegate {
-    func movieMakerDidAddObject(current: Int, total: Int)
-}
-
-class MovieMakerWithImages: NSObject {
+class MovieMakerWithImages: NSObject, MovieCreatable, FileOperatable, FileDeletable {
     
-    var delegate:MovieMakerWithImagesDelegate?
-    var size:NSSize!
-    var files:[NSImage] = []
+    // FileOperatable
+    var baseDirectoryPath = "\(kAppHomePath)/images"
+    
+    // MovieCreatable
+    typealias FileListType = NSImage
+    var size = NSSize()
+    var files = [FileListType]()
+    var delegate:MovieMakerDelegate?
     
     override init() {
         super.init()
-        self.setImageInfo()
+        self.initImageInfo()
     }
     
-    //MARK: - File Util
+    //MARK: - File 
     
-    func setImageInfo() {
+    func initImageInfo() {
         
-        // get home directory path
-        let homeDir = "\(kAppHomePath)/images"
         let fileManager = NSFileManager.defaultManager()
-        let list:Array = try! fileManager.contentsOfDirectoryAtPath(homeDir)
+        let list:Array = try! fileManager.contentsOfDirectoryAtPath(self.baseDirectoryPath)
 
         for path in list {
-            print("path = \(homeDir)/\(path)")
+            print("path = \(self.baseDirectoryPath)/\(path)")
             
             if path.hasSuffix("DS_Store") {
                 continue
             }
             
-            let image = NSImage(contentsOfFile: "\(homeDir)/\(path)")!
+            let image = NSImage(contentsOfFile: "\(self.baseDirectoryPath)/\(path)")!
             self.files.append(image)
         }
         
     }
     
-    func deleteFiles() {
-        
-        // get home directory path
-        let homeDir = "\(kAppHomePath)/images"
-        let fileManager = NSFileManager.defaultManager()
-        let list:Array = try! fileManager.contentsOfDirectoryAtPath(homeDir)
-        
-        for path in list {
-            
-            do {
-                try fileManager.removeItemAtPath("\(homeDir)/\(path)")
-            } catch let error as NSError {
-                print("failed to remove file: \(error.description)");
-            }
-            
-        }
-    }
-    
     //MARK: - movie
     
-    func writeImagesAsMovie(toPath path:String, success: (() -> Void)) {
+    func generateMovie(composedMoviePath:String, success: (() -> Void)) {
         
-        print("writeImagesAsMovie \(#line) path = file://\(path)")
+        print("writeImagesAsMovie \(#line) path = file://\(composedMoviePath)")
         let images = self.files
         
         // delete file if file already exists
         let fileManager = NSFileManager.defaultManager();
-        if fileManager.fileExistsAtPath(path) {
+        if fileManager.fileExistsAtPath(composedMoviePath) {
             
             do {
-                try fileManager.removeItemAtPath(path)
+                try fileManager.removeItemAtPath(composedMoviePath)
             } catch let error as NSError {
                 print("failed to make directory: \(error.description)");
             }
@@ -87,7 +68,7 @@ class MovieMakerWithImages: NSObject {
         }
         
         // Target Saving File
-        let url = NSURL(fileURLWithPath: "\(path)")
+        let url = NSURL(fileURLWithPath: "\(composedMoviePath)")
         
         var videoWriter: AVAssetWriter!
         do {
@@ -182,7 +163,7 @@ class MovieMakerWithImages: NSObject {
             print("Finish writing")
             
             // delete images that use in generating movie
-            self.deleteFiles()
+            self.removeFiles()
             
             success()
         }
