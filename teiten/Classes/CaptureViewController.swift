@@ -34,7 +34,6 @@ public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTabl
     // resouce type
     var resourceType = ResourceType.Image.rawValue
     
-    
     // Outlets
     @IBOutlet var backgroundView:NSView!
     @IBOutlet var cannotConnectCameraView: NSView!
@@ -148,11 +147,7 @@ public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTabl
         self.tableView.registerForDraggedTypes(types)
         self.tableView.setDraggingSourceOperationMask(NSDragOperation.Every, forLocal: false)
         
-
-        
         self.initCountDown()
-        
-
     }
     
     func disableConnectingCaptureDevice() {
