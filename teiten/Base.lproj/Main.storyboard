@@ -213,7 +213,7 @@ IA
                                             <constraint firstAttribute="width" constant="149" id="3R0-SN-1A5"/>
                                             <constraint firstAttribute="height" constant="122" id="rtk-ag-xEc"/>
                                         </constraints>
-                                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="999" drawsBackground="YES" id="g5r-QG-uJG">
+                                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="0" drawsBackground="YES" id="g5r-QG-uJG">
                                             <font key="font" size="72" name="Arial-Black"/>
                                             <color key="textColor" name="highlightColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>

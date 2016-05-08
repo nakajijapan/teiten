@@ -9,16 +9,32 @@
 import Cocoa
 import AVFoundation
 
+import RxSwift
+
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, FileDeletable {
     
     @IBOutlet weak var cameraMenu: NSMenu!
+    let disposeBag = DisposeBag()
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         
         self.addCameraItemsInMenuItem()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppDelegate.handleCaptureDeviceWasConnected(_:)), name: AVCaptureDeviceWasConnectedNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppDelegate.handleCaptureDeviceWasDisconnected(_:)), name: AVCaptureDeviceWasDisconnectedNotification, object: nil)
+        
+        NSNotificationCenter.defaultCenter().rx_notification(AVCaptureDeviceWasConnectedNotification).subscribeNext { (notification) in
+            self.addCameraItemsInMenuItem()
+        }.addDisposableTo(self.disposeBag)
+        
+        NSNotificationCenter.defaultCenter().rx_notification(AVCaptureDeviceWasDisconnectedNotification).subscribeNext { (notification) in
+            self.addCameraItemsInMenuItem()
+            
+            do {
+                try VideoDeviceManager.sharedManager.switchDefaultDevice()
+            } catch _ {
+                print("no device")
+            }
+        }.addDisposableTo(self.disposeBag)
+        
     }
     
     func applicationWillTerminate(aNotification: NSNotification) {
@@ -29,23 +45,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, FileDeletable {
     func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {
         return true
     }
-    
-    // MARK: - Notifications
-
-    func handleCaptureDeviceWasConnected(notification:NSNotification) {
-        self.addCameraItemsInMenuItem()
-    }
-    
-    func handleCaptureDeviceWasDisconnected(notification:NSNotification) {
-        self.addCameraItemsInMenuItem()
-        
-        do {
-            try VideoDeviceManager.sharedManager.switchDefaultDevice()
-        } catch _ {
-            print("no device")
-        }
-    }
-    
     
     // MARK: - Actions
     
