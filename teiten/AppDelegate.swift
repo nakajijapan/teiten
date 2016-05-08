@@ -7,12 +7,34 @@
 //
 
 import Cocoa
+import AVFoundation
+
+import RxSwift
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, FileDeletable {
     
+    @IBOutlet weak var cameraMenu: NSMenu!
+    let disposeBag = DisposeBag()
+    
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-        // Insert code here to initialize your application
+        
+        self.addCameraItemsInMenuItem()
+        
+        NSNotificationCenter.defaultCenter().rx_notification(AVCaptureDeviceWasConnectedNotification).subscribeNext { (notification) in
+            self.addCameraItemsInMenuItem()
+        }.addDisposableTo(self.disposeBag)
+        
+        NSNotificationCenter.defaultCenter().rx_notification(AVCaptureDeviceWasDisconnectedNotification).subscribeNext { (notification) in
+            self.addCameraItemsInMenuItem()
+            
+            do {
+                try VideoDeviceManager.sharedManager.switchDefaultDevice()
+            } catch _ {
+                print("no device")
+            }
+        }.addDisposableTo(self.disposeBag)
+        
     }
     
     func applicationWillTerminate(aNotification: NSNotification) {
@@ -24,6 +46,25 @@ class AppDelegate: NSObject, NSApplicationDelegate, FileDeletable {
         return true
     }
     
+    // MARK: - Actions
+    
+    func addCameraItemsInMenuItem() {
+        
+        self.cameraMenu.removeAllItems()
+        VideoDeviceManager.videoDevices().forEach { (device) in
+            let menuItem = NSMenuItem(title: device.localizedName, action: #selector(AppDelegate.menuItemDidClick(_:)), keyEquivalent: "")
+            self.cameraMenu.addItem(menuItem)
+        }
+        
+    }
+    
+    func menuItemDidClick(menuItem: NSMenuItem) {
+        do {
+            try VideoDeviceManager.sharedManager.switchDevice(menuItem.title)
+        } catch _ {
+            print("no device")
+        }
+    }
     
     @IBAction func captureImageMenuItemDidSelect(sender: AnyObject) {
         

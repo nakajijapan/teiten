@@ -93,7 +93,7 @@ public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTabl
         self.videoMovieFileOutput.maxRecordedDuration = maxDuration
         self.videoMovieFileOutput.minFreeDiskSpaceLimit = 1024 * 1024
         
-        self.captureSession = AVCaptureSession()
+        self.captureSession = VideoDeviceManager.sharedManager.captureSession
         
         if self.captureSession.canAddInput(videoInput) {
             self.captureSession.addInput(videoInput as AVCaptureInput)
