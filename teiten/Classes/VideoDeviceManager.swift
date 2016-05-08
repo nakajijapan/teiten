@@ -11,14 +11,10 @@ import AVFoundation
 
 public class VideoDeviceManager {
     
-    var captureSession:AVCaptureSession!
+    static let sharedManager = VideoDeviceManager()
+    var captureSession = AVCaptureSession()
     
-    init(captureSession: AVCaptureSession) {
-        self.captureSession = captureSession
-    }
-    
-    public class func defaultDevice() -> AVCaptureDevice! {
-        return AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
+    private init() {
     }
     
     public class func videoDevices() -> [AVCaptureDevice] {
@@ -28,41 +24,73 @@ public class VideoDeviceManager {
         
         devices.forEach { (device) in
             let captureDevice = device as! AVCaptureDevice
-            print("device = \(captureDevice.localizedName) \(captureDevice.uniqueID)")
             captureDevices.append(captureDevice)
         }
      
         return captureDevices
     }
     
-    func switchDevice(uniqueID:String, currentCaptureInput:AVCaptureDeviceInput) throws {
+    func switchDefaultDevice() throws {
+
+
+        let captureDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
+
+        
+        do {
+            try self.updateCaptureSession(captureDevice!)
+        } catch _ {
+            throw NSError(domain: TeitenError.errorDomain!, code: -1, userInfo: ["description": "can not update CaptureSession"])
+        }
+    }
+    
+    func switchDevice(localizedName:String) throws {
         
         var captureDevice:AVCaptureDevice?
         for device in self.dynamicType.videoDevices() {
-            if device.uniqueID == uniqueID {
+            if device.localizedName == localizedName {
                 captureDevice = device
                 break
             }
         }
-
+        
+        do {
+            try self.updateCaptureSession(captureDevice!)
+        } catch _ {
+            throw NSError(domain: TeitenError.errorDomain!, code: -1, userInfo: ["description": "can not update CaptureSession"])
+        }
+        
+    }
+    
+    private func updateCaptureSession(captureDevice: AVCaptureDevice) throws {
+    
         self.captureSession.beginConfiguration()
         
         let videoInput:AVCaptureDeviceInput
         do {
             videoInput = try AVCaptureDeviceInput(device: captureDevice)
         } catch _ {
-            throw NSError(domain: TeitenError.errorDomain!, code: -1, userInfo: ["description": "AVCaptureDevice notfound"])
+            throw NSError(domain: TeitenError.errorDomain!, code: -1, userInfo: ["description": "notfound AVCaptureDevice"])
         }
- 
-        self.captureSession.removeInput(currentCaptureInput)
-        if self.captureSession.canAddInput(videoInput) {
-            self.captureSession.addInput(videoInput as AVCaptureInput)
-        } else {
-            throw NSError(domain: TeitenError.errorDomain!, code: -1, userInfo: ["description": "AVCaptureDevice cannot add \(videoInput)"])
+        
+        for deviceInput in self.captureSession.inputs {
+            let videoDeviceInput = deviceInput as! AVCaptureDeviceInput
+            if videoDeviceInput.device.hasMediaType(AVMediaTypeVideo) {
+                
+                self.captureSession.removeInput(videoDeviceInput)
+                if self.captureSession.canAddInput(videoInput) {
+                    self.captureSession.addInput(videoInput as AVCaptureInput)
+                } else {
+                    throw NSError(domain: TeitenError.errorDomain!, code: -1, userInfo: ["description": "cannot add \(videoInput)"])
+                }
+                
+                break
+                
+            }
+            
         }
         
         self.captureSession.commitConfiguration()
-        
+    
     }
     
 }
