@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0FC1CBB0448D4738615C5F21 /* Pods_TeitenTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B71CF7EA64DFEAE829520CE /* Pods_TeitenTests.framework */; };
 		8D88AFD7DE5A90A84F23A9EF /* Pods_Teiten.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5EEADF257574E353AA85507 /* Pods_Teiten.framework */; };
+		DC786A6E1CDF651D00B4A7EE /* VideoDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC786A6D1CDF651D00B4A7EE /* VideoDeviceManager.swift */; };
+		DC786A701CDF816300B4A7EE /* Teiten.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC786A6F1CDF816300B4A7EE /* Teiten.swift */; };
 		DC8661F71CDBA9050031A6F5 /* FileDeletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8661F61CDBA9050031A6F5 /* FileDeletable.swift */; };
 		DC8661F91CDBB3CC0031A6F5 /* MovieCreatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8661F81CDBB3CC0031A6F5 /* MovieCreatable.swift */; };
 		DCB414C41C6F4125009B077D /* Scheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB414C31C6F4125009B077D /* Scheduler.swift */; };
@@ -45,6 +47,8 @@
 		B50FFD433D06CBF7D8ECCA46 /* Pods-Teiten.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Teiten.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Teiten/Pods-Teiten.debug.xcconfig"; sourceTree = "<group>"; };
 		CBD08C60EE954D6A857CC5F6 /* Pods-TeitenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TeitenTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TeitenTests/Pods-TeitenTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D5EEADF257574E353AA85507 /* Pods_Teiten.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Teiten.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC786A6D1CDF651D00B4A7EE /* VideoDeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoDeviceManager.swift; sourceTree = "<group>"; };
+		DC786A6F1CDF816300B4A7EE /* Teiten.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Teiten.swift; path = teiten/Teiten.swift; sourceTree = SOURCE_ROOT; };
 		DC8661F61CDBA9050031A6F5 /* FileDeletable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileDeletable.swift; sourceTree = "<group>"; };
 		DC8661F81CDBB3CC0031A6F5 /* MovieCreatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCreatable.swift; sourceTree = "<group>"; };
 		DCB414C31C6F4125009B077D /* Scheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scheduler.swift; sourceTree = "<group>"; };
@@ -133,6 +137,7 @@
 			children = (
 				DCB53F971A88D17F00FA3B10 /* Teiten.entitlements */,
 				DCB53F621A88CFC100FA3B10 /* AppDelegate.swift */,
+				DC786A6F1CDF816300B4A7EE /* Teiten.swift */,
 				DCB53F7F1A88D03300FA3B10 /* Classes */,
 				DCB53F661A88CFC100FA3B10 /* Images.xcassets */,
 				DCB53F681A88CFC100FA3B10 /* Main.storyboard */,
@@ -177,6 +182,7 @@
 				DCB414C31C6F4125009B077D /* Scheduler.swift */,
 				DC8661F61CDBA9050031A6F5 /* FileDeletable.swift */,
 				DC8661F81CDBB3CC0031A6F5 /* MovieCreatable.swift */,
+				DC786A6D1CDF651D00B4A7EE /* VideoDeviceManager.swift */,
 			);
 			name = Classes;
 			path = teiten/Classes;
@@ -402,8 +408,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC786A701CDF816300B4A7EE /* Teiten.swift in Sources */,
 				DCB414C41C6F4125009B077D /* Scheduler.swift in Sources */,
 				DCB53F861A88D03300FA3B10 /* FileEntity.swift in Sources */,
+				DC786A6E1CDF651D00B4A7EE /* VideoDeviceManager.swift in Sources */,
 				DCF928BE1BBC381F00C40621 /* MovieMakerWithMovies.swift in Sources */,
 				DCB53F871A88D03300FA3B10 /* MovieMakerWithImages.swift in Sources */,
 				DCB53F851A88D03300FA3B10 /* CaptureViewController.swift in Sources */,
