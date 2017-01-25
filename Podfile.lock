@@ -1,10 +1,10 @@
 PODS:
   - NKJMovieComposer (1.1.0)
-  - RxBlocking (2.3.1):
-    - RxSwift (~> 2.3.1)
-  - RxCocoa (2.3.1):
-    - RxSwift (~> 2.3.1)
-  - RxSwift (2.3.1)
+  - RxBlocking (2.6.1):
+    - RxSwift (~> 2.6)
+  - RxCocoa (2.6.1):
+    - RxSwift (~> 2.6)
+  - RxSwift (2.6.1)
 
 DEPENDENCIES:
   - NKJMovieComposer
@@ -14,8 +14,10 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   NKJMovieComposer: 222931a723ba852196d14695d747f13995c39edd
-  RxBlocking: 84fd81865a641a3843b33bae7b8315e78ddbd383
-  RxCocoa: a2baaf3462b989559a51dce59d78fbebb8fe0afa
-  RxSwift: 829b2843e9eddc77a02cb3f5117f0d55f8f646f1
+  RxBlocking: ff9f5a592b813dd9e3bacd1bf82f72dc00f60ad8
+  RxCocoa: 3bb2820fd2a1ba48a70d38926bec0803838ae802
+  RxSwift: 0147fbf94e65c6085da9540de92848189ac1c3f6
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: e7a0f55d833127803a510aecaaa3cba53f19b8ef
+
+COCOAPODS: 1.2.0.beta.3
