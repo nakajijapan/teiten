@@ -19,6 +19,6 @@ protocol MovieCreatable {
     var delegate:MovieMakerDelegate? { get set }
     var baseDirectoryPath:String { get set }
     
-    func generateMovie(_ composedMoviePath:String, success: (() -> Void)) -> Void
+    func generateMovie(_ composedMoviePath:String, success: @escaping (() -> Void))
 }
 

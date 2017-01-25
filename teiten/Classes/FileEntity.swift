@@ -11,7 +11,7 @@ import Cocoa
 class FileEntity: NSObject, NSPasteboardWriting {
     
     var image:NSImage!
-    var fileURL:URL!
+    var fileURL:NSURL!
     
     override init() {
         
@@ -24,11 +24,11 @@ class FileEntity: NSObject, NSPasteboardWriting {
         let dragPathString   = "\(NSTemporaryDirectory())teiten.jpg"
         let schemePathString = "file://\(dragPathString)"
         
-        self.fileURL = URL(string: schemePathString)
+        self.fileURL = NSURL(string: schemePathString)
         
         if FileManager.default.fileExists(atPath: dragPathString) {
             do {
-                try FileManager.default.removeItem(at: self.fileURL)
+                try FileManager.default.removeItem(at: self.fileURL as URL)
             } catch let error as NSError {
                 print("can not remove. \(error.description)")
             }
@@ -44,7 +44,8 @@ class FileEntity: NSObject, NSPasteboardWriting {
     }
     
     // MARK: - NSPasteboardWriting
-    
+//    - (NSArray<NSString *> *)writableTypesForPasteboard:(NSPasteboard *)pasteboard;
+
     func writableTypes(for pasteboard: NSPasteboard) -> [String] {
         print("\(#function) \(#line) \(self.fileURL.writableTypes(for: pasteboard))")
         return self.fileURL.writableTypes(for: pasteboard)
@@ -55,7 +56,7 @@ class FileEntity: NSObject, NSPasteboardWriting {
         return self.fileURL.pasteboardPropertyList(forType: type)
     }
     
-    func writinOptionsForType(_ type: String!, pasteboard: NSPasteboard!) -> NSPasteboardWritingOptions {
+    @nonobjc func writinOptionsForType(_ type: String!, pasteboard: NSPasteboard!) -> NSPasteboardWritingOptions {
         print("\(#function) \(#line) \(type)")
         return self.fileURL.writingOptions(forType: type, pasteboard: pasteboard)
     }

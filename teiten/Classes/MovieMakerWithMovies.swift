@@ -57,7 +57,7 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
     }
     
     //MARK: - movie
-    
+
     func generateMovie(_ composedMoviePath:String, success: @escaping (() -> Void)) {
         
         // delete file if file already exists
@@ -105,7 +105,7 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
             textLayer.string = dateFormatter.string(from: self.dates[i])
             textLayer.fontSize = 48.0
             textLayer.alignmentMode = kCAAlignmentRight
-            textLayer.foregroundColor = NSColor.whiteColor().CGColor
+            textLayer.foregroundColor = NSColor.white.cgColor
             textLayer.shouldRasterize = true
             textLayer.opacity = 0.0
             layerRoot.addSublayer(textLayer)
@@ -126,13 +126,13 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
         
         
         // animation
-        movieComposition.videoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: layerVideo, inLayer: layerRoot)
+        movieComposition.videoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: layerVideo, in: layerRoot)
         
         // compose
         let assetExportSession = movieComposition.readyToComposeVideo("\(composedMoviePath)")
         
         // export
-        assetExportSession.exportAsynchronouslyWithCompletionHandler({() -> Void in
+        assetExportSession?.exportAsynchronously(completionHandler: {() -> Void in
             
             print("Finish writing")
             

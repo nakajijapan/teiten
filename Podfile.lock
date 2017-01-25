@@ -1,23 +1,33 @@
 PODS:
   - NKJMovieComposer (1.1.0)
-  - RxBlocking (2.6.1):
-    - RxSwift (~> 2.6)
-  - RxCocoa (2.6.1):
-    - RxSwift (~> 2.6)
-  - RxSwift (2.6.1)
+  - RxBlocking (3.1.0):
+    - RxSwift (~> 3.1)
+  - RxCocoa (3.1.0):
+    - RxSwift (~> 3.1)
+  - RxSwift (3.1.0)
 
 DEPENDENCIES:
-  - NKJMovieComposer
-  - RxBlocking (~> 2.0)
-  - RxCocoa (~> 2.0)
-  - RxSwift (~> 2.0)
+  - NKJMovieComposer (from `https://github.com/nakajijapan/NKJMovieComposer.git`, branch `update-api`)
+  - RxBlocking
+  - RxCocoa
+  - RxSwift
+
+EXTERNAL SOURCES:
+  NKJMovieComposer:
+    :branch: update-api
+    :git: https://github.com/nakajijapan/NKJMovieComposer.git
+
+CHECKOUT OPTIONS:
+  NKJMovieComposer:
+    :commit: 161412b41003c36d31ba88fd3a3137ed6419f2b7
+    :git: https://github.com/nakajijapan/NKJMovieComposer.git
 
 SPEC CHECKSUMS:
   NKJMovieComposer: 222931a723ba852196d14695d747f13995c39edd
-  RxBlocking: ff9f5a592b813dd9e3bacd1bf82f72dc00f60ad8
-  RxCocoa: 3bb2820fd2a1ba48a70d38926bec0803838ae802
-  RxSwift: 0147fbf94e65c6085da9540de92848189ac1c3f6
+  RxBlocking: cd73ef6a5f8c39cede9488178c46aa0c3c3ed17f
+  RxCocoa: 50d7564866da9299161e86a263ce12a0873904d8
+  RxSwift: 83ff553e7593fdfdcb2562933a64c0284dffdadc
 
-PODFILE CHECKSUM: e7a0f55d833127803a510aecaaa3cba53f19b8ef
+PODFILE CHECKSUM: be5c9a81644e0ff67459cb7e2236cf1e938aad05
 
-COCOAPODS: 1.2.0.beta.3
+COCOAPODS: 1.2.0.rc.1

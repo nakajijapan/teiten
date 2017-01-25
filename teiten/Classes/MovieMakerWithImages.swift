@@ -11,6 +11,7 @@ import CoreMedia
 import CoreVideo
 import CoreGraphics
 import Foundation
+import AppKit
 
 class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
     
@@ -130,9 +131,9 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
         
         for nsImage in images {
             
-            print("writeImagesAsMovie \(#line) - \(adaptor.assetWriterInput.readyForMoreMediaData)")
+            print("writeImagesAsMovie \(#line) - \(adaptor.assetWriterInput.isReadyForMoreMediaData)")
             
-            if adaptor.assetWriterInput.readyForMoreMediaData {
+            if adaptor.assetWriterInput.isReadyForMoreMediaData {
                 
                 print("------------------------ writeImagesAsMovie - \(frameCount)------------------------")
                 
@@ -140,8 +141,8 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
                 
                 let cgFirstImage:CGImage? = self.convertNSImageToCGImage(nsImage)
                 
-                let buffer:CVPixelBufferRef = self.pixelBufferFromCGImage(cgFirstImage!)
-                let result:Bool = adaptor.appendPixelBuffer(buffer, withPresentationTime: frameTime)
+                let buffer:CVPixelBuffer = self.pixelBufferFromCGImage(cgFirstImage!)
+                let result:Bool = adaptor.append(buffer, withPresentationTime: frameTime)
                 if result == false {
                     print("failed to append buffer")
                 }
@@ -175,7 +176,7 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
     
     func convertNSImageToCGImage(_ image:NSImage) -> CGImage? {
         
-        let imageData:Data? = image.TIFFRepresentation
+        let imageData:Data? = image.tiffRepresentation
         if imageData == nil {
             return nil
         }

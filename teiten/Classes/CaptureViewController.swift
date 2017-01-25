@@ -236,7 +236,7 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
             .addDisposableTo(disposeBag)
         
         // CountDownLabel
-        self.countDownLabel.rx_observe(String.self, "stringValue")
+        self.countDownLabel.rx.observe(String.self, "stringValue")
             .subscribe({ (string) -> Void in
                 
                 if self.timeInterval > 0 {
@@ -245,9 +245,9 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
                     
                 } else if (self.timeInterval == 0) {
                     
-                    self.timeInterval = NSUserDefaults.standardUserDefaults().integerForKey("TIMEINTERVAL")
+                    self.timeInterval = UserDefaults.standard.integer(forKey: "TIMEINTERVAL")
                     
-                    if self.resourceType == ResourceType.Image.rawValue {
+                    if self.resourceType == ResourceType.image.rawValue {
                         self.captureImage()
                     } else {
                         self.captureMovie(nil)
@@ -263,37 +263,35 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
     
     // MARK: - NSUserDefaults
     func initSubscribeNSuserDefaults() {
-        
         UserDefaults.standard
-            .rx_observe(Int.self, "TIMEINTERVAL")
-            .subscribeNext({ (value) -> Void in
-                
-                if value != nil {
-                    self.timeInterval = value!
+            .rx
+            .observe(Int.self, "TIMEINTERVAL")
+            .subscribe(onNext: { (value) in
+                if let value = value {
+                    self.timeInterval = value
                 }
                 
-            }).addDisposableTo(disposeBag)
-        
+            }, onError: nil, onCompleted: nil, onDisposed: nil)
+            .addDisposableTo(disposeBag)
+
         UserDefaults.standard
-            .rx_observe(Int.self, "SCREENRESOLUTION")
-            .subscribeNext({ (value) -> Void in
-
-                if value != nil {
-                    self.screenResolution = value!
+            .rx
+            .observe(Int.self, "SCREENRESOLUTION")
+            .subscribe(onNext: { (value) in
+                if let value = value {
+                    self.screenResolution = value
                 }
-
-            })
+            }, onError: nil, onCompleted: nil, onDisposed: nil)
             .addDisposableTo(disposeBag)
         
         UserDefaults.standard
-            .rx_observe(Int.self, "RESOURCETYPE")
-            .subscribeNext({ (value) -> Void in
-                
-                if value != nil {
-                    self.resourceType = value!
+            .rx
+            .observe(Int.self, "RESOURCETYPE")
+            .subscribe(onNext: { (value) in
+                if let value = value {
+                    self.resourceType = value
                 }
-
-            })
+            }, onError: nil, onCompleted: nil, onDisposed: nil)
             .addDisposableTo(disposeBag)
 
     }
@@ -375,10 +373,10 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
             let data2 = image?.tiffRepresentation
             let bitmapImageRep = NSBitmapImageRep.imageReps(with: data2!)[0] as! NSBitmapImageRep
             let properties = [NSImageInterlaced: NSNumber(value: true as Bool)]
-            let resizedData:Data? = bitmapImageRep.representationUsingType(NSBitmapImageFileType.NSJPEGFileType, properties: properties)
+            let resizedData:Data? = bitmapImageRep.representation(using: .JPEG, properties: properties)
             
             // reload table
-            self.entity.loadImage(image, data: resizedData!)
+            self.entity.loadImage(image!, data: resizedData!)
             
             DispatchQueue.main.async(execute: {() -> Void in
                 self.tableView.reloadData()
@@ -471,7 +469,7 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
             
             // Alert
             let alert = NSAlert()
-            alert.alertStyle = NSAlertStyle.InformationalAlertStyle
+            alert.alertStyle = NSAlertStyle.informational
             alert.messageText = "Complete!!"
             alert.informativeText = "finished generating movie"
             alert.runModal()

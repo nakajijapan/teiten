@@ -64,7 +64,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, FileDeletable {
 
         // Alert
         let alert = NSAlert()
-        alert.alertStyle = NSAlertStyle.InformationalAlertStyle
+        alert.alertStyle = .informational
         alert.messageText = "Complete!!"
         alert.informativeText = "finished clearing cache"
         alert.runModal()
