@@ -11,23 +11,23 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, FileDeletable {
     
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
     }
     
-    func applicationWillTerminate(aNotification: NSNotification) {
+    func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
     
     // kill process when application closed window
-    func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return true
     }
     
     
-    @IBAction func captureImageMenuItemDidSelect(sender: AnyObject) {
+    @IBAction func captureImageMenuItemDidSelect(_ sender: AnyObject) {
         
-        guard let mainWindow = NSApplication.sharedApplication().mainWindow else {
+        guard let mainWindow = NSApplication.shared().mainWindow else {
             return
         }
         
@@ -39,9 +39,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, FileDeletable {
     }
     
     
-    @IBAction func createMovieMenuItemDidSelect(sender: AnyObject) {
+    @IBAction func createMovieMenuItemDidSelect(_ sender: AnyObject) {
         
-        guard let mainWindow = NSApplication.sharedApplication().mainWindow else {
+        guard let mainWindow = NSApplication.shared().mainWindow else {
             return
         }
         
@@ -53,7 +53,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, FileDeletable {
 
     }
     
-    @IBAction func clearCacheMenuItemDidSelect(sender: AnyObject) {
+    @IBAction func clearCacheMenuItemDidSelect(_ sender: AnyObject) {
 
         let paths = [
             "\(kAppHomePath)/images",

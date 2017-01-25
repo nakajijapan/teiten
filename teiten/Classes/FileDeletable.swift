@@ -13,12 +13,12 @@ extension FileDeletable {
     
     func removeFiles(path targetPath:String) {
         
-        let fileManager = NSFileManager.defaultManager()
-        let contents = try! fileManager.contentsOfDirectoryAtPath(targetPath)
+        let fileManager = FileManager.default
+        let contents = try! fileManager.contentsOfDirectory(atPath: targetPath)
         
         for content in contents {
             do {
-                try fileManager.removeItemAtPath("\(targetPath)/\(content)")
+                try fileManager.removeItem(atPath: "\(targetPath)/\(content)")
             } catch let error as NSError {
                 print("failed to remove file: \(error.description)");
             }
@@ -28,14 +28,14 @@ extension FileDeletable {
     
     func removeFilesByDirecotries(paths targetPaths:[String]) {
         
-        let fileManager = NSFileManager.defaultManager()
+        let fileManager = FileManager.default
        
-        targetPaths.enumerate().forEach { (index: Int, element: String) in
+        targetPaths.enumerated().forEach { (index: Int, element: String) in
             
-            let contents = try! fileManager.contentsOfDirectoryAtPath(element)
+            let contents = try! fileManager.contentsOfDirectory(atPath: element)
             for content in contents {
                 do {
-                    try fileManager.removeItemAtPath("\(element)/\(content)")
+                    try fileManager.removeItem(atPath: "\(element)/\(content)")
                 } catch let error as NSError {
                     print("failed to remove file: \(error.description)");
                 }

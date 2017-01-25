@@ -24,7 +24,7 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
     var files = [FileListType]()
     var delegate:MovieMakerDelegate?
 
-    var dates = [NSDate]()
+    var dates = [Date]()
     
     
     override init() {
@@ -36,8 +36,8 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
     
     func initMovieInfo() {
         
-        let fileManager = NSFileManager.defaultManager()
-        let paths = try! fileManager.contentsOfDirectoryAtPath(self.baseDirectoryPath)
+        let fileManager = FileManager.default
+        let paths = try! fileManager.contentsOfDirectory(atPath: self.baseDirectoryPath)
         
         for path in paths {
             
@@ -46,8 +46,8 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
             }
            
             // Creation Date
-            let attributes = try! NSFileManager.defaultManager().attributesOfItemAtPath("\(self.baseDirectoryPath)/\(path)")
-            let createDateStirng = attributes[NSFileCreationDate] as! NSDate
+            let attributes = try! FileManager.default.attributesOfItem(atPath: "\(self.baseDirectoryPath)/\(path)")
+            let createDateStirng = attributes[FileAttributeKey.creationDate] as! Date
             self.dates.append(createDateStirng)
             
             // File Path
@@ -58,14 +58,14 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
     
     //MARK: - movie
     
-    func generateMovie(composedMoviePath:String, success: (() -> Void)) {
+    func generateMovie(_ composedMoviePath:String, success: @escaping (() -> Void)) {
         
         // delete file if file already exists
-        let fileManager = NSFileManager.defaultManager();
-        if fileManager.fileExistsAtPath(composedMoviePath) {
+        let fileManager = FileManager.default;
+        if fileManager.fileExists(atPath: composedMoviePath) {
             
             do {
-                try fileManager.removeItemAtPath(composedMoviePath)
+                try fileManager.removeItem(atPath: composedMoviePath)
             } catch let error as NSError {
                 print("failed to make directory: \(error.description)");
             }
@@ -89,20 +89,20 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
             let moviePath = self.files[i]
             
             // movie
-            let movieURL = NSURL(fileURLWithPath: moviePath)
+            let movieURL = URL(fileURLWithPath: moviePath)
             //let layerInstruction = movieComposition.addVideo(movieURL)
             _ = movieComposition.addVideo(movieURL)
             
             self.delegate?.movieMakerDidAddObject(i + 1, total: self.files.count)
             
             // today
-            let dateFormatter = NSDateFormatter()
+            let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy/MM/dd HH:mm"
             
             // text layer
             let textLayer = CATextLayer()
             textLayer.frame = CGRect(x: self.size.width - 400.0 - 10.0, y: 10.0, width: 400.0, height: 52.0)
-            textLayer.string = dateFormatter.stringFromDate(self.dates[i])
+            textLayer.string = dateFormatter.string(from: self.dates[i])
             textLayer.fontSize = 48.0
             textLayer.alignmentMode = kCAAlignmentRight
             textLayer.foregroundColor = NSColor.whiteColor().CGColor
@@ -117,10 +117,10 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
             animation.duration      = CMTimeGetSeconds(offsetTimeDuration)
             animation.repeatCount   = 1
             animation.autoreverses  = false
-            animation.fromValue     = NSNumber(float: 1.0)
-            animation.toValue       = NSNumber(float: 1.0)
-            animation.removedOnCompletion = false
-            textLayer.addAnimation(animation, forKey:"hide")
+            animation.fromValue     = NSNumber(value: 1.0 as Float)
+            animation.toValue       = NSNumber(value: 1.0 as Float)
+            animation.isRemovedOnCompletion = false
+            textLayer.add(animation, forKey:"hide")
 
         }
         

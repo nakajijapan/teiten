@@ -254,6 +254,7 @@
 					DCB53F5C1A88CFC100FA3B10 = {
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = CNE5C4C374;
+						LastSwiftMigration = 0820;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
 								enabled = 1;
@@ -262,6 +263,7 @@
 					};
 					DCB53F6E1A88CFC100FA3B10 = {
 						CreatedOnToolsVersion = 6.1.1;
+						LastSwiftMigration = 0820;
 						TestTargetID = DCB53F5C1A88CFC100FA3B10;
 					};
 				};
@@ -591,6 +593,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.nakajijapan.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Teiten.app/Contents/MacOS/Teiten";
 			};
 			name = Debug;
@@ -610,6 +613,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.nakajijapan.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Teiten.app/Contents/MacOS/Teiten";
 			};
 			name = Release;
