@@ -23,7 +23,7 @@ enum ScreenResolution:Int {
         }
     }
     
-    func toSessionPreset() -> String! {
+    func toSessionPreset() -> String {
         switch self {
         case .size320x180:
             return AVCaptureSessionPreset320x240
@@ -33,6 +33,18 @@ enum ScreenResolution:Int {
             return AVCaptureSessionPreset1280x720
         }
     }
+    
+    func toString() -> String {
+        switch self {
+        case .size320x180:
+            return "320x180"
+        case .size640x360:
+            return "640x360"
+        case .size1280x720:
+            return "1280x720"
+        }
+    }
+
 }
 
 enum ResourceType:Int {
