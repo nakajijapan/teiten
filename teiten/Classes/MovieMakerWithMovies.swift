@@ -24,7 +24,7 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
     var files = [FileListType]()
     var delegate:MovieMakerDelegate?
 
-    var dates = [Date]()
+    var dates = [NSDate]()
     
     
     override init() {
@@ -47,7 +47,7 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
            
             // Creation Date
             let attributes = try! FileManager.default.attributesOfItem(atPath: "\(self.baseDirectoryPath)/\(path)")
-            let createDateStirng = attributes[FileAttributeKey.creationDate] as! Date
+            let createDateStirng = attributes[FileAttributeKey.creationDate] as! NSDate
             self.dates.append(createDateStirng)
             
             // File Path
@@ -57,11 +57,11 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
     }
     
     //MARK: - movie
-
-    func generateMovie(_ composedMoviePath:String, success: @escaping (() -> Void)) {
+    
+    func generateMovie(composedMoviePath:String, success: @escaping (() -> Void)) {
         
         // delete file if file already exists
-        let fileManager = FileManager.default;
+        let fileManager = FileManager.default
         if fileManager.fileExists(atPath: composedMoviePath) {
             
             do {
@@ -78,7 +78,6 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
         layerRoot.frame   = CGRect(x: 0.0, y: 0.0, width: self.size.width, height: self.size.height)
         layerVideo.frame  = CGRect(x: 0.0, y: 0.0, width: self.size.width, height: self.size.height)
         layerRoot.addSublayer(layerVideo)
-
         
         let movieComposition = NKJMovieComposer()
         movieComposition.videoComposition.renderSize = CGSize(width: self.size.width, height: self.size.height)
@@ -93,7 +92,7 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
             //let layerInstruction = movieComposition.addVideo(movieURL)
             _ = movieComposition.addVideo(movieURL)
             
-            self.delegate?.movieMakerDidAddObject(i + 1, total: self.files.count)
+            self.delegate?.movieMakerDidAddObject(current: i + 1, total: self.files.count)
             
             // today
             let dateFormatter = DateFormatter()
@@ -102,7 +101,7 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
             // text layer
             let textLayer = CATextLayer()
             textLayer.frame = CGRect(x: self.size.width - 400.0 - 10.0, y: 10.0, width: 400.0, height: 52.0)
-            textLayer.string = dateFormatter.string(from: self.dates[i])
+            textLayer.string = dateFormatter.string(from: self.dates[i] as Date)
             textLayer.fontSize = 48.0
             textLayer.alignmentMode = kCAAlignmentRight
             textLayer.foregroundColor = NSColor.white.cgColor
@@ -117,8 +116,8 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
             animation.duration      = CMTimeGetSeconds(offsetTimeDuration)
             animation.repeatCount   = 1
             animation.autoreverses  = false
-            animation.fromValue     = NSNumber(value: 1.0 as Float)
-            animation.toValue       = NSNumber(value: 1.0 as Float)
+            animation.fromValue     = NSNumber(value: 1.0)
+            animation.toValue       = NSNumber(value: 1.0)
             animation.isRemovedOnCompletion = false
             textLayer.add(animation, forKey:"hide")
 

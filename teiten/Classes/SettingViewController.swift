@@ -10,7 +10,7 @@ import Cocoa
 import AVFoundation
 
 enum ScreenResolution:Int {
-    case size1280x720 = 0, size320x180, size640x360
+    case size1280x720, size320x180, size640x360
     
     func toSize() -> CGSize {
         switch self {
@@ -23,7 +23,7 @@ enum ScreenResolution:Int {
         }
     }
     
-    func toSessionPreset() -> String {
+    func toSessionPreset() -> String! {
         switch self {
         case .size320x180:
             return AVCaptureSessionPreset320x240
@@ -33,22 +33,10 @@ enum ScreenResolution:Int {
             return AVCaptureSessionPreset1280x720
         }
     }
-    
-    func toString() -> String {
-        switch self {
-        case .size320x180:
-            return "320x180"
-        case .size640x360:
-            return "640x360"
-        case .size1280x720:
-            return "1280x720"
-        }
-    }
-
 }
 
 enum ResourceType:Int {
-    case image = 0, movie
+    case Image = 0, Movie
 }
 
 class SettingViewController: NSViewController {
@@ -73,7 +61,7 @@ class SettingViewController: NSViewController {
         self.matrixForResourceType.setSelectionFrom(0, to: resourceType, anchor: 0, highlight: true)
     }
     
-    @IBAction func timeIntervalMatrixDidChangeValue(_ sender:NSMatrix) {
+    @IBAction func timeIntervalMatrixDidChangeValue(sender:NSMatrix) {
         
         var timeInterval = 10
         switch (sender.selectedRow) {
@@ -89,14 +77,14 @@ class SettingViewController: NSViewController {
         
     }
     
-    @IBAction func resolutionMatrixDidChangeValue(_ sender:NSMatrix) {
+    @IBAction func resolutionMatrixDidChangeValue(sender:NSMatrix) {
 
         let screenResolution = ScreenResolution(rawValue: sender.selectedRow)!
         UserDefaults.standard.set(screenResolution.rawValue, forKey: "SCREENRESOLUTION")
 
     }
     
-    @IBAction func resourceTypeMatrixDidChangeValue(_ sender: NSMatrix) {
+    @IBAction func resourceTypeMatrixDidChangeValue(sender: NSMatrix) {
 
         let resourceType = ResourceType(rawValue: sender.selectedRow)!
         UserDefaults.standard.set(resourceType.rawValue, forKey: "RESOURCETYPE")
@@ -104,7 +92,7 @@ class SettingViewController: NSViewController {
     }
     
     
-    @IBAction func dissmiss(_ sender: AnyObject) {
+    @IBAction func dissmiss(sender: AnyObject) {
         self.dismiss(self)
     }
     

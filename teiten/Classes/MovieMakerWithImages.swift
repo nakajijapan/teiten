@@ -6,12 +6,11 @@
 //  Copyright (c) 2014 net.nakajijapan. All rights reserved.
 //
 
+import AppKit
 import AVFoundation
 import CoreMedia
 import CoreVideo
 import CoreGraphics
-import Foundation
-import AppKit
 
 class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
     
@@ -51,13 +50,13 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
     
     //MARK: - movie
     
-    func generateMovie(_ composedMoviePath:String, success: @escaping (() -> Void)) {
+    func generateMovie(composedMoviePath:String, success: @escaping (() -> Void)) {
         
         print("writeImagesAsMovie \(#line) path = file://\(composedMoviePath)")
         let images = self.files
         
         // delete file if file already exists
-        let fileManager = FileManager.default;
+        let fileManager = FileManager.default
         if fileManager.fileExists(atPath: composedMoviePath) {
             
             do {
@@ -139,10 +138,10 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
                 
                 frameTime = CMTimeMake(frameCount * 12 * durationForEachImage, Int32(fps64))
                 
-                let cgFirstImage:CGImage? = self.convertNSImageToCGImage(nsImage)
+                let cgFirstImage: CGImage? = self.convertNSImageToCGImage(image: nsImage)
                 
-                let buffer:CVPixelBuffer = self.pixelBufferFromCGImage(cgFirstImage!)
-                let result:Bool = adaptor.append(buffer, withPresentationTime: frameTime)
+                let buffer: CVPixelBuffer = self.pixelBufferFromCGImage(image: cgFirstImage!)
+                let result: Bool = adaptor.append(buffer, withPresentationTime: frameTime)
                 if result == false {
                     print("failed to append buffer")
                 }
@@ -150,7 +149,7 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
                 
                 frameCount += 1
                 
-                self.delegate?.movieMakerDidAddObject(current, total: images.count)
+                self.delegate?.movieMakerDidAddObject(current: current, total: images.count)
                 current += 1
                 
             }
@@ -174,9 +173,9 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
     
     // MARK: - Private Methods
     
-    func convertNSImageToCGImage(_ image:NSImage) -> CGImage? {
+    func convertNSImageToCGImage(image:NSImage) -> CGImage? {
         
-        let imageData:Data? = image.tiffRepresentation
+        let imageData: Data? = image.tiffRepresentation
         if imageData == nil {
             return nil
         }
@@ -188,7 +187,7 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
         return cgimage
     }
     
-    func pixelBufferFromCGImage(_ image: CGImage) -> CVPixelBuffer {
+    func pixelBufferFromCGImage(image: CGImage) -> CVPixelBuffer {
         
         let options:NSDictionary = NSDictionary(dictionary: [
             kCVPixelBufferCGImageCompatibilityKey : true,
@@ -212,6 +211,7 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
         // Lock
         CVPixelBufferLockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
         
+        //let pxdata:UnsafeMutablePointer<()> = CVPixelBufferGetBaseAddress(pixelBuffer)
         let pxdata:UnsafeMutableRawPointer = CVPixelBufferGetBaseAddress(pixelBuffer)!
         
         let colorSpace:CGColorSpace = CGColorSpaceCreateDeviceRGB()
@@ -234,7 +234,7 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
         //let flipHorizontal:CGAffineTransform = CGAffineTransformMake(-1.0, 0.0, 0.0, 1.0, width, 0.0);
         //CGContextConcatCTM(context, flipHorizontal);
         
-        context?.draw(image, in: CGRect(x: 0, y: 0, width: width, height: height))
+        CGContextDrawImage(context, CGRect(x: 0, y: 0, width: width, height: height), image)
         
         // UnLock
         context = nil

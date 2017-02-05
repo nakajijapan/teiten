@@ -19,21 +19,21 @@ import RxBlocking
 let kAppHomePath = "\(NSHomeDirectory())/Teiten"
 let kAppMoviePath = "\(NSHomeDirectory())/Movies/\(Bundle.main.bundleIdentifier!)"
 
-open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDataSource, NSTableViewDelegate, AVCaptureFileOutputRecordingDelegate {
+public class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableViewDataSource, NSTableViewDelegate, AVCaptureFileOutputRecordingDelegate {
     
     let disposeBag = DisposeBag()
     
     // timer
-    var timer:Timer!
+    var timer: Timer!
     var timeInterval = 0
-    @IBOutlet var countDownLabel:NSTextField!
+    @IBOutlet var countDownLabel: NSTextField!
     @IBOutlet weak var previewImageScrollView: NSScrollView!
 
     // resolution
     var screenResolution = ScreenResolution.size1280x720.rawValue
     
     // resouce type
-    var resourceType = ResourceType.image.rawValue
+    var resourceType = ResourceType.Image.rawValue
     
     // Outlets
     @IBOutlet var backgroundView:NSView!
@@ -59,7 +59,7 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
     
     // MARK: - LifeCycle
 
-    override open func viewDidLoad() {
+    override public func viewDidLoad() {
 
         // Initialize
         self.initDirectories()
@@ -69,7 +69,7 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
 
         // AVCaptureDevice
         guard let device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) else {
-            self.cannotConnectCameraViewHidden(false)
+            self.cannotConnectCameraViewHidden(hidden: false)
             return
         }
 
@@ -78,7 +78,7 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
         do {
             videoInput = try AVCaptureDeviceInput(device: device)
         } catch _ {
-            self.cannotConnectCameraViewHidden(false)
+            self.cannotConnectCameraViewHidden(hidden: false)
             return
         }
 
@@ -98,21 +98,21 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
         if self.captureSession.canAddInput(videoInput) {
             self.captureSession.addInput(videoInput as AVCaptureInput)
         } else {
-            self.cannotConnectCameraViewHidden(false)
+            self.cannotConnectCameraViewHidden(hidden: false)
             return
         }
         
         if self.captureSession.canAddOutput(self.videoStillImageOutput) {
             self.captureSession.addOutput(self.videoStillImageOutput)
         } else {
-            self.cannotConnectCameraViewHidden(false)
+            self.cannotConnectCameraViewHidden(hidden: false)
             return
         }
         
         if self.captureSession.canAddOutput(self.videoMovieFileOutput) {
             self.captureSession.addOutput(self.videoMovieFileOutput)
         } else {
-            self.cannotConnectCameraViewHidden(false)
+            self.cannotConnectCameraViewHidden(hidden: false)
             return
         }
         
@@ -123,7 +123,7 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
         if self.captureSession.canAddInput(audioInput) {
             self.captureSession.addInput(audioInput)
         } else {
-            self.cannotConnectCameraViewHidden(false)
+            self.cannotConnectCameraViewHidden(hidden: false)
             return
         }
         
@@ -151,7 +151,7 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
         self.initCountDown()
     }
     
-    func cannotConnectCameraViewHidden(_ hidden:Bool) {
+    func cannotConnectCameraViewHidden(hidden:Bool) {
 
         self.countDownLabel.isHidden = !hidden
         self.previewImageScrollView.isHidden = !hidden
@@ -236,7 +236,7 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
             .addDisposableTo(disposeBag)
         
         // CountDownLabel
-        self.countDownLabel.rx.observe(String.self, "stringValue")
+        self.countDownLabel.rx_observe(String.self, "stringValue")
             .subscribe({ (string) -> Void in
                 
                 if self.timeInterval > 0 {
@@ -245,9 +245,9 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
                     
                 } else if (self.timeInterval == 0) {
                     
-                    self.timeInterval = UserDefaults.standard.integer(forKey: "TIMEINTERVAL")
+                    self.timeInterval = UserDefaults.standard.integerForKey("TIMEINTERVAL")
                     
-                    if self.resourceType == ResourceType.image.rawValue {
+                    if self.resourceType == ResourceType.Image.rawValue {
                         self.captureImage()
                     } else {
                         self.captureMovie(nil)
@@ -263,55 +263,57 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
     
     // MARK: - NSUserDefaults
     func initSubscribeNSuserDefaults() {
+        
         UserDefaults.standard
-            .rx
-            .observe(Int.self, "TIMEINTERVAL")
-            .subscribe(onNext: { (value) in
-                if let value = value {
-                    self.timeInterval = value
+            .rx_observe(Int.self, "TIMEINTERVAL")
+            .subscribeNext({ (value) -> Void in
+                
+                if value != nil {
+                    self.timeInterval = value!
                 }
                 
-            }, onError: nil, onCompleted: nil, onDisposed: nil)
-            .addDisposableTo(disposeBag)
-
+            }).addDisposableTo(disposeBag)
+        
         UserDefaults.standard
-            .rx
-            .observe(Int.self, "SCREENRESOLUTION")
-            .subscribe(onNext: { (value) in
-                if let value = value {
-                    self.screenResolution = value
+            .rx_observe(Int.self, "SCREENRESOLUTION")
+            .subscribeNext({ (value) -> Void in
+
+                if value != nil {
+                    self.screenResolution = value!
                 }
-            }, onError: nil, onCompleted: nil, onDisposed: nil)
+
+            })
             .addDisposableTo(disposeBag)
         
         UserDefaults.standard
-            .rx
-            .observe(Int.self, "RESOURCETYPE")
-            .subscribe(onNext: { (value) in
-                if let value = value {
-                    self.resourceType = value
+            .rx_observe(Int.self, "RESOURCETYPE")
+            .subscribeNext({ (value) -> Void in
+                
+                if value != nil {
+                    self.resourceType = value!
                 }
-            }, onError: nil, onCompleted: nil, onDisposed: nil)
+
+            })
             .addDisposableTo(disposeBag)
 
     }
     
     // MARK: - AVCaptureFileOutputRecordingDelegate
     
-    open func capture(_ captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAt outputFileURL: URL!, fromConnections connections: [Any]!, error: Error!) {
+    public func captureOutput(captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAtURL outputFileURL: NSURL!, fromConnections connections: [AnyObject]!, error: NSError!) {
         print("Saved: \(outputFileURL)")
     }
     
     // MARK: - MovieMakerDelegate
     
     // add Object
-    func movieMakerDidAddObject(_ current: Int, total: Int) {
+    func movieMakerDidAddObject(current: Int, total: Int) {
         let nst = Thread(target:self, selector:#selector(CaptureViewController.countOne(_:)), object:["current": current, "total": total])
         nst.start()
     }
     
     // refrect count number to label
-    func countOne(_ params: [String:Int]) {
+    func countOne(params: [String:Int]) {
         let delta = 100.0 / Double(params["total"]!)
         self.indicator.increment(by: Double(delta))
     }
@@ -319,11 +321,11 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
     
     // MARK: - NSTableView data source
     
-    open func numberOfRows(in tableView: NSTableView) -> Int {
+    public func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         return 1
     }
     
-    open func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+    public func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let view = tableView.make(withIdentifier: "imageCell", owner: self)
         let imageView = view!.viewWithTag(1) as! NSImageView
         imageView.image = self.entity.image
@@ -331,30 +333,30 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
         return view
     }
     
-    open func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+    public func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         return 80
     }
     
     // MARK: - Drag
     
-    open func tableView(_ tableView: NSTableView, pasteboardWriterForRow row: Int) -> NSPasteboardWriting? {
+    public func tableView(tableView: NSTableView, pasteboardWriterForRow row: Int) -> NSPasteboardWriting? {
         return self.entity
     }
     
     // MARK: - Actions
     
-    @IBAction func captureImageButtonDidClick(_ sender:AnyObject?) {
+    @IBAction func captureImageButtonDidClick(sender:AnyObject?) {
         self.captureImage()
     }
     
-    @IBAction func createMovieButtonDidClick(_ sender:AnyObject?) {
+    @IBAction func createMovieButtonDidClick(sender:AnyObject?) {
         self.createMovie()
     }
 
 
     // MARK: - Public Methods
     
-    open func captureImage() {
+    public func captureImage() {
         
         guard self.videoStillImageOutput != nil else {
             return
@@ -364,21 +366,21 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
         
         self.videoStillImageOutput.captureStillImageAsynchronously(from: connection, completionHandler: {(sambleBuffer, erro) -> Void in
             
-            let data = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sambleBuffer)
-            let tmpImage = NSImage(data: data!)!
+            let data = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sambleBuffer)!
+            let tmpImage = NSImage(data: data)!
             let targetSize = ScreenResolution(rawValue: self.screenResolution)!.toSize()
-            let image = self.imageFromSize(tmpImage, size: targetSize)
+            let image = self.imageFromSize(sourceImage: tmpImage, size: targetSize)!
             
             // convert to jpeg for writing file
-            let data2 = image?.tiffRepresentation
+            let data2 = image.tiffRepresentation
             let bitmapImageRep = NSBitmapImageRep.imageReps(with: data2!)[0] as! NSBitmapImageRep
-            let properties = [NSImageInterlaced: NSNumber(value: true as Bool)]
-            let resizedData:Data? = bitmapImageRep.representation(using: .JPEG, properties: properties)
+            let properties = [NSImageInterlaced: NSNumber(value: true)]
+            let resizedData:Data? = bitmapImageRep.representationUsingType(NSBitmapImageFileType.NSJPEGFileType, properties: properties)
             
             // reload table
-            self.entity.loadImage(image!, data: resizedData!)
+            self.entity.loadImage(image: image, data: resizedData!)
             
-            DispatchQueue.main.async(execute: {() -> Void in
+            DispatchQueue.main.asynchronously(execute: {() -> Void in
                 self.tableView.reloadData()
             })
             
@@ -386,7 +388,7 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
         
     }
     
-    open func createMovie() {
+    public func createMovie() {
         
         // save path
         let dateFormatter = DateFormatter()
@@ -396,13 +398,13 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
 
         self.indicatorStart()
         
-        if self.resourceType == ResourceType.image.rawValue {
+        if self.resourceType == ResourceType.Image.rawValue {
             let movieMaker = MovieMakerWithImages()
             movieMaker.size = ScreenResolution(rawValue: self.screenResolution)!.toSize()
             movieMaker.delegate = self
-            movieMaker.generateMovie(path) { () -> Void in
+            movieMaker.generateMovie(composedMoviePath: path) { () -> Void in
                 
-                DispatchQueue.main.async(execute: { () -> Void in
+                dispatch_get_main_queue().asynchronously(execute: { () -> Void in
                     
                     self.indicatorStop()
                     
@@ -412,9 +414,9 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
             let movieMaker = MovieMakerWithMovies()
             movieMaker.size = ScreenResolution(rawValue: self.screenResolution)!.toSize()
             movieMaker.delegate = self
-            movieMaker.generateMovie(path) { () -> Void in
+            movieMaker.generateMovie(composedMoviePath: path) { () -> Void in
                 
-                DispatchQueue.main.async(execute: { () -> Void in
+                DispatchQueue.main.asynchronously(execute: { () -> Void in
                     
                     self.indicatorStop()
                     
@@ -426,7 +428,7 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
     
     // MARK: - Private Methods
 
-    func imageFromSize(_ sourceImage:NSImage, size:NSSize) -> NSImage! {
+    func imageFromSize(sourceImage:NSImage, size:NSSize) -> NSImage! {
         
         // extract NSBitmapImageRep from sourceImage, and take out CGImage
         let image = NSBitmapImageRep(data: sourceImage.tiffRepresentation!)?.cgImage!
@@ -443,7 +445,7 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
         // write source image to bitmap
         let bitmapRect = NSMakeRect(0.0, 0.0, size.width, size.height)
         
-        bitmapContext.draw(image!, in: bitmapRect)
+        CGContextDrawImage(bitmapContext, bitmapRect, image)
         
         // convert NSImage to bitmap
         let newImageRef = bitmapContext.makeImage()!
@@ -460,23 +462,23 @@ open class CaptureViewController: NSViewController, MovieMakerDelegate, NSTableV
     }
     
     func indicatorStop() {
-        DispatchQueue.main.async(execute: { () -> Void in
+        DispatchQueue.main.asynchronously(execute: { () -> Void in
             
             // Indicator Stop
             self.indicator.doubleValue = 100.0
             self.indicator.stopAnimation(self.indicator)
-            self.indicator.isHidden = true
+            self.indicator.hidden = true
             
             // Alert
             let alert = NSAlert()
-            alert.alertStyle = NSAlertStyle.informational
+            alert.alertStyle = NSAlertStyle.InformationalAlertStyle
             alert.messageText = "Complete!!"
             alert.informativeText = "finished generating movie"
             alert.runModal()
         })
     }
     
-    func captureMovie(_ sender:AnyObject!) {
+    func captureMovie(sender: AnyObject!) {
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMddHHmmss"
