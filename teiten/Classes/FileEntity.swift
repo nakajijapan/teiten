@@ -10,37 +10,37 @@ import Cocoa
 
 class FileEntity: NSObject, NSPasteboardWriting {
     
-    var image:NSImage!
-    var fileURL:NSURL!
+    var image: NSImage!
+    var fileURL: URL!
     
     override init() {
         
     }
     
-    func loadImage(image: NSImage, data: NSData) {
+    func loadImage(image: NSImage, data: Data) {
         
         self.image = image
         
         let dragPathString   = "\(NSTemporaryDirectory())teiten.jpg"
         let schemePathString = "file://\(dragPathString)"
         
-        self.fileURL = NSURL(string: schemePathString)
+        self.fileURL = URL(string: schemePathString)
         
-        if NSFileManager.defaultManager().fileExistsAtPath(dragPathString) {
+        if FileManager.default.fileExists(atPath: dragPathString) {
             do {
-                try NSFileManager.defaultManager().removeItemAtURL(self.fileURL)
+                try FileManager.default.removeItem(at: self.fileURL)
             } catch let error as NSError {
                 print("can not remove. \(error.description)")
             }
         }
         
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMddHHmmss"
-        let dateString = dateFormatter.stringFromDate(NSDate())
+        let dateString = dateFormatter.string(from: Date())
         let savePathString = "\(kAppHomePath)/images/\(dateString).jpg"
         
-        data.writeToFile(savePathString, atomically: true)
-        data.writeToFile(dragPathString, atomically: true)
+        data.write(to: savePathString, options: true)
+        data.write(to: dragPathString, options: true)
     }
     
     // MARK: - NSPasteboardWriting

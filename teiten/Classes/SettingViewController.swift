@@ -10,13 +10,13 @@ import Cocoa
 import AVFoundation
 
 enum ScreenResolution:Int {
-    case size1280x720 = 0, size320x180, size640x360
+    case size1280x720, size320x180, size640x360
     
     func toSize() -> CGSize {
         switch self {
         case .size320x180:
             return CGSize(width: 320, height: 180)
-        case size640x360:
+        case .size640x360:
             return CGSize(width: 640, height: 360)
         case .size1280x720:
             return CGSize(width: 1280, height: 720)
@@ -27,7 +27,7 @@ enum ScreenResolution:Int {
         switch self {
         case .size320x180:
             return AVCaptureSessionPreset320x240
-        case size640x360:
+        case .size640x360:
             return AVCaptureSessionPreset640x480
         case .size1280x720:
             return AVCaptureSessionPreset1280x720
@@ -47,17 +47,17 @@ class SettingViewController: NSViewController {
     
     override func viewWillAppear() {
         
-        let timeInterval = NSUserDefaults.standardUserDefaults().integerForKey("TIMEINTERVAL")
+        let timeInterval = UserDefaults.standard.integer(forKey: "TIMEINTERVAL")
         if timeInterval == 10 {
             self.matrix.setSelectionFrom(0, to: 0, anchor: 0, highlight: true)
         } else {
             self.matrix.setSelectionFrom(0, to: 1, anchor: 0, highlight: true)
         }
         
-        let screenResolution = NSUserDefaults.standardUserDefaults().integerForKey("SCREENRESOLUTION")
+        let screenResolution = UserDefaults.standard.integer(forKey: "SCREENRESOLUTION")
         self.matrixForResolution.setSelectionFrom(0, to: screenResolution, anchor: 0, highlight: true)
         
-        let resourceType = NSUserDefaults.standardUserDefaults().integerForKey("RESOURCETYPE")
+        let resourceType = UserDefaults.standard.integer(forKey: "RESOURCETYPE")
         self.matrixForResourceType.setSelectionFrom(0, to: resourceType, anchor: 0, highlight: true)
     }
     
@@ -73,27 +73,27 @@ class SettingViewController: NSViewController {
             break
         }
         
-        NSUserDefaults.standardUserDefaults().setInteger(timeInterval, forKey: "TIMEINTERVAL")
+        UserDefaults.standard.set(timeInterval, forKey: "TIMEINTERVAL")
         
     }
     
     @IBAction func resolutionMatrixDidChangeValue(sender:NSMatrix) {
 
         let screenResolution = ScreenResolution(rawValue: sender.selectedRow)!
-        NSUserDefaults.standardUserDefaults().setInteger(screenResolution.rawValue, forKey: "SCREENRESOLUTION")
+        UserDefaults.standard.set(screenResolution.rawValue, forKey: "SCREENRESOLUTION")
 
     }
     
     @IBAction func resourceTypeMatrixDidChangeValue(sender: NSMatrix) {
 
         let resourceType = ResourceType(rawValue: sender.selectedRow)!
-        NSUserDefaults.standardUserDefaults().setInteger(resourceType.rawValue, forKey: "RESOURCETYPE")
+        UserDefaults.standard.set(resourceType.rawValue, forKey: "RESOURCETYPE")
 
     }
     
     
     @IBAction func dissmiss(sender: AnyObject) {
-        self.dismissController(self)
+        self.dismiss(self)
     }
     
 }

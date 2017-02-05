@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 net.nakajijapan. All rights reserved.
 //
 
+import AppKit
 import AVFoundation
 import CoreMedia
 import CoreVideo
 import CoreGraphics
-import Foundation
 
 class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
     
@@ -32,8 +32,8 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
     
     func initImageInfo() {
         
-        let fileManager = NSFileManager.defaultManager()
-        let list:Array = try! fileManager.contentsOfDirectoryAtPath(self.baseDirectoryPath)
+        let fileManager = FileManager.default
+        let list:Array = try! fileManager.contentsOfDirectory(atPath: self.baseDirectoryPath)
 
         for path in list {
             print("path = \(self.baseDirectoryPath)/\(path)")
@@ -50,17 +50,17 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
     
     //MARK: - movie
     
-    func generateMovie(composedMoviePath:String, success: (() -> Void)) {
+    func generateMovie(composedMoviePath:String, success: @escaping (() -> Void)) {
         
         print("writeImagesAsMovie \(#line) path = file://\(composedMoviePath)")
         let images = self.files
         
         // delete file if file already exists
-        let fileManager = NSFileManager.defaultManager();
-        if fileManager.fileExistsAtPath(composedMoviePath) {
+        let fileManager = FileManager.default
+        if fileManager.fileExists(atPath: composedMoviePath) {
             
             do {
-                try fileManager.removeItemAtPath(composedMoviePath)
+                try fileManager.removeItem(atPath: composedMoviePath)
             } catch let error as NSError {
                 print("failed to make directory: \(error.description)");
             }
@@ -68,11 +68,11 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
         }
         
         // Target Saving File
-        let url = NSURL(fileURLWithPath: "\(composedMoviePath)")
+        let url = URL(fileURLWithPath: "\(composedMoviePath)")
         
         var videoWriter: AVAssetWriter!
         do {
-            videoWriter = try AVAssetWriter(URL: url, fileType: AVFileTypeQuickTimeMovie)
+            videoWriter = try AVAssetWriter(outputURL: url, fileType: AVFileTypeQuickTimeMovie)
         } catch let error as NSError {
             print("failed to create AssetWriter: \(error.description)");
         }
@@ -81,13 +81,13 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
         // AVAssetWriterInput
         
         let videoSettings: [String : AnyObject] = [
-            AVVideoCodecKey: AVVideoCodecH264,
-            AVVideoWidthKey: self.size.width,
-            AVVideoHeightKey: self.size.height]
+            AVVideoCodecKey: AVVideoCodecH264 as AnyObject,
+            AVVideoWidthKey: self.size.width as AnyObject,
+            AVVideoHeightKey: self.size.height as AnyObject]
         
         
         let writerInput = AVAssetWriterInput(mediaType: AVMediaTypeVideo, outputSettings: videoSettings)
-        videoWriter.addInput(writerInput)
+        videoWriter.add(writerInput)
         
         
         //-----------------------------------
@@ -98,9 +98,9 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
         let heightKey = kCVPixelBufferHeightKey as NSString as String
         
         let attributes: [String : AnyObject] = [
-            formatTypeKey: Int(kCVPixelFormatType_32ARGB),
-            widthKey:      self.size.width,
-            heightKey:     self.size.height,
+            formatTypeKey: Int(kCVPixelFormatType_32ARGB) as AnyObject,
+            widthKey:      self.size.width as AnyObject,
+            heightKey:     self.size.height as AnyObject,
         ]
         
         let adaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: writerInput, sourcePixelBufferAttributes: attributes)
@@ -116,7 +116,7 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
         }
         print("Session started? \(start)");
         
-        videoWriter.startSessionAtSourceTime(kCMTimeZero)
+        videoWriter.startSession(atSourceTime: kCMTimeZero)
         
         
         //-----------------------------------
@@ -130,18 +130,18 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
         
         for nsImage in images {
             
-            print("writeImagesAsMovie \(#line) - \(adaptor.assetWriterInput.readyForMoreMediaData)")
+            print("writeImagesAsMovie \(#line) - \(adaptor.assetWriterInput.isReadyForMoreMediaData)")
             
-            if adaptor.assetWriterInput.readyForMoreMediaData {
+            if adaptor.assetWriterInput.isReadyForMoreMediaData {
                 
                 print("------------------------ writeImagesAsMovie - \(frameCount)------------------------")
                 
                 frameTime = CMTimeMake(frameCount * 12 * durationForEachImage, Int32(fps64))
                 
-                let cgFirstImage:CGImage? = self.convertNSImageToCGImage(nsImage)
+                let cgFirstImage: CGImage? = self.convertNSImageToCGImage(image: nsImage)
                 
-                let buffer:CVPixelBufferRef = self.pixelBufferFromCGImage(cgFirstImage!)
-                let result:Bool = adaptor.appendPixelBuffer(buffer, withPresentationTime: frameTime)
+                let buffer: CVPixelBuffer = self.pixelBufferFromCGImage(image: cgFirstImage!)
+                let result: Bool = adaptor.append(buffer, withPresentationTime: frameTime)
                 if result == false {
                     print("failed to append buffer")
                 }
@@ -149,7 +149,7 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
                 
                 frameCount += 1
                 
-                self.delegate?.movieMakerDidAddObject(current, total: images.count)
+                self.delegate?.movieMakerDidAddObject(current: current, total: images.count)
                 current += 1
                 
             }
@@ -158,8 +158,8 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
         }
 
         writerInput.markAsFinished()
-        videoWriter.endSessionAtSourceTime(frameTime)
-        videoWriter.finishWritingWithCompletionHandler { () -> Void in
+        videoWriter.endSession(atSourceTime: frameTime)
+        videoWriter.finishWriting { () -> Void in
 
             print("Finish writing")
             
@@ -175,7 +175,7 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
     
     func convertNSImageToCGImage(image:NSImage) -> CGImage? {
         
-        let imageData:NSData? = image.TIFFRepresentation
+        let imageData: Data? = image.tiffRepresentation
         if imageData == nil {
             return nil
         }
@@ -199,8 +199,8 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
         // memo
         CVPixelBufferCreate(
             kCFAllocatorDefault,
-            CGImageGetWidth(image),
-            CGImageGetHeight(image),
+            image.width,
+            image.height,
             kCVPixelFormatType_32ARGB,
             cfoptions,
             &unmanagedPixelBuffer // UnsafeMutablePointer<CVPixelBuffer?>
@@ -209,35 +209,36 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
         let pixelBuffer:CVPixelBuffer = unmanagedPixelBuffer!
         
         // Lock
-        CVPixelBufferLockBaseAddress(pixelBuffer, 0)
+        CVPixelBufferLockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
         
-        let pxdata:UnsafeMutablePointer<()> = CVPixelBufferGetBaseAddress(pixelBuffer)
+        //let pxdata:UnsafeMutablePointer<()> = CVPixelBufferGetBaseAddress(pixelBuffer)
+        let pxdata:UnsafeMutableRawPointer = CVPixelBufferGetBaseAddress(pixelBuffer)!
         
-        let colorSpace:CGColorSpace = CGColorSpaceCreateDeviceRGB()!
-        let bitmapInfo = CGImageAlphaInfo.PremultipliedFirst.rawValue
+        let colorSpace:CGColorSpace = CGColorSpaceCreateDeviceRGB()
+        let bitmapInfo = CGImageAlphaInfo.premultipliedFirst.rawValue
         
-        var context = CGBitmapContextCreate(
-            pxdata,
-            CGImageGetWidth(image),
-            CGImageGetHeight(image),
-            8,
-            CGImageGetWidth(image) * 4,
-            colorSpace,
-            bitmapInfo
+        var context = CGContext(
+            data: pxdata,
+            width: image.width,
+            height: image.height,
+            bitsPerComponent: 8,
+            bytesPerRow: image.width * 4,
+            space: colorSpace,
+            bitmapInfo: bitmapInfo
         );
         
-        let height:CGFloat = CGFloat(CGImageGetHeight(image))
-        let width:CGFloat  = CGFloat(CGImageGetWidth(image))
+        let height:CGFloat = CGFloat(image.height)
+        let width:CGFloat  = CGFloat(image.width)
         
         // Image had been reversed because of this
         //let flipHorizontal:CGAffineTransform = CGAffineTransformMake(-1.0, 0.0, 0.0, 1.0, width, 0.0);
         //CGContextConcatCTM(context, flipHorizontal);
         
-        CGContextDrawImage(context, CGRectMake(0, 0, width, height), image)
+        CGContextDrawImage(context, CGRect(x: 0, y: 0, width: width, height: height), image)
         
         // UnLock
         context = nil
-        CVPixelBufferUnlockBaseAddress(pixelBuffer, 0)
+        CVPixelBufferUnlockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
         
         return pixelBuffer
     }

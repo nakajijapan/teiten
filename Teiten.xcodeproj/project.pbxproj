@@ -547,7 +547,6 @@
 		};
 		DCB53F7A1A88CFC100FA3B10 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EF470B8582EC9AC06E6285A0 /* Pods-Teiten.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -571,7 +570,6 @@
 		};
 		DCB53F7B1A88CFC100FA3B10 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4F1960E246B0381A817CC0E0 /* Pods-Teiten.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -595,7 +593,6 @@
 		};
 		DCB53F7D1A88CFC100FA3B10 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D458567EA718BA7483B2C7F4 /* Pods-TeitenTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -618,7 +615,6 @@
 		};
 		DCB53F7E1A88CFC100FA3B10 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 82F138D7DF78BEC05D2D97CD /* Pods-TeitenTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";

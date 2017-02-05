@@ -20,14 +20,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, FileDeletable {
     }
     
     // kill process when application closed window
-    func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return true
     }
     
     
     @IBAction func captureImageMenuItemDidSelect(sender: AnyObject) {
         
-        guard let mainWindow = NSApplication.sharedApplication().mainWindow else {
+        guard let mainWindow = NSApplication.shared().mainWindow else {
             return
         }
         
@@ -41,7 +41,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, FileDeletable {
     
     @IBAction func createMovieMenuItemDidSelect(sender: AnyObject) {
         
-        guard let mainWindow = NSApplication.sharedApplication().mainWindow else {
+        guard let mainWindow = NSApplication.shared().mainWindow else {
             return
         }
         
