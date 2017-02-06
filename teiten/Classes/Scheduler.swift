@@ -17,9 +17,9 @@ class Scheduler {
     
     init() {
 
-        let operationQueue = NSOperationQueue()
+        let operationQueue = OperationQueue()
         operationQueue.maxConcurrentOperationCount = 10
-        operationQueue.qualityOfService = NSQualityOfService.UserInitiated
+        operationQueue.qualityOfService = QualityOfService.userInitiated
         backgroundWorkScheduler = OperationQueueScheduler(operationQueue: operationQueue)
 
         mainScheduler = MainScheduler.instance

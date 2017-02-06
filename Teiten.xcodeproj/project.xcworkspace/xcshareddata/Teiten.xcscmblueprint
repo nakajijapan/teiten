@@ -9,11 +9,11 @@
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "2D341408-3DA3-47B3-964E-8856FDD915F0",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "09378AC8541058007B6F2BC2A75FE6B61C21501C" : "teiten_public",
+    "09378AC8541058007B6F2BC2A75FE6B61C21501C" : "teiten_public\/",
     "8F908A0E0218F85A3E929645F7A0E0941ED588C4" : "teiten"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "Teiten",
-  "DVTSourceControlWorkspaceBlueprintVersion" : 203,
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
   "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Teiten.xcodeproj",
   "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
     {

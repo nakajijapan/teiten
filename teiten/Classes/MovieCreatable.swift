@@ -9,7 +9,7 @@
 import Foundation
 
 protocol MovieMakerDelegate {
-    func movieMakerDidAddObject(current: Int, total: Int)
+    func movieMakerDidAddObject(_ current: Int, total: Int)
 }
 
 protocol MovieCreatable {
@@ -19,6 +19,6 @@ protocol MovieCreatable {
     var delegate:MovieMakerDelegate? { get set }
     var baseDirectoryPath:String { get set }
     
-    func generateMovie(composedMoviePath:String, success: (() -> Void)) -> Void
+    func generateMovie(_ composedMoviePath:String, success: @escaping (() -> Void))
 }
 
