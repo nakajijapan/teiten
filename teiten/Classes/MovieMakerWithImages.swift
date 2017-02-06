@@ -50,7 +50,7 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
     
     //MARK: - movie
     
-    func generateMovie(composedMoviePath:String, success: @escaping (() -> Void)) {
+    func generateMovie(_ composedMoviePath:String, success: @escaping (() -> Void)) {
         
         print("writeImagesAsMovie \(#line) path = file://\(composedMoviePath)")
         let images = self.files
@@ -149,7 +149,7 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
                 
                 frameCount += 1
                 
-                self.delegate?.movieMakerDidAddObject(current: current, total: images.count)
+                self.delegate?.movieMakerDidAddObject(current, total: images.count)
                 current += 1
                 
             }
@@ -233,8 +233,7 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
         // Image had been reversed because of this
         //let flipHorizontal:CGAffineTransform = CGAffineTransformMake(-1.0, 0.0, 0.0, 1.0, width, 0.0);
         //CGContextConcatCTM(context, flipHorizontal);
-        
-        CGContextDrawImage(context, CGRect(x: 0, y: 0, width: width, height: height), image)
+        context?.draw(image, in: CGRect(x: 0, y: 0, width: width, height: height))
         
         // UnLock
         context = nil

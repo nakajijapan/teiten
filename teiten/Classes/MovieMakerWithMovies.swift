@@ -58,10 +58,11 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
     
     //MARK: - movie
     
-    func generateMovie(composedMoviePath:String, success: @escaping (() -> Void)) {
+    func generateMovie(_ composedMoviePath:String, success: @escaping (() -> Void)) {
         
         // delete file if file already exists
         let fileManager = FileManager.default
+        
         if fileManager.fileExists(atPath: composedMoviePath) {
             
             do {
@@ -92,7 +93,7 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
             //let layerInstruction = movieComposition.addVideo(movieURL)
             _ = movieComposition.addVideo(movieURL)
             
-            self.delegate?.movieMakerDidAddObject(current: i + 1, total: self.files.count)
+            self.delegate?.movieMakerDidAddObject(i + 1, total: self.files.count)
             
             // today
             let dateFormatter = DateFormatter()

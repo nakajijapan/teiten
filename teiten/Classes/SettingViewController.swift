@@ -91,8 +91,7 @@ class SettingViewController: NSViewController {
 
     }
     
-    
-    @IBAction func dissmiss(sender: AnyObject) {
+    @IBAction func dissmiss(_ sender: Any) {
         self.dismiss(self)
     }
     

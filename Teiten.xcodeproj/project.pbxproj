@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		79BC97D0F6BF7078E27E34A2 /* Pods_TeitenTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 053646B5BEBBEE67DDDDB610 /* Pods_TeitenTests.framework */; };
 		DC8661F71CDBA9050031A6F5 /* FileDeletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8661F61CDBA9050031A6F5 /* FileDeletable.swift */; };
 		DC8661F91CDBB3CC0031A6F5 /* MovieCreatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8661F81CDBB3CC0031A6F5 /* MovieCreatable.swift */; };
 		DC928F281E4729DA00D18D1B /* NKJMovieComposer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC928F231E4729DA00D18D1B /* NKJMovieComposer.framework */; };
@@ -126,7 +125,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79BC97D0F6BF7078E27E34A2 /* Pods_TeitenTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,12 +262,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DCB53F7C1A88CFC100FA3B10 /* Build configuration list for PBXNativeTarget "TeitenTests" */;
 			buildPhases = (
-				60311971E8021B1E45368407 /* [CP] Check Pods Manifest.lock */,
 				DCB53F6B1A88CFC100FA3B10 /* Sources */,
 				DCB53F6C1A88CFC100FA3B10 /* Frameworks */,
 				DCB53F6D1A88CFC100FA3B10 /* Resources */,
-				2B85ED24A2673533FBEB1F24 /* [CP] Embed Pods Frameworks */,
-				947C89C43E26E1E1786F13A2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -295,7 +290,7 @@
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = CNE5C4C374;
 						LastSwiftMigration = 0820;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
 								enabled = 1;
@@ -304,6 +299,7 @@
 					};
 					DCB53F6E1A88CFC100FA3B10 = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = CNE5C4C374;
 						LastSwiftMigration = 0820;
 						TestTargetID = DCB53F5C1A88CFC100FA3B10;
 					};
@@ -348,51 +344,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2B85ED24A2673533FBEB1F24 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TeitenTests/Pods-TeitenTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		60311971E8021B1E45368407 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		947C89C43E26E1E1786F13A2 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TeitenTests/Pods-TeitenTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		DC928F331E472A2100D18D1B /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -402,7 +353,6 @@
 				"$(SRCROOT)/Carthage/Build/Mac/RxBlocking.framework",
 				"$(SRCROOT)/Carthage/Build/Mac/RxCocoa.framework",
 				"$(SRCROOT)/Carthage/Build/Mac/RxSwift.framework",
-				"$(SRCROOT)/Carthage/Build/Mac/RegiftOSX.framework",
 				"$(SRCROOT)/Carthage/Build/Mac/NKJMovieComposer.framework",
 			);
 			outputPaths = (
@@ -557,20 +507,19 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = CNE5C4C374;
-				INFOPLIST_FILE = Teiten/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				OTHER_CODE_SIGN_FLAGS = "--deep";
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
+				INFOPLIST_FILE = Teiten/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.nakajijapan.$(PRODUCT_NAME:rfc1034identifier)kansoku";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "761abf6c-9754-42a8-874c-d7557f108557";
-				PROVISIONING_PROFILE_SPECIFIER = Teiten20160217;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -581,23 +530,22 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Teiten/Teiten.entitlements;
-				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = CNE5C4C374;
-				INFOPLIST_FILE = Teiten/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				OTHER_CODE_SIGN_FLAGS = "--deep";
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
+				INFOPLIST_FILE = Teiten/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.nakajijapan.$(PRODUCT_NAME:rfc1034identifier)kansoku";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c38d145b-9a4e-4385-8a31-b0c90bf88ad1";
-				PROVISIONING_PROFILE_SPECIFIER = TeitenProduction;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -608,6 +556,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = CNE5C4C374;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
