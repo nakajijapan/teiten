@@ -19,6 +19,16 @@ import RxBlocking
 let kAppHomePath = "\(NSHomeDirectory())/Teiten"
 let kAppMoviePath = "\(NSHomeDirectory())/Movies/\(Bundle.main.bundleIdentifier!)"
 
+fileprivate extension NSTouchBarCustomizationIdentifier {
+    static let touchBar = NSTouchBarCustomizationIdentifier(Bundle.main.bundleIdentifier!)
+}
+
+fileprivate extension NSTouchBarItemIdentifier {
+    static let capture = NSTouchBarItemIdentifier("\(Bundle.main.bundleIdentifier!).TouchBarItem.capture")
+    static let share = NSTouchBarItemIdentifier("\(Bundle.main.bundleIdentifier!).TouchBarItem.share")
+    static let size = NSTouchBarItemIdentifier("\(Bundle.main.bundleIdentifier!).TouchBarItem.size")
+}
+
 class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFileOutputRecordingDelegate, NSTableViewDataSource, NSTableViewDelegate {
  
     let disposeBag = DisposeBag()
@@ -42,7 +52,7 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
     @IBOutlet weak var captureImageButton: NSButton!
     
     // camera
-    var previewView:NSView!
+    var previewView: NSView!
     
     // image
     var captureSession:AVCaptureSession!
@@ -510,3 +520,98 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
     }
 }
 
+
+// MARK: -  NSTouchBar
+extension CaptureViewController {
+    
+    // MARK: - TouchBar
+    @available(OSX 10.12.2, *)
+    override open func makeTouchBar() -> NSTouchBar? {
+        
+        let touchBar = NSTouchBar()
+        touchBar.delegate = self
+        touchBar.customizationIdentifier = .touchBar
+        touchBar.defaultItemIdentifiers = [.capture, .share, .size]
+        
+        return touchBar
+        
+    }
+    
+}
+
+// MARK: - NSTouchBarDelegate
+extension CaptureViewController: NSTouchBarDelegate {
+    
+    @available(OSX 10.12.2, *)
+    public func touchBar(_ touchBar: NSTouchBar, makeItemForIdentifier identifier: NSTouchBarItemIdentifier) -> NSTouchBarItem? {
+        
+        print("\(identifier)")
+        
+        switch identifier {
+        case NSTouchBarItemIdentifier.capture:
+            
+            let button = NSButton(image: NSImage(named: "button_capture_image")!, target: self, action: #selector(captureButtonDidTap(_:)))
+            button.bezelColor = NSColor(red:0.35, green:0.61, blue:0.35, alpha:1.00)
+            
+            
+            let touchBarItem = NSCustomTouchBarItem(identifier: identifier)
+            touchBarItem.view = button
+            return touchBarItem
+            
+        case NSTouchBarItemIdentifier.size:
+            
+            let customActionItem = NSCustomTouchBarItem(identifier: identifier)
+            let segmentedControl = NSSegmentedControl(
+                labels: [
+                    ScreenResolution.size1280x720.toString(),
+                    ScreenResolution.size320x180.toString(),
+                    ScreenResolution.size640x360.toString(),
+                ],
+                trackingMode: NSSegmentSwitchTracking.selectOne,
+                target: self,
+                action: #selector(segmentedControlDidSelect(_:))
+            )
+            
+            let screenResolution = UserDefaults.standard.integer(forKey: "SCREENRESOLUTION")
+            segmentedControl.selectedSegment = screenResolution
+            customActionItem.view = segmentedControl
+            return customActionItem
+            
+            
+        case NSTouchBarItemIdentifier.share:
+            
+            let services = NSSharingServicePickerTouchBarItem(identifier: identifier)
+            services.delegate = self
+            
+            return services
+            
+        default:
+            return nil
+        }
+        
+    }
+    
+    func segmentedControlDidSelect(_ sender: NSSegmentedControl) {
+        let screenResolution = ScreenResolution(rawValue: sender.selectedSegment)!
+        UserDefaults.standard.set(screenResolution.rawValue, forKey: "SCREENRESOLUTION")
+    }
+    
+    func captureButtonDidTap(_ sender: NSButton) {
+        self.captureImage()
+    }
+    
+    
+}
+
+// MARK: - NSSharingServicePickerTouchBarItemDelegate
+extension CaptureViewController: NSSharingServicePickerTouchBarItemDelegate {
+
+    @available(OSX 10.12.2, *)
+    func items(for pickerTouchBarItem: NSSharingServicePickerTouchBarItem) -> [Any] {
+        if let image = self.entity.image {
+            return [image]
+        }
+        return []
+    }
+
+}
