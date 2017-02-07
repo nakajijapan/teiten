@@ -52,12 +52,19 @@ class FileEntity: NSObject, NSPasteboardWriting {
     // MARK: - NSPasteboardWriting
     
     func writableTypes(for pasteboard: NSPasteboard) -> [String] {
+        guard self.fileURL != nil else {
+            return []
+        }
+        
         let fileURL = self.fileURL as NSURL
         print("\(#function) \(#line) \(fileURL.writableTypes(for: pasteboard)))")
         return fileURL.writableTypes(for: pasteboard)
     }
     
     func pasteboardPropertyList(forType type: String) -> Any? {
+        guard self.fileURL != nil else {
+            return nil
+        }
         
         let fileURL = self.fileURL as NSURL
         print("\(#function) \(#line) \(type) : \(fileURL.pasteboardPropertyList(forType: type))")
@@ -65,6 +72,10 @@ class FileEntity: NSObject, NSPasteboardWriting {
     }
     
     func writingOptions(forType type: String, pasteboard: NSPasteboard) -> NSPasteboardWritingOptions {
+        guard self.fileURL != nil else {
+            return .promised
+        }
+
         let fileURL = self.fileURL as NSURL
         print("\(#function) \(#line) \(type)")
         return fileURL.writingOptions(forType: type, pasteboard: pasteboard)

@@ -23,6 +23,17 @@ enum ScreenResolution:Int {
         }
     }
     
+    func toString() -> String {
+        switch self {
+        case .size320x180:
+            return "size320x180"
+        case .size640x360:
+            return "size640x360"
+        case .size1280x720:
+            return "size1280x720"
+        }
+    }
+    
     func toSessionPreset() -> String! {
         switch self {
         case .size320x180:

@@ -124,7 +124,6 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
 
         }
         
-        
         // animation
         movieComposition.videoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: layerVideo, in: layerRoot)
         
