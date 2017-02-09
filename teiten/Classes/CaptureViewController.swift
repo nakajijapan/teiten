@@ -97,32 +97,32 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
         // Movie
         videoMovieFileOutput = AVCaptureMovieFileOutput()
         let maxDuration = CMTime(
-            seconds: 3.0,          // recording time
+            seconds: 4.0,          // recording time
             preferredTimescale: 24 // frame buffer
         )
         videoMovieFileOutput.maxRecordedDuration = maxDuration
         videoMovieFileOutput.minFreeDiskSpaceLimit = 1024 * 1024
         
-        self.captureSession = AVCaptureSession()
+        captureSession = AVCaptureSession()
         
-        if self.captureSession.canAddInput(videoInput) {
-            self.captureSession.addInput(videoInput as AVCaptureInput)
+        if captureSession.canAddInput(videoInput) {
+            captureSession.addInput(videoInput as AVCaptureInput)
         } else {
-            self.cannotConnectCameraViewHidden(hidden: false)
+            cannotConnectCameraViewHidden(hidden: false)
             return
         }
         
-        if self.captureSession.canAddOutput(self.videoStillImageOutput) {
-            self.captureSession.addOutput(self.videoStillImageOutput)
+        if captureSession.canAddOutput(videoStillImageOutput) {
+            captureSession.addOutput(videoStillImageOutput)
         } else {
-            self.cannotConnectCameraViewHidden(hidden: false)
+            cannotConnectCameraViewHidden(hidden: false)
             return
         }
         
-        if self.captureSession.canAddOutput(self.videoMovieFileOutput) {
-            self.captureSession.addOutput(self.videoMovieFileOutput)
+        if captureSession.canAddOutput(videoMovieFileOutput) {
+            captureSession.addOutput(videoMovieFileOutput)
         } else {
-            self.cannotConnectCameraViewHidden(hidden: false)
+            cannotConnectCameraViewHidden(hidden: false)
             return
         }
         
@@ -141,14 +141,14 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
         captureSession.sessionPreset = ScreenResolution(rawValue: 0)!.toSessionPreset()
         
         // Preview Layer
-        let previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
+        let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
         previewLayer?.frame = CGRect(x: 0, y: 0, width: 640, height: 360)
         
         previewView = NSView(frame: NSRect(x:0, y: 0, width: 640, height: 360))
         previewView.layer = previewLayer
         
-        backgroundView.addSubview(self.previewView, positioned: NSWindowOrderingMode.below, relativeTo: self.backgroundView)
+        backgroundView.addSubview(previewView, positioned: NSWindowOrderingMode.below, relativeTo: backgroundView)
         
         // start
         captureSession.startRunning()
@@ -158,7 +158,7 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
         tableView.register(forDraggedTypes: types)
         tableView.setDraggingSourceOperationMask(NSDragOperation.every, forLocal: false)
         
-        self.initCountDown()
+        initCountDown()
     }
     
     func cannotConnectCameraViewHidden(hidden:Bool) {
@@ -167,24 +167,24 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
         previewImageScrollView.isHidden = !hidden
         cannotConnectCameraView.isHidden = hidden
 
-        self.createMovieButton.isEnabled = hidden
-        self.captureImageButton.isEnabled = hidden
+        createMovieButton.isEnabled = hidden
+        captureImageButton.isEnabled = hidden
 
     }
     
     func initCannotConnectCameraView() {
 
-        self.cannotConnectCameraView.isHidden = true
-        self.backgroundView.addSubview(self.cannotConnectCameraView)
-        self.cannotConnectCameraView.translatesAutoresizingMaskIntoConstraints = false
-        let views = ["cannotConnectCameraView": self.cannotConnectCameraView] as [String: Any]
-        self.backgroundView.addConstraints(NSLayoutConstraint.constraints(
+        cannotConnectCameraView.isHidden = true
+        backgroundView.addSubview(cannotConnectCameraView)
+        cannotConnectCameraView.translatesAutoresizingMaskIntoConstraints = false
+        let views = ["cannotConnectCameraView": cannotConnectCameraView] as [String: Any]
+        backgroundView.addConstraints(NSLayoutConstraint.constraints(
             withVisualFormat: "V:|[cannotConnectCameraView]|",
             options: NSLayoutFormatOptions.alignAllCenterX,
             metrics: nil,
             views: views)
         )
-        self.view.addConstraints(NSLayoutConstraint.constraints(
+        view.addConstraints(NSLayoutConstraint.constraints(
             withVisualFormat: "H:|[cannotConnectCameraView]|",
             options: NSLayoutFormatOptions.alignAllCenterX,
             metrics: nil,
@@ -402,22 +402,18 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
             movieMaker.size = ScreenResolution(rawValue: screenResolution)!.toSize()
             movieMaker.delegate = self
             movieMaker.generateMovie(path) {
-                
                 DispatchQueue.main.async {
                     self.indicatorStop()
                 }
-                
             }
         } else {
             let movieMaker = MovieMakerWithMovies()
-            movieMaker.size = ScreenResolution(rawValue: screenResolution)!.toSize()
+            movieMaker.size = ScreenResolution(rawValue: 0)!.toSize() // fixed
             movieMaker.delegate = self
             movieMaker.generateMovie(path) {
-                
                 DispatchQueue.main.async {
                     self.indicatorStop()
                 }
-                
             }
         }
 
