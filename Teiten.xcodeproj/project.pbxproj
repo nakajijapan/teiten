@@ -145,11 +145,6 @@
 		DCB53F541A88CFC100FA3B10 = {
 			isa = PBXGroup;
 			children = (
-				DC928F231E4729DA00D18D1B /* NKJMovieComposer.framework */,
-				DC928F241E4729DA00D18D1B /* RxBlocking.framework */,
-				DC928F251E4729DA00D18D1B /* RxCocoa.framework */,
-				DC928F261E4729DA00D18D1B /* RxSwift.framework */,
-				DC928F271E4729DA00D18D1B /* RxTest.framework */,
 				DCB53F5F1A88CFC100FA3B10 /* Teiten */,
 				DCB53F721A88CFC100FA3B10 /* TeitenTests */,
 				DCB53F5E1A88CFC100FA3B10 /* Products */,
@@ -224,6 +219,11 @@
 		DCB53F961A88D0FF00FA3B10 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DC928F231E4729DA00D18D1B /* NKJMovieComposer.framework */,
+				DC928F241E4729DA00D18D1B /* RxBlocking.framework */,
+				DC928F251E4729DA00D18D1B /* RxCocoa.framework */,
+				DC928F261E4729DA00D18D1B /* RxSwift.framework */,
+				DC928F271E4729DA00D18D1B /* RxTest.framework */,
 				DCB53F941A88D0EF00FA3B10 /* AVFoundation.framework */,
 				DCB53F921A88D0E600FA3B10 /* InputMethodKit.framework */,
 				DCB53F901A88D0DA00FA3B10 /* CoreVideo.framework */,
