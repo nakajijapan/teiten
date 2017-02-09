@@ -282,8 +282,8 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
             .observe(Int.self, "TIMEINTERVAL")
             .subscribe(
                 onNext: { (value: Int?) in
-                    if value != nil {
-                        self.timeInterval = value!
+                    if let value = value {
+                        self.timeInterval = value
                     }
             },
                 onError: nil,
@@ -296,8 +296,8 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
             .observe(Int.self, "SCREENRESOLUTION")
             .subscribe(
                 onNext: { (value: Int?) in
-                    if value != nil {
-                        self.screenResolution = value!
+                    if let value = value {
+                        self.screenResolution = value
                     }
             },
                 onError: nil,
@@ -309,8 +309,8 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
             .rx.observe(Int.self, "RESOURCETYPE")
             .subscribe(
                 onNext: { (value: Int?) in
-                    if value != nil {
-                        self.resourceType = value!
+                    if let value = value {
+                        self.resourceType = value
                     }
             },
                 onError: nil,
@@ -401,7 +401,7 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
             let movieMaker = MovieMakerWithImages()
             movieMaker.size = ScreenResolution(rawValue: screenResolution)!.toSize()
             movieMaker.delegate = self
-            movieMaker.generateMovie(path) { () -> Void in
+            movieMaker.generateMovie(path) {
                 
                 DispatchQueue.main.async {
                     self.indicatorStop()
@@ -412,7 +412,7 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
             let movieMaker = MovieMakerWithMovies()
             movieMaker.size = ScreenResolution(rawValue: screenResolution)!.toSize()
             movieMaker.delegate = self
-            movieMaker.generateMovie(path) { () -> Void in
+            movieMaker.generateMovie(path) {
                 
                 DispatchQueue.main.async {
                     self.indicatorStop()

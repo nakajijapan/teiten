@@ -21,15 +21,15 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
     // MovieCreatable
     typealias FileListType = String
     var size = NSSize()
-    var files = [FileListType]()
-    var delegate:MovieMakerDelegate?
+    var files: [FileListType] = []
+    var delegate: MovieMakerDelegate?
 
     var dates = [NSDate]()
     
     
     override init() {
         super.init()
-        self.initMovieInfo()
+        initMovieInfo()
     }
     
     // MARK: - File
@@ -37,7 +37,7 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
     func initMovieInfo() {
         
         let fileManager = FileManager.default
-        let paths = try! fileManager.contentsOfDirectory(atPath: self.baseDirectoryPath)
+        let paths = try! fileManager.contentsOfDirectory(atPath: baseDirectoryPath)
         
         for path in paths {
             
@@ -46,12 +46,12 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
             }
            
             // Creation Date
-            let attributes = try! FileManager.default.attributesOfItem(atPath: "\(self.baseDirectoryPath)/\(path)")
+            let attributes = try! FileManager.default.attributesOfItem(atPath: "\(baseDirectoryPath)/\(path)")
             let createDateStirng = attributes[FileAttributeKey.creationDate] as! NSDate
-            self.dates.append(createDateStirng)
+            dates.append(createDateStirng)
             
             // File Path
-            self.files.append("\(self.baseDirectoryPath)/\(path)")
+            files.append("\(baseDirectoryPath)/\(path)")
         }
         
     }
@@ -76,14 +76,14 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
         // generate parent layer
         let layerRoot  = CALayer()
         let layerVideo = CALayer()
-        layerRoot.frame   = CGRect(x: 0.0, y: 0.0, width: self.size.width, height: self.size.height)
-        layerVideo.frame  = CGRect(x: 0.0, y: 0.0, width: self.size.width, height: self.size.height)
+        layerRoot.frame   = CGRect(x: 0.0, y: 0.0, width: size.width, height: size.height)
+        layerVideo.frame  = CGRect(x: 0.0, y: 0.0, width: size.width, height: size.height)
         layerRoot.addSublayer(layerVideo)
         
         let movieComposition = NKJMovieComposer()
-        movieComposition.videoComposition.renderSize = CGSize(width: self.size.width, height: self.size.height)
+        movieComposition.videoComposition.renderSize = CGSize(width: size.width, height: size.height)
 
-        for i in 0..<self.files.count {
+        for i in 0..<files.count {
 
             let beforeTimeDuration = movieComposition.currentTimeDuration
             let moviePath = self.files[i]
@@ -93,7 +93,7 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
             //let layerInstruction = movieComposition.addVideo(movieURL)
             _ = movieComposition.addVideo(movieURL)
             
-            self.delegate?.movieMakerDidAddObject(i + 1, total: self.files.count)
+            self.delegate?.movieMakerDidAddObject(i + 1, total: files.count)
             
             // today
             let dateFormatter = DateFormatter()

@@ -369,7 +369,7 @@ IA
                                     </column>
                                 </cells>
                                 <connections>
-                                    <action selector="timeIntervalMatrixDidChangeValue:" target="vQI-ER-s2z" id="c86-KG-ol2"/>
+                                    <action selector="timeIntervalMatrixDidChangeValueWithSender:" target="vQI-ER-s2z" id="1qt-n7-CfF"/>
                                 </connections>
                             </matrix>
                             <matrix verticalHuggingPriority="750" fixedFrame="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EPs-A6-rtZ">
@@ -395,7 +395,7 @@ IA
                                     </column>
                                 </cells>
                                 <connections>
-                                    <action selector="resourceTypeMatrixDidChangeValue:" target="vQI-ER-s2z" id="Guu-BO-wWT"/>
+                                    <action selector="resourceTypeMatrixDidChangeValueWithSender:" target="vQI-ER-s2z" id="R2D-Ez-CxZ"/>
                                 </connections>
                             </matrix>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HTY-nv-iKm">
@@ -461,7 +461,7 @@ IA
                                     </column>
                                 </cells>
                                 <connections>
-                                    <action selector="resolutionMatrixDidChangeValue:" target="vQI-ER-s2z" id="Z5Q-pO-EJ5"/>
+                                    <action selector="resolutionMatrixDidChangeValueWithSender:" target="vQI-ER-s2z" id="72m-Ku-5h8"/>
                                 </connections>
                             </matrix>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jgm-fx-bbx">
