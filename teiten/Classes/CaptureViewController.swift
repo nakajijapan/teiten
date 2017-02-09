@@ -177,7 +177,7 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
         self.cannotConnectCameraView.isHidden = true
         self.backgroundView.addSubview(self.cannotConnectCameraView)
         self.cannotConnectCameraView.translatesAutoresizingMaskIntoConstraints = false
-        let views = ["cannotConnectCameraView": self.cannotConnectCameraView]
+        let views = ["cannotConnectCameraView": self.cannotConnectCameraView] as [String: Any]
         self.backgroundView.addConstraints(NSLayoutConstraint.constraints(
             withVisualFormat: "V:|[cannotConnectCameraView]|",
             options: NSLayoutFormatOptions.alignAllCenterX,
