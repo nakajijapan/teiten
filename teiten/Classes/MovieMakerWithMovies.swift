@@ -86,7 +86,7 @@ class MovieMakerWithMovies: NSObject, MovieCreatable, FileDeletable {
         for i in 0..<files.count {
 
             let beforeTimeDuration = movieComposition.currentTimeDuration
-            let moviePath = self.files[i]
+            let moviePath = files[i]
             
             // movie
             let movieURL = URL(fileURLWithPath: moviePath)
