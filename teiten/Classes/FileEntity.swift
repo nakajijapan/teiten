@@ -52,10 +52,6 @@ class FileEntity: NSObject, NSPasteboardWriting {
     // MARK: - NSPasteboardWriting
     
     func writableTypes(for pasteboard: NSPasteboard) -> [String] {
-        guard self.fileURL != nil else {
-            return []
-        }
-        
         let fileURL = self.fileURL as NSURL
         print("\(#function) \(#line) \(fileURL.writableTypes(for: pasteboard)))")
         return fileURL.writableTypes(for: pasteboard)

@@ -25,7 +25,7 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
     
     override init() {
         super.init()
-        self.initImageInfo()
+        initImageInfo()
     }
     
     //MARK: - File 
@@ -33,17 +33,17 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
     func initImageInfo() {
         
         let fileManager = FileManager.default
-        let list:Array = try! fileManager.contentsOfDirectory(atPath: self.baseDirectoryPath)
+        let list:Array = try! fileManager.contentsOfDirectory(atPath: baseDirectoryPath)
 
         for path in list {
-            print("path = \(self.baseDirectoryPath)/\(path)")
+            print("path = \(baseDirectoryPath)/\(path)")
             
             if path.hasSuffix("DS_Store") {
                 continue
             }
             
-            let image = NSImage(contentsOfFile: "\(self.baseDirectoryPath)/\(path)")!
-            self.files.append(image)
+            let image = NSImage(contentsOfFile: "\(baseDirectoryPath)/\(path)")!
+            files.append(image)
         }
         
     }
@@ -175,8 +175,7 @@ class MovieMakerWithImages: NSObject, MovieCreatable, FileDeletable {
     
     func convertNSImageToCGImage(image:NSImage) -> CGImage? {
         
-        let imageData: Data? = image.tiffRepresentation
-        if imageData == nil {
+        guard let imageData = image.tiffRepresentation else {
             return nil
         }
         
