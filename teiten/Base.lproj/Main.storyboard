@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16E144f" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16E154a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
@@ -207,7 +207,7 @@ IA
                                             <constraint firstAttribute="width" constant="149" id="3R0-SN-1A5"/>
                                             <constraint firstAttribute="height" constant="122" id="rtk-ag-xEc"/>
                                         </constraints>
-                                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="999" drawsBackground="YES" id="g5r-QG-uJG">
+                                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="0" drawsBackground="YES" id="g5r-QG-uJG">
                                             <font key="font" size="72" name="Arial-Black"/>
                                             <color key="textColor" name="highlightColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
@@ -343,11 +343,11 @@ IA
             <objects>
                 <viewController title="Setting" storyboardIdentifier="SettingViewController" id="vQI-ER-s2z" customClass="SettingViewController" customModule="Teiten" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="NyM-re-WWU">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="344"/>
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="292"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <matrix verticalHuggingPriority="750" fixedFrame="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="21P-Pj-BF9">
-                                <rect key="frame" x="32" y="224" width="61" height="38"/>
+                                <rect key="frame" x="32" y="83" width="61" height="38"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 <size key="cellSize" width="39" height="18"/>
@@ -369,11 +369,11 @@ IA
                                     </column>
                                 </cells>
                                 <connections>
-                                    <action selector="timeIntervalMatrixDidChangeValue:" target="vQI-ER-s2z" id="c86-KG-ol2"/>
+                                    <action selector="timeIntervalMatrixDidChangeValueWithSender:" target="vQI-ER-s2z" id="1qt-n7-CfF"/>
                                 </connections>
                             </matrix>
                             <matrix verticalHuggingPriority="750" fixedFrame="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EPs-A6-rtZ">
-                                <rect key="frame" x="32" y="58" width="61" height="38"/>
+                                <rect key="frame" x="32" y="163" width="61" height="38"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 <size key="cellSize" width="59" height="18"/>
@@ -395,11 +395,11 @@ IA
                                     </column>
                                 </cells>
                                 <connections>
-                                    <action selector="resourceTypeMatrixDidChangeValue:" target="vQI-ER-s2z" id="Guu-BO-wWT"/>
+                                    <action selector="resourceTypeMatrixDidChangeValueWithSender:" target="vQI-ER-s2z" id="R2D-Ez-CxZ"/>
                                 </connections>
                             </matrix>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HTY-nv-iKm">
-                                <rect key="frame" x="18" y="297" width="74" height="27"/>
+                                <rect key="frame" x="18" y="245" width="74" height="27"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Setting" id="eKe-92-Fox">
                                     <font key="font" metaFont="system" size="22"/>
@@ -408,7 +408,7 @@ IA
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6bE-cM-xtf">
-                                <rect key="frame" x="30" y="270" width="184" height="19"/>
+                                <rect key="frame" x="30" y="129" width="184" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Shooting Time Interval" id="Itd-pT-5Tc">
                                     <font key="font" metaFont="system" size="16"/>
@@ -417,16 +417,16 @@ IA
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OrJ-Ed-D3a">
-                                <rect key="frame" x="30" y="197" width="184" height="19"/>
+                                <rect key="frame" x="231" y="209" width="184" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Resolution" id="e14-8e-bPG">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Resolution (Image Only)" id="e14-8e-bPG">
                                     <font key="font" metaFont="system" size="16"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="opV-KB-FRW">
-                                <rect key="frame" x="30" y="104" width="184" height="19"/>
+                                <rect key="frame" x="30" y="209" width="184" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Save Target" id="LAu-T8-p1q">
                                     <font key="font" metaFont="system" size="16"/>
@@ -435,7 +435,7 @@ IA
                                 </textFieldCell>
                             </textField>
                             <matrix verticalHuggingPriority="750" fixedFrame="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RlC-9N-eRH">
-                                <rect key="frame" x="32" y="131" width="106" height="58"/>
+                                <rect key="frame" x="233" y="143" width="106" height="58"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 <size key="cellSize" width="82" height="18"/>
@@ -461,7 +461,7 @@ IA
                                     </column>
                                 </cells>
                                 <connections>
-                                    <action selector="resolutionMatrixDidChangeValue:" target="vQI-ER-s2z" id="Z5Q-pO-EJ5"/>
+                                    <action selector="resolutionMatrixDidChangeValueWithSender:" target="vQI-ER-s2z" id="72m-Ku-5h8"/>
                                 </connections>
                             </matrix>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jgm-fx-bbx">
@@ -485,7 +485,7 @@ IA
                 </viewController>
                 <customObject id="FiH-vb-TrW" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="124" y="1298"/>
+            <point key="canvasLocation" x="124" y="1272"/>
         </scene>
     </scenes>
     <resources>

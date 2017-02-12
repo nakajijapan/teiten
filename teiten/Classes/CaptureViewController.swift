@@ -72,14 +72,14 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
     override public func viewDidLoad() {
 
         // Initialize
-        self.initDirectories()
-        self.initDefaultSettings()
-        self.initSubscribeNSuserDefaults()
-        self.initCannotConnectCameraView()
+        initDirectories()
+        initDefaultSettings()
+        initSubscribeNSuserDefaults()
+        initCannotConnectCameraView()
 
         // AVCaptureDevice
         guard let device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) else {
-            self.cannotConnectCameraViewHidden(hidden: false)
+            cannotConnectCameraViewHidden(hidden: false)
             return
         }
 
@@ -88,41 +88,41 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
         do {
             videoInput = try AVCaptureDeviceInput(device: device)
         } catch _ {
-            self.cannotConnectCameraViewHidden(hidden: false)
+            cannotConnectCameraViewHidden(hidden: false)
             return
         }
 
-        self.videoStillImageOutput = AVCaptureStillImageOutput()
+        videoStillImageOutput = AVCaptureStillImageOutput()
         
         // Movie
-        self.videoMovieFileOutput = AVCaptureMovieFileOutput()
+        videoMovieFileOutput = AVCaptureMovieFileOutput()
         let maxDuration = CMTime(
-            seconds: 3.0,          // recording time
+            seconds: 4.0,          // recording time
             preferredTimescale: 24 // frame buffer
         )
-        self.videoMovieFileOutput.maxRecordedDuration = maxDuration
-        self.videoMovieFileOutput.minFreeDiskSpaceLimit = 1024 * 1024
+        videoMovieFileOutput.maxRecordedDuration = maxDuration
+        videoMovieFileOutput.minFreeDiskSpaceLimit = 1024 * 1024
         
-        self.captureSession = AVCaptureSession()
+        captureSession = AVCaptureSession()
         
-        if self.captureSession.canAddInput(videoInput) {
-            self.captureSession.addInput(videoInput as AVCaptureInput)
+        if captureSession.canAddInput(videoInput) {
+            captureSession.addInput(videoInput as AVCaptureInput)
         } else {
-            self.cannotConnectCameraViewHidden(hidden: false)
+            cannotConnectCameraViewHidden(hidden: false)
             return
         }
         
-        if self.captureSession.canAddOutput(self.videoStillImageOutput) {
-            self.captureSession.addOutput(self.videoStillImageOutput)
+        if captureSession.canAddOutput(videoStillImageOutput) {
+            captureSession.addOutput(videoStillImageOutput)
         } else {
-            self.cannotConnectCameraViewHidden(hidden: false)
+            cannotConnectCameraViewHidden(hidden: false)
             return
         }
         
-        if self.captureSession.canAddOutput(self.videoMovieFileOutput) {
-            self.captureSession.addOutput(self.videoMovieFileOutput)
+        if captureSession.canAddOutput(videoMovieFileOutput) {
+            captureSession.addOutput(videoMovieFileOutput)
         } else {
-            self.cannotConnectCameraViewHidden(hidden: false)
+            cannotConnectCameraViewHidden(hidden: false)
             return
         }
         
@@ -130,61 +130,61 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
         let audioCaptureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeAudio)
         let audioInput = try! AVCaptureDeviceInput(device: audioCaptureDevice) //[AVCaptureDeviceInput deviceInputWithDevice:audioCaptureDevice error:&error];
 
-        if self.captureSession.canAddInput(audioInput) {
-            self.captureSession.addInput(audioInput)
+        if captureSession.canAddInput(audioInput) {
+            captureSession.addInput(audioInput)
         } else {
-            self.cannotConnectCameraViewHidden(hidden: false)
+            cannotConnectCameraViewHidden(hidden: false)
             return
         }
         
         // AVCaptureSessionPreset1280x720
-        self.captureSession.sessionPreset = ScreenResolution(rawValue: 0)!.toSessionPreset()
+        captureSession.sessionPreset = ScreenResolution(rawValue: 0)!.toSessionPreset()
         
         // Preview Layer
-        let previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
+        let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
         previewLayer?.frame = CGRect(x: 0, y: 0, width: 640, height: 360)
         
-        self.previewView = NSView(frame: NSRect(x:0, y: 0, width: 640, height: 360))
-        self.previewView.layer = previewLayer
+        previewView = NSView(frame: NSRect(x:0, y: 0, width: 640, height: 360))
+        previewView.layer = previewLayer
         
-        self.backgroundView.addSubview(self.previewView, positioned: NSWindowOrderingMode.below, relativeTo: self.backgroundView)
+        backgroundView.addSubview(previewView, positioned: NSWindowOrderingMode.below, relativeTo: backgroundView)
         
         // start
-        self.captureSession.startRunning()
+        captureSession.startRunning()
         
         // setting drag type allowed
         let types = [NSImage.imageTypes().first!, NSFilenamesPboardType]
-        self.tableView.register(forDraggedTypes: types)
-        self.tableView.setDraggingSourceOperationMask(NSDragOperation.every, forLocal: false)
+        tableView.register(forDraggedTypes: types)
+        tableView.setDraggingSourceOperationMask(NSDragOperation.every, forLocal: false)
         
-        self.initCountDown()
+        initCountDown()
     }
     
     func cannotConnectCameraViewHidden(hidden:Bool) {
 
-        self.countDownLabel.isHidden = !hidden
-        self.previewImageScrollView.isHidden = !hidden
-        self.cannotConnectCameraView.isHidden = hidden
+        countDownLabel.isHidden = !hidden
+        previewImageScrollView.isHidden = !hidden
+        cannotConnectCameraView.isHidden = hidden
 
-        self.createMovieButton.isEnabled = hidden
-        self.captureImageButton.isEnabled = hidden
+        createMovieButton.isEnabled = hidden
+        captureImageButton.isEnabled = hidden
 
     }
     
     func initCannotConnectCameraView() {
 
-        self.cannotConnectCameraView.isHidden = true
-        self.backgroundView.addSubview(self.cannotConnectCameraView)
-        self.cannotConnectCameraView.translatesAutoresizingMaskIntoConstraints = false
-        let views = ["cannotConnectCameraView": self.cannotConnectCameraView] as [String: Any]
-        self.backgroundView.addConstraints(NSLayoutConstraint.constraints(
+        cannotConnectCameraView.isHidden = true
+        backgroundView.addSubview(cannotConnectCameraView)
+        cannotConnectCameraView.translatesAutoresizingMaskIntoConstraints = false
+        let views = ["cannotConnectCameraView": cannotConnectCameraView] as [String: Any]
+        backgroundView.addConstraints(NSLayoutConstraint.constraints(
             withVisualFormat: "V:|[cannotConnectCameraView]|",
             options: NSLayoutFormatOptions.alignAllCenterX,
             metrics: nil,
             views: views)
         )
-        self.view.addConstraints(NSLayoutConstraint.constraints(
+        view.addConstraints(NSLayoutConstraint.constraints(
             withVisualFormat: "H:|[cannotConnectCameraView]|",
             options: NSLayoutFormatOptions.alignAllCenterX,
             metrics: nil,
@@ -219,17 +219,17 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
 
     func initDefaultSettings() {
 
-        self.timeInterval = UserDefaults.standard.integer(forKey: "TIMEINTERVAL")
-        if self.timeInterval < 1 {
-            self.timeInterval = 10
+        timeInterval = UserDefaults.standard.integer(forKey: "TIMEINTERVAL")
+        if timeInterval < 1 {
+            timeInterval = 10
             UserDefaults.standard.set(self.timeInterval, forKey: "TIMEINTERVAL")
         }
         
-        self.screenResolution = UserDefaults.standard.integer(forKey: "SCREENRESOLUTION")
+        screenResolution = UserDefaults.standard.integer(forKey: "SCREENRESOLUTION")
         
         UserDefaults.standard.set(self.screenResolution, forKey: "SCREENRESOLUTION")
         
-        self.resourceType = UserDefaults.standard.integer(forKey: "RESOURCETYPE")
+        resourceType = UserDefaults.standard.integer(forKey: "RESOURCETYPE")
 
     }
     
@@ -246,7 +246,7 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
             .addDisposableTo(disposeBag)
         
         // CountDownLabel
-        self.countDownLabel
+        countDownLabel
             .rx
             .observe(String.self, "stringValue")
             .subscribe(
@@ -282,8 +282,8 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
             .observe(Int.self, "TIMEINTERVAL")
             .subscribe(
                 onNext: { (value: Int?) in
-                    if value != nil {
-                        self.timeInterval = value!
+                    if let value = value {
+                        self.timeInterval = value
                     }
             },
                 onError: nil,
@@ -296,8 +296,8 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
             .observe(Int.self, "SCREENRESOLUTION")
             .subscribe(
                 onNext: { (value: Int?) in
-                    if value != nil {
-                        self.screenResolution = value!
+                    if let value = value {
+                        self.screenResolution = value
                     }
             },
                 onError: nil,
@@ -309,8 +309,8 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
             .rx.observe(Int.self, "RESOURCETYPE")
             .subscribe(
                 onNext: { (value: Int?) in
-                    if value != nil {
-                        self.resourceType = value!
+                    if let value = value {
+                        self.resourceType = value
                     }
             },
                 onError: nil,
@@ -339,34 +339,30 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
     // refrect count number to label
     func countOne(_ params: [String:Int]) {
         let delta = 100.0 / Double(params["total"]!)
-        self.indicator.increment(by: Double(delta))
+        indicator.increment(by: Double(delta))
     }
-    
-    
-
     
     // MARK: - Actions
     
     @IBAction func captureImageButtonDidClick(_ sender: Any) {
-        self.captureImage()
-
+        captureImage()
     }
     
     @IBAction func createMovieButtonDidClick(_ sender: Any) {
-        self.createMovie()
+        createMovie()
     }
 
     // MARK: - Public Methods
     
     public func captureImage() {
         
-        guard self.videoStillImageOutput != nil else {
+        guard videoStillImageOutput != nil else {
             return
         }
         
-        let connection = self.videoStillImageOutput.connections[0] as! AVCaptureConnection
+        let connection = videoStillImageOutput.connections[0] as! AVCaptureConnection
         
-        self.videoStillImageOutput.captureStillImageAsynchronously(from: connection, completionHandler: {(sambleBuffer, erro) -> Void in
+        videoStillImageOutput.captureStillImageAsynchronously(from: connection, completionHandler: {(sambleBuffer, erro) -> Void in
             
             let data = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sambleBuffer)!
             let tmpImage = NSImage(data: data)!
@@ -399,29 +395,25 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
         let date = Date()
         let path = "\(kAppMoviePath)/\(dateFormatter.string(from: date)).mov"
 
-        self.indicatorStart()
+        indicatorStart()
         
-        if self.resourceType == ResourceType.Image.rawValue {
+        if resourceType == ResourceType.Image.rawValue {
             let movieMaker = MovieMakerWithImages()
-            movieMaker.size = ScreenResolution(rawValue: self.screenResolution)!.toSize()
+            movieMaker.size = ScreenResolution(rawValue: screenResolution)!.toSize()
             movieMaker.delegate = self
-            movieMaker.generateMovie(path) { () -> Void in
-                
+            movieMaker.generateMovie(path) {
                 DispatchQueue.main.async {
                     self.indicatorStop()
                 }
-                
             }
         } else {
             let movieMaker = MovieMakerWithMovies()
-            movieMaker.size = ScreenResolution(rawValue: self.screenResolution)!.toSize()
+            movieMaker.size = ScreenResolution(rawValue: 0)!.toSize() // fixed
             movieMaker.delegate = self
-            movieMaker.generateMovie(path) { () -> Void in
-                
+            movieMaker.generateMovie(path) {
                 DispatchQueue.main.async {
                     self.indicatorStop()
                 }
-                
             }
         }
 
@@ -441,7 +433,15 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
         let bytesPerRow = Int(4) * width
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let bitmapInfo = CGImageAlphaInfo.premultipliedLast.rawValue
-        let bitmapContext = CGContext(data: nil, width: width, height: height, bitsPerComponent: bitsPerComponent, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: bitmapInfo)!
+        let bitmapContext = CGContext(
+            data: nil,
+            width: width,
+            height: height,
+            bitsPerComponent: bitsPerComponent,
+            bytesPerRow: bytesPerRow,
+            space: colorSpace,
+            bitmapInfo: bitmapInfo
+            )!
         
         // write source image to bitmap
         let bitmapRect = NSMakeRect(0.0, 0.0, size.width, size.height)
@@ -457,9 +457,9 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
     }
     
     func indicatorStart() {
-        self.indicator.isHidden = false
-        self.indicator.doubleValue = 0
-        self.indicator.startAnimation(self.indicator)
+        indicator.isHidden = false
+        indicator.doubleValue = 0
+        indicator.startAnimation(self.indicator)
     }
     
     func indicatorStop() {
@@ -492,7 +492,7 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
         }
         
         // start recording
-        self.videoMovieFileOutput.startRecording(toOutputFileURL: URL(string: schemePathString), recordingDelegate: self)
+        videoMovieFileOutput.startRecording(toOutputFileURL: URL(string: schemePathString), recordingDelegate: self)
         
     }
     
@@ -504,7 +504,7 @@ class CaptureViewController: NSViewController, MovieMakerDelegate, AVCaptureFile
     public func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let view = tableView.make(withIdentifier: "imageCell", owner: self)
         let imageView = view!.viewWithTag(1) as! NSImageView
-        imageView.image = self.entity.image
+        imageView.image = entity.image
         imageView.alphaValue = 0.6
         return view
     }
@@ -597,7 +597,7 @@ extension CaptureViewController: NSTouchBarDelegate {
     }
     
     func captureButtonDidTap(_ sender: NSButton) {
-        self.captureImage()
+        captureImage()
     }
     
     
@@ -608,7 +608,7 @@ extension CaptureViewController: NSSharingServicePickerTouchBarItemDelegate {
 
     @available(OSX 10.12.2, *)
     func items(for pickerTouchBarItem: NSSharingServicePickerTouchBarItem) -> [Any] {
-        if let image = self.entity.image {
+        if let image = entity.image {
             return [image]
         }
         return []
